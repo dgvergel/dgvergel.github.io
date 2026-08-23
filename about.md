@@ -12,17 +12,19 @@ The content of this blog (including text, source code, diagrams, images, and any
 
 The aforementioned content is provided "AS IS", without warranties of any kind, either express or implied. The author (Daniel Gómez Vergel) shall not be held liable under any circumstances for any damages or losses arising from the use of such content.
 
-## Intellectual property
+## Copyright and licensing
 
 1. The original content of this blog is the intellectual property of its author, Daniel Gómez Vergel. Its reproduction, distribution, modification, or public communication, in whole or in part, is prohibited without the author's prior express written consent, except where permitted by applicable law or by the permissions granted in this notice.
 
-2. Unless otherwise stated, the source code published on this blog is distributed under the Creative Commons Attribution 4.0 International (CC BY 4.0) license. Its use is governed by the terms of that license, which in particular require proper attribution of the code's authorship.
+2. Unless otherwise stated, the original source code created by the author and published on this blog's posts is distributed under the Creative Commons Attribution 4.0 International (CC BY 4.0) license. Its use is governed by the terms of that license, which in particular require proper attribution of the code's authorship.
+   
+3. This blog uses de Minima Jekyll theme, which is third-party software distributed under the MIT License (see LICENSE.md). Minima and any other third-party software or materials remain subject to their respective licenses and copyright notices.
 
-3. Images generated using artificial intelligence will be identified as such where appropriate. Their use may be subject to the licensing terms of the service provider and to applicable laws and regulations.
+4. Images generated using artificial intelligence will be identified as such where appropriate. Their use may be subject to the licensing terms of the service provider and to applicable laws and regulations.
 
-4. Any intellectual property rights belonging to third parties with respect to libraries, trademarks, algorithms, technologies, or any other elements mentioned in the articles remain the property of their respective owners.
+5. Any intellectual property rights belonging to third-parties with respect to libraries, trademarks, algorithms, technologies, or any other elements mentioned in the posts remain the property of their respective owners.
 
-## Privacy Notice
+## Privacy notice
 
 ### Hosting and data processed by GitHub
 
