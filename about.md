@@ -14,7 +14,7 @@ The aforementioned content is provided "AS IS", without warranties of any kind, 
 
 ## Copyright and licensing
 
-1. The original content of this blog is the intellectual property of its author, Daniel Gómez Vergel. Its reproduction, distribution, modification, or public communication, in whole or in part, is prohibited without the author's prior express written consent, except where permitted by applicable law or by the permissions granted in this notice.
+1. The original content of this blog's posts is the intellectual property of its author, Daniel Gómez Vergel. Its reproduction, distribution, modification, or public communication, in whole or in part, is prohibited without the author's prior express written consent, except where permitted by applicable law or by the permissions granted in this notice.
 
 2. Unless otherwise stated, the original source code created by the author and published on this blog's posts is distributed under the Creative Commons Attribution 4.0 International (CC BY 4.0) license. Its use is governed by the terms of that license, which in particular require proper attribution of the code's authorship.
    
