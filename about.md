@@ -6,7 +6,7 @@ permalink: /about/
 
 ## Nature of the content
 
-The content of this blog (including text, source code, diagrams, images, and any other original material published in its articles) is provided solely for educational and informational purposes.
+The content of this blog's posts (including text, source code, diagrams, images, and any other original material published in its articles) is provided solely for educational and informational purposes.
 
 ## Warranty and liability
 
