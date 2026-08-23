@@ -1,0 +1,13 @@
+---
+# Los dos guiones iniciales vacíos son obligatorios para que Jekyll procese el archivo SASS
+---
+
+@import "minima";
+
+// apuntar al título principal h1 de las páginas con plantilla "page"
+.page-content .post-title {
+  text-align: center;         // centra el título verticalmente
+  border-bottom: 1px solid #e8e8e8; // crea la fina línea horizontal (color por defecto de Minima)
+  padding-bottom: 15px;       // espacio entre el texto y la línea
+  margin-bottom: 30px;        // espacio entre la línea y el contenido inferior
+}
