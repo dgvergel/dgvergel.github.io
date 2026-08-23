@@ -4,6 +4,10 @@ title: About
 permalink: /about/
 ---
 
+## Author of the blog
+
+I hold a Bachelor's degree in Physics from the University of Seville and a Ph.D. in Theoretical Physics from the Complutense University of Madrid. I currently serve as Head of the Department of Technology & Education at Universidad Europea de Andalucía (Málaga, Spain), where I teach Physics and Programming courses within the Bachelor's Degree in Computer Engineering.
+
 ## Nature of the content
 
 The content of this blog's posts (including text, source code, diagrams, images, and any other original material published in its articles) is provided solely for educational and informational purposes.
