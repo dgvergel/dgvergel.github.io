@@ -1,8 +1,10 @@
 ---
 layout: page
-title: Privacy Notice
-permalink: /privacy/
+title: About
+permalink: /about/
 ---
+
+## Privacy Notice
 
 ### Hosting and data processed by GitHub
 
