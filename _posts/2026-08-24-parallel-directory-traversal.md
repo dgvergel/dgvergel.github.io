@@ -33,10 +33,9 @@ contains: 46 files, 5 folders
 size: 210.1 MiB (220.308.703 bytes)
 </div>
 
-<div class="dgv-note">We will use the C++26 standard, in particular contracts and <code>std::optional<T&&></code>,
-together with the module system introduced in C++20, which allows us to organize the code into well-defined, self-contained
-components. This choice is motivated by considerations of code simplicity, efficiency, and modernity.
-Should it be necessary, adapting the solution to the traditional structure based on header (<code>.hpp</code>) and
+<div class="dgv-note">We will use the C++26 standard, in particular contracts and <code>std::optional<T&></code>,
+together with the module system introduced in C++20, which allows us to efficiently organize the code into well-defined
+components. Should it be necessary, adapting the solution to the traditional structure based on header (<code>.hpp</code>) and
 implementation (<code>.cpp</code>) files would be straightforward.
 </div>
 
@@ -57,7 +56,7 @@ Both the queue and the counter are protected by a `std::mutex`, while a `std::co
 used to block worker threads whenever no work is available, and to wake them up when new tasks are
 added or when global completion is detected.
 
-<div class="dgv-note">It is important to note that an empty queue does not
+<div class="dgv-note">It is important to note that an empty <code>tasks_</code> queue does not
 necessarily imply that the computation has finished: a worker thread may still be processing a task
 and could generate additional tasks at a later stage. The purpose of the <code>active_</code> counter is precisely
 to distinguish between these two situations.
@@ -145,7 +144,7 @@ compatibility layers for selected C library components, together with formatting
 output. We begin by examining the compatibility modules:
 
 * `c_tools.exit_codes`: Exposes the standard language termination values `EXIT_SUCCESS` and `EXIT_FAILURE`
-through the `c_tools namespace`. Its purpose is to facilitate the use of these values from modular code
+through the `c_tools` namespace. Its purpose is to facilitate the use of these values from modular code
 without relying directly on the macros defined in `<cstdlib>`.
 
 * `c_tools.standard_streams`: Provides `noexcept` functions that return `std::FILE*` pointers to the standard
@@ -186,7 +185,7 @@ achieved when increasing the number of workers:
 <div class="dgv-note" markdown="1">The number of worker threads <code>num_workers</code> defaults to
 <code>hardware_concurrency()</code>[^3], which
 provides an estimate of the concurrency level available on the system, typically matching the number
-of hardware threads. However, this value should be interpreted as a suggestive upper bound and not
+of hardware threads. However, this value should be interpreted as an indicative upper bound and not
 necessarily as the optimal number of workers. In practice, performance can saturate with a lower
 thread count due to factors such as contention over the shared queue, the type of storage device,
 or the limitations of the file system itself.
