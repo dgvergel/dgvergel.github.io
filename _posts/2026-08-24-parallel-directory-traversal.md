@@ -2,10 +2,11 @@
 layout: post
 title: "Parallel directory traversal: A dynamic queue approach"
 date: 2026-08-24
-categories: [concurrency, cpp26, dynamic task queue]
+categories: [concurrency, cpp26, dynamic-task-queue]
+permalink: /:year/:month/:day/parallel-directory-traversal
 ---
 
-## Introduction
+### Introduction
 
 In this article, we will take an in-depth look at a concurrent programming example in C++.
 
@@ -38,7 +39,7 @@ components. This choice is motivated by considerations of code simplicity, clari
 Should it be necessary, adapting the solution to the traditional structure based on header (`.hpp`) and
 implementation (`.cpp`) files would be straightforward.
 
-## Module #1: concurrency_tools.dynamic_task_queue
+### Module #1: concurrency_tools.dynamic_task_queue
 
 We begin by implementing a blocking concurrent work queue, `dynamic_task_queue<T>`, specifically
 designed for scenarios in which tasks can dynamically generate additional tasks during their execution.
@@ -83,6 +84,8 @@ out of scope, its destructor automatically invokes `complete()`, transferring th
 to the queue and signaling the completion of the original task. Thus, the `acquire/complete` protocol
 is guaranteed by design using the RAII technique:
 
-<div class = "dgv-cb">{% include parallel-directory-traversal/cb-1.html %}</div>
+<div class="dgv-cb">
+{% include parallel-directory-traversal/cb-1.html %}
+</div>
 
 To be continued...
