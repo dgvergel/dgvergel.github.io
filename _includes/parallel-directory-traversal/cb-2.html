@@ -1,0 +1,121 @@
+<span style="color: #569cd6;">module</span>;
+<span style="color: #569cd6;">#include </span><span style="color: #ce9178;">&lt;cstdio&gt;</span>
+<span style="color: #569cd6;">export</span> <span style="color: #569cd6;">module</span> statistics.directory;
+
+<span style="color: #569cd6;">import</span> std;
+<span style="color: #569cd6;">import</span> concurrency_tools.dynamic_task_queue;
+<span style="color: #569cd6;">namespace</span> statistics {
+
+<span style="color: #569cd6;">export</span> <span style="color: #569cd6;">struct</span> extension_statistics {
+&nbsp; &nbsp;std::uintmax_t num_files = <span style="color: #b5cea8; text-align: left;">0</span>;
+&nbsp; &nbsp;std::<span style="white-space: normal;">uintmax_t</span><span style="white-space: normal;">&nbsp;total_size =&nbsp;<span style="color: #b5cea8; text-align: left; white-space: pre;">0</span>;</span>
+};
+<span style="color: #6a9955;">// resultado total o parcial producido por un worker:</span>
+<span style="color: #569cd6;">export</span> <span style="color: #569cd6;">struct</span> directory_statistics { 
+&nbsp; &nbsp;std::map&lt;std::string, extension_statistics&gt; files;
+&nbsp; &nbsp;std::<span style="white-space: normal;">uintmax_t</span><span style="white-space: normal;">&nbsp;num_directories =&nbsp;<span style="color: #b5cea8; text-align: left; white-space: pre;">0</span>;<br />&nbsp; &nbsp;std::uintmax_t num_errors =&nbsp;<span style="color: #b5cea8; text-align: left; white-space: pre;">0</span>;</span>
+};
+<span style="color: #569cd6;">using</span> directory_queue = concurrency_tools::dynamic_task_queue&lt;std::filesystem::path&gt;;
+
+<span style="color: #c586c0; text-align: left;">[[nodiscard]]</span>
+<span style="color: #569cd6;">auto</span> process_directories(directory_queue&amp; directories) -&gt; directory_statistics
+{
+&nbsp; &nbsp;<span style="color: #569cd6;">auto</span> res = directory_statistics{};
+
+&nbsp; &nbsp;<span style="color: #569cd6;">while</span> (<span style="color: #569cd6;">auto</span> directory = directories.acquire()) {
+<span style="color: #6a9955;">&nbsp; &nbsp; &nbsp; // sólo procesamos el directorio 'dir'; los subdirectorios</span>
+<span style="color: #6a9955;">&nbsp; &nbsp; &nbsp; // encontrados pasarán a la cola y serán procesados
+      // posteriormente por algún worker:</span>
+&nbsp; &nbsp; &nbsp; <span style="color: #569cd6;">auto const</span>&amp; dir = directory-&gt;get();
+&nbsp; &nbsp; &nbsp; <span style="color: #569cd6;">auto</span> ec = std::error_code{};
+&nbsp; &nbsp; &nbsp; <span style="color: #569cd6;">auto</span> it = std::filesystem::directory_iterator{dir, ec};
+&nbsp; &nbsp; &nbsp; <span style="color: #569cd6;">if</span> (ec) {
+<span style="color: #6a9955;">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;// no podemos acceder al directorio; la tarea actual se</span>
+<span style="color: #6a9955;">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;// completará automáticamente tras 'continue':</span>
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;++res.num_errors;
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<span style="color: #569cd6;">continue</span>;
+&nbsp; &nbsp; &nbsp; }
+
+&nbsp; &nbsp; &nbsp; <span style="color: #569cd6;">auto</span> end = std::filesystem::directory_iterator{};
+&nbsp; &nbsp; &nbsp; <span style="color: #569cd6;">for</span> (; it != end; it.increment(ec)) {
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<span style="color: #569cd6;">if</span> (ec) {<span style="color: #6a9955;"> // error al avanzar por el directorio</span>
+            ++res.num_errors;
+&nbsp; &nbsp; &nbsp; &nbsp;&nbsp;    <span style="color: #569cd6;">break</span>;
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;}
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<span style="color: #569cd6;">auto</span> <span style="color: #569cd6;">const</span>&amp; entry = *it;
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<span style="color: #569cd6;">auto</span> <span style="color: #569cd6;">const</span> status = entry.symlink_status(ec);
+&nbsp; &nbsp; &nbsp;   &nbsp;<span style="color: #569cd6;">if</span> (ec) {
+            ++res.num_errors;
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;   <span style="color: #569cd6;">continue</span>;
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;}
+&nbsp; &nbsp; &nbsp;   &nbsp;<span style="color: #569cd6;">if</span> (std::filesystem::is_symlink(status)) {
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <span style="color: #569cd6;">continue</span>;
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;}
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<span style="color: #569cd6;">else</span> <span style="color: #569cd6;">if</span> (std::filesystem::is_directory(status)) {
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; ++res.num_directories;
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;   directory-&gt;add_task(entry.path());
+&nbsp; &nbsp; &nbsp; &nbsp;  }
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<span style="color: #569cd6;">else</span> <span style="color: #569cd6;">if</span> (std::filesystem::is_regular_file(status)) {
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <span style="color: #569cd6;">auto</span> <span style="color: #569cd6;">const</span> size = entry.file_size(ec);
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;   <span style="color: #569cd6;">if</span> (ec) {
+               ++res.num_errors;
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;    <span style="color: #569cd6;">continue</span>;
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;   }
+            <span style="color: #569cd6;">auto</span> <span style="color: #569cd6;">const</span> extension = entry.path().extension().string();
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;   <span style="color: #569cd6;">auto</span>&amp; [num_files, total_size] = res.files[extension];
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;   ++num_files;
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; total_size += size;
+&nbsp; &nbsp; &nbsp; &nbsp;  }
+      } 
+&nbsp; &nbsp;} <span style="color: #6a9955;">// destrucción del acquired_task 'directory' y llamada automática</span>
+<span style="color: #6a9955;">     // a complete() antes de la próxima iteración del bucle, incorporando</span>
+<span style="color: #6a9955;">     // los subdirectorios encontrados a la cola de tareas</span>
+
+&nbsp; &nbsp;<span style="color: #569cd6;">return</span> res;
+}
+
+<span style="color: #6a9955;">// fusiona el resultado de un worker en el resultado global:</span>
+<span style="color: #569cd6;">void</span> merge_statistics(
+&nbsp; &nbsp;directory_statistics&amp; destination,
+&nbsp; &nbsp;directory_statistics <span style="color: #569cd6;">const</span>&amp; source
+){
+&nbsp; &nbsp;destination.num_directories += source.num_directories;
+   destination.num_errors += source.num_errors;
+
+&nbsp; &nbsp;<span style="color: #569cd6;">for</span> (<span style="color: #569cd6;">auto</span> <span style="color: #569cd6;">const</span>&amp; [extension, info] : source.files) {
+&nbsp; &nbsp; &nbsp; <span style="color: #569cd6;">auto</span>&amp; destination_info = destination.files[extension];
+&nbsp; &nbsp; &nbsp; destination_info.num_files += info.num_files;
+&nbsp; &nbsp; &nbsp; destination_info.total_size += info.total_size;
+&nbsp; &nbsp;}
+}
+
+<span style="color: #569cd6;">export</span>
+<span style="color: #c586c0; text-align: left;">[[nodiscard]]</span>
+<span style="color: #569cd6;">auto</span> run_directory_statistics(
+&nbsp; &nbsp;std::filesystem::path <span style="color: #569cd6;">const</span>&amp; root,
+&nbsp; &nbsp;std::size_t num_workers
+)
+&nbsp; &nbsp;-&gt; directory_statistics
+&nbsp; &nbsp;pre(std::filesystem::is_directory(root))
+&nbsp; &nbsp;pre(num_workers &gt;= <span style="color: #b5cea8;">1</span>)
+{
+&nbsp; &nbsp;<span style="color: #569cd6;">auto</span> directories = directory_queue{root};
+&nbsp; &nbsp;<span style="color: #569cd6;">auto</span> futures = std::views::indices(num_workers - <span style="color: #b5cea8;">1</span>)
+&nbsp; &nbsp; &nbsp; | std::views::transform([&amp;](<span style="color: #c586c0; text-align: left;">[[maybe_unused]]</span> <span style="color: #569cd6;">auto</span> worker_id)
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;-&gt; std::future&lt;directory_statistics&gt; {
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<span style="color: #569cd6;">return</span> std::async(
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; std::launch::async,
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; process_directories,
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; std::ref(directories)
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;);
+&nbsp; &nbsp; &nbsp; &nbsp; })
+&nbsp; &nbsp; &nbsp; | std::ranges::to&lt;std::vector&gt;();
+
+&nbsp; &nbsp;<span style="color: #569cd6;">auto</span> total = process_directories(directories);
+&nbsp; &nbsp;<span style="color: #569cd6;">for</span> (<span style="color: #569cd6;">auto</span>&amp; f : futures) {
+&nbsp; &nbsp; &nbsp; merge_statistics(total, f.get());
+&nbsp; &nbsp;}
+&nbsp; &nbsp;<span style="color: #569cd6;">return</span> total;
+}
+
+}<span style="color: #6a9955;"> // namespace statistics</span>
