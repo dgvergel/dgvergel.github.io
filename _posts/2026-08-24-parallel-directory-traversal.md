@@ -88,8 +88,136 @@ is guaranteed by design using the RAII technique:
 {% include parallel-directory-traversal/cb-1.html %}
 </div>
 
+## Module #2: statistics.directory
+
+The next module implements the parallel analysis of a directory tree. Given a root directory (`root`),
+it produces an object of type `directory_statistics` containing:
+
+* A `std::map` associative container that maps each file extension encountered (`.txt`, `.zip`, and so on)
+to an `extension_statistics` object. This object stores both the number of files with that extension
+present in the directory tree and their cumulative size.
+* The total number of subdirectories discovered.
+* The total number of errors encountered during the analysis, whether due to (i) failure to open a
+directory, (ii) inability to retrieve information about a specific entry, or (iii) inability to continue
+iterating through a directory.
+
+The `run_directory_statistics()` function is responsible for coordinating the parallel execution.
+It initializes a `dynamic_task_queue<std::filesystem::path>` with the root directory and launches a
+configurable number of worker threads, `num_workers`, each of which produces a `directory_statistics`
+object containing the partial statistics gathered during its work. Specifically, `num_workers - 1`
+workers are launched asynchronously using `std::async` [^1], while the main thread acts as an additional
+worker processing tasks from the shared queue.
+
+Each pending directory `dir` is represented as a task stored in the `dynamic_task_queue<std::filesystem::path>`,
+with `std::filesystem::is_directory(dir) == true`. Workers execute the `process_directories()` function,
+which acquires directories from the queue through `acquire()`, inspects their contents, and records
+statistics for the files found, grouped by extension and cumulative size. Subdirectories discovered
+during the traversal are not processed immediately; instead, they are registered as new tasks within
+the `acquired_task` object associated with the current directory. At its destruction, this object
+automatically transfers the accumulated tasks to the queue and signals completion of the original task
+through RAII.
+
+The implementation of `process_directories()` is based on `std::filesystem::directory_iterator` [^3].
+This iterator visits only the entries contained directly within a directory and does not recurse into
+subdirectories. The iteration order is unspecified by the standard, except that each directory entry
+is visited exactly once.
+
+<div class="dgv-note">It is worth emphasizing once again that, under this design, each worker maintains its own
+<code>directory_statistics object</code>, accumulating statistics only for the directories it processes.
+</div>
+
+Once the traversal has completed, the partial results are merged by `merge_statistics()`, which
+aggregates the file counts and cumulative sizes for each extension, together with the total number of
+subdirectories visited.
+
 <div class="dgv-cb">
 {% include parallel-directory-traversal/cb-2.html %}
 </div>
 
-To be continued...
+## Auxiliary modules
+
+Before turning to the main program, we will define three simple auxiliary modules that provide
+compatibility layers for selected C library components, together with formatting utilities for program
+output. We begin by examining the compatibility modules:
+
+* `c_tools.exit_codes`: Exposes the standard language termination values `EXIT_SUCCESS` and `EXIT_FAILURE`
+through the `c_tools namespace`. Its purpose is to facilitate the use of these values from modular code
+without relying directly on the macros defined in `<cstdlib>`.
+
+* `c_tools.standard_streams`: Provides `noexcept` functions that return `std::FILE*` pointers to the standard
+`stdin`, `stdout`, and `stderr` streams defined in `<cstdio>`.
+
+<div class="dgv-cb">
+{% include parallel-directory-traversal/cb-3.html %}
+</div>
+
+<div class="dgv-cb">
+{% include parallel-directory-traversal/cb-4.html %}
+</div>
+
+Finally:
+
+* `format_tools`: Extends `std::format` through custom `std::formatter` specializations, allowing binary
+sizes to be displayed using more readable units (KiB, MiB, and GiB) and integral values to be formatted
+with thousands separators.
+
+<div class="dgv-cb">
+{% include parallel-directory-traversal/cb-5.html %}
+</div>
+
+## Benchmarks
+
+The following `main()` function serves as a benchmark for the various modules developed throughout
+this article. It performs the statistical analysis of a directory tree specified as a command-line
+argument, using an increasing number of worker threads and measuring the execution time in each case.
+
+Based on these measurements, several performance metrics are computed and displayed, including the
+speedup relative to the sequential execution (a single worker thread) and the percentage improvement
+achieved when increasing the number of workers:
+
+<div class="dgv-cb">
+{% include parallel-directory-traversal/cb-6.html %}
+</div>
+
+The number of worker threads `num_workers` defaults to `std::thread::hardware_concurrency()` [^3], which
+provides an estimate of the concurrency level available on the system, typically matching the number
+of hardware threads. However, this value should be interpreted as a suggestive upper bound and not
+necessarily as the optimal number of workers. In practice, performance can saturate with a lower
+thread count due to factors such as contention over the shared queue, the type of storage device,
+or the limitations of the file system itself.
+
+As an example, on a system equipped with an 11th Gen Intel Core i5-1135G7 processor running at 2.40 GHz,
+8 hardware threads, and an SK hynix HFM256GD3HX015N SSD, the following results were obtained when
+analyzing a test directory tree:
+
+<div class="dgv-terminal-out">Workers  Time (ms)    Speedup    vs. 1 worker   vs. previous
+      1      16331       1.0×            0.0%              -
+      2      10194       1.6×           37.6%          37.6%
+      3       7777       2.1×           52.4%          23.7%
+      4       6242       2.6×           61.8%          19.7%
+      5       4994       3.3×           69.4%          20.0%
+      6       4545       3.6×           72.2%           9.0%
+      7       4281       3.8×           73.8%           5.8%
+      8       4125       4.0×           74.7%           3.6%
+____________________________________________________________
+contains: 136.613 files, 7.695 folders
+size: 7.2 GiB (7.679.411.327 bytes)
+errors: 0
+</div>
+
+Here, the 'vs. 1 worker' column expresses the percentage reduction in execution time relative to the
+sequential version.
+
+The associative container within the global `directory_statistics` result allows, among other actions,
+printing breakdowns like the one shown in the introduction of this article, or searching for information
+about a specific extension. As an example:
+
+<div class="dgv-cb">
+{% include parallel-directory-traversal/cb-7.html %}
+</div>
+
+### Bibliography
+
+[^1]: cppreference – std::async– https://en.cppreference.com/cpp/thread/async
+[^2]: cppreference – std::filesystem::directory_iterator – https://en.cppreference.com/cpp/filesystem/directory_iterator
+[^3]: cppreference – std::thread::hardware_concurrency – https://cppreference.com/cpp/thread/thread/hardware_concurrency
