@@ -40,7 +40,7 @@ Should it be necessary, adapting the solution to the traditional structure based
 implementation (<code>.cpp</code>) files would be straightforward.
 </div>
 
-### Module 1: concurrency_tools.dynamic_task_queue
+### Module 1: dynamic_task_queue
 
 We begin by implementing a blocking concurrent work queue, `dynamic_task_queue<T>`, specifically
 designed for scenarios in which tasks can dynamically generate additional tasks during their execution.
