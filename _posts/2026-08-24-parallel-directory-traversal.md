@@ -189,8 +189,7 @@ provides an estimate of the concurrency level available on the system, typically
 of hardware threads. However, this value should be interpreted as a suggestive upper bound and not
 necessarily as the optimal number of workers. In practice, performance can saturate with a lower
 thread count due to factors such as contention over the shared queue, the type of storage device,
-or the limitations of the file system itself.
-</div>
+or the limitations of the file system itself.</div>
 
 As an example, on a system equipped with an 11th Gen Intel Core i5-1135G7 processor running at 2.40 GHz,
 8 hardware threads, and an SK hynix HFM256GD3HX015N SSD, the following results were obtained when
