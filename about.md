@@ -10,7 +10,7 @@ I hold a Bachelor's degree in Physics from the University of Seville and a Ph.D.
 
 ## Nature of the content
 
-The content of this blog's posts (including text, source code, diagrams, images, and any other original material published in its articles) is provided solely for educational and informational purposes.
+The content of this blog's posts, including text, source code, diagrams, images, and any other original material, is provided solely for educational and informational purposes. Nothing published on this website should be construed as professional, legal, financial, engineering, or other specialised advice.
 
 ## Warranty and liability
 
@@ -18,13 +18,13 @@ The aforementioned content is provided "AS IS", without warranties of any kind, 
 
 ## Copyright and licensing
 
-1. The original content of this blog's posts is the intellectual property of its author, Daniel Gómez Vergel. Its reproduction, distribution, modification, or public communication, in whole or in part, is prohibited without the author's prior express written consent, except where permitted by applicable law or by the permissions granted in this notice.
+1.Unless otherwise stated, all original textual content published in this blog's posts is © Daniel Gómez Vergel. All rights reserved. Its reproduction, distribution, modification, or public communication, in whole or in part, is prohibited without the author's prior express written consent, except where permitted by applicable law or by the permissions granted in this notice.
 
-2. Unless otherwise stated, the original source code created by the author and published on this blog's posts is distributed under the Creative Commons Attribution 4.0 International (CC BY 4.0) license. Its use is governed by the terms of that license, which in particular require proper attribution of the code's authorship.
+2. Unless otherwise stated, the original source code created by the author and published in this blog's posts is distributed under the Creative Commons Attribution 4.0 International (CC BY 4.0) license. Its use is governed by the terms of that license, which in particular require proper attribution of the code's authorship. This license applies only to the source code and does not automatically extend to the accompanying text, diagrams, images, or other materials.
    
-3. This blog uses de Minima Jekyll theme, which is third-party software distributed under the MIT License (see LICENSE.md). Minima and any other third-party software or materials remain subject to their respective licenses and copyright notices.
+3. This blog uses the Minima Jekyll theme, which is third-party software distributed under the MIT License. Minima and any other third-party software or materials remain subject to their respective licenses and copyright notices.
 
-4. Images generated using artificial intelligence will be identified as such where appropriate. Their use may be subject to the licensing terms of the service provider and to applicable laws and regulations.
+4. Images generated with the assistance of artificial intelligence may be identified as such where appropriate. Copyright ownership, licensing, and permitted uses of such images may depend on the terms of the service provider and applicable law.
 
 5. Any intellectual property rights belonging to third-parties with respect to libraries, trademarks, algorithms, technologies, or any other elements mentioned in the posts remain the property of their respective owners.
 
@@ -34,13 +34,13 @@ The aforementioned content is provided "AS IS", without warranties of any kind, 
 
 This blog is hosted on GitHub Pages, a static website hosting service provided by GitHub.
 
-GitHub states that, when a visitor accesses a GitHub Pages site, the visitor's IP address is logged and stored for security purposes, regardless of whether the visitor is signed in to GitHub.
+According to GitHub, when a visitor accesses a GitHub Pages site, the visitor's IP address may be logged and stored for security and operational purposes, regardless of whether the visitor is signed in to GitHub.
 
 GitHub may also process technical information associated with access to its services and may use cookies or similar technologies in accordance with the [GitHub General Privacy Statement](https://docs.github.com/en/site-policy/privacy-policies/github-general-privacy-statement).
 
 ### Services incorporated by the author
 
-The author has not intentionally incorporated advertising services, analytics or tracking tools into this blog. In particular, Google Analytics is not enabled.
+The author has not deliberately incorporated third-party advertising services, analytics tools, or tracking technologies into this blog. In particular, Google Analytics is not enabled.
 
 The blog does not provide comment systems, contact forms, newsletters, user accounts or other mechanisms managed by the author for the direct collection of visitors' personal data.
 
