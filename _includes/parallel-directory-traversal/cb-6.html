@@ -1,0 +1,117 @@
+<span style="color: #569cd6;">import</span> std;
+
+<span style="color: #569cd6;">import</span> c_tools.exit_codes;
+<span style="color: #569cd6;">import</span> c_tools.standard_streams;
+<span style="color: #569cd6;">import</span> format_tools;
+<span style="color: #569cd6;">import</span> statistics.directory;
+
+<span style="color: #569cd6;">namespace</span> stdc = std::chrono;
+<span style="color: #569cd6;">namespace</span> stdf = std::filesystem;
+<span style="color: #569cd6;">namespace</span> stdv = std::views;
+
+<span style="color: #569cd6;">struct</span> benchmark_result {
+   statistics::directory_statistics statistics;
+   stdc::milliseconds duration;
+};
+
+<span style="color: #c586c0; text-align: left;">[[nodiscard]]</span>
+<span style="color: #569cd6;">auto</span> run_benchmark(
+   stdf::path <span style="color: #569cd6;">const</span>&amp; root,
+   std::size_t num_workers
+)
+   -&gt; benchmark_result
+{
+   <span style="color: #569cd6;">using</span> clock = stdc::steady_clock;
+   <span style="color: #569cd6;">auto</span> <span style="color: #569cd6;">const</span> start = clock::now();
+
+   <span style="color: #569cd6;">auto</span> <span style="color: #569cd6;">const</span> total = statistics::run_directory_statistics(root, num_workers);
+
+   <span style="color: #569cd6;">using</span> ms = stdc::milliseconds;
+   <span style="color: #569cd6;">return</span> {
+      .statistics = total,
+      .duration   = stdc::duration_cast&lt;ms&gt;(clock::now() - start)
+   };
+}
+
+<span style="color: #569cd6;">auto</span> main(<span style="color: #569cd6;">int</span> argc, <span style="color: #569cd6;">char</span>* argv[]) -&gt; <span style="color: #569cd6;">int</span>
+{
+   <span style="color: #569cd6;">if</span> (argc != <span style="color: #b5cea8;">2</span>) {
+      std::println(
+         c_tools::stderr_stream(),
+         <span style="color: #ce9178;">"usage: {} &lt;directory&gt;"</span>,
+         argv[<span style="color: #b5cea8;">0</span>]
+      );
+      <span style="color: #569cd6;">return</span> c_tools::exit_failure;
+   }
+
+   <span style="color: #569cd6;">auto</span> <span style="color: #569cd6;">const</span> root = stdf::path{argv[<span style="color: #b5cea8;">1</span>]};
+   <span style="color: #569cd6;">auto</span> ec = std::error_code{};
+   <span style="color: #569cd6;">if</span> (<span style="color: #569cd6;">not</span> stdf::is_directory(root, ec)) {
+      std::println(
+         c_tools::stderr_stream(),
+         <span style="color: #ce9178;">"error: '{}': {}"</span>,
+         root.string(),
+         ec? ec.message() : <span style="color: #ce9178;">"not a directory"</span>
+      );
+      <span style="color: #569cd6;">return</span> c_tools::exit_failure;
+   }
+  
+   <span style="color: #569cd6;">auto</span> <span style="color: #569cd6;">const</span> concurrency = std::thread::hardware_concurrency();
+   <span style="color: #569cd6;">auto</span> <span style="color: #569cd6;">const</span> max_workers = std::max(<span style="color: #b5cea8;">1u</span>, concurrency);
+
+   std::println(
+      <span style="color: #ce9178;">"{:&gt;7} {:&gt;10} {:&gt;10} {:&gt;15} {:&gt;14}"</span>,
+      <span style="color: #ce9178;">"Workers"</span>,
+      <span style="color: #ce9178;">"Time (ms)"</span>,
+      <span style="color: #ce9178;">"Speedup"</span>,
+      <span style="color: #ce9178;">"vs. 1 worker"</span>,
+      <span style="color: #ce9178;">"vs. previous"</span>
+   );
+
+   <span style="color: #569cd6;">auto</span> baseline = stdc::milliseconds{};
+   <span style="color: #569cd6;">auto</span> previous = <span style="color: #b5cea8;">0.0</span>;
+
+   <span style="color: #569cd6;">for</span> (<span style="color: #569cd6;">auto</span> <span style="color: #569cd6;">const</span> num_workers : stdv::iota(<span style="color: #b5cea8;">1u</span>, max_workers + <span style="color: #b5cea8;">1</span>)) {
+      <span style="color: #569cd6;">auto</span> <span style="color: #569cd6;">const</span> [stats, duration] = run_benchmark(root, num_workers);
+
+      <span style="color: #569cd6;">if</span> (num_workers == <span style="color: #b5cea8;">1</span>) {
+         baseline = duration;
+      }
+
+      <span style="color: #569cd6;">auto</span> <span style="color: #569cd6;">const</span> current = <span style="color: #569cd6;">static_cast</span>&lt;<span style="color: #569cd6;">double</span>&gt;(duration.count());
+      <span style="color: #569cd6;">auto</span> <span style="color: #569cd6;">const</span> speedup = <span style="color: #569cd6;">static_cast</span>&lt;<span style="color: #569cd6;">double</span>&gt;(baseline.count())/current;
+
+      std::println(
+         <span style="color: #ce9178;">"{:&gt;7} {:&gt;10} {:&gt;9.1f}× {:&gt;14.1f}% {:&gt;14}"</span>,
+         num_workers,
+         current,
+         speedup,
+         <span style="color: #b5cea8;">100.0</span>*(<span style="color: #b5cea8;">1.0</span> - <span style="color: #b5cea8;">1.0</span>/speedup),
+         previous? std::format(<span style="color: #ce9178;">"{:.1f}%"</span>, <span style="color: #b5cea8;">100</span>*(<span style="color: #b5cea8;">1.0</span> - current/previous)) : <span style="color: #ce9178;">"-"</span>
+      );
+
+      previous = current;
+
+      <span style="color: #569cd6;">if</span> (num_workers == max_workers) {
+         <span style="color: #569cd6;">auto</span> total_files = std::uintmax_t{};
+         <span style="color: #569cd6;">auto</span> total_size  = std::uintmax_t{};
+
+         <span style="color: #569cd6;">for</span> (<span style="color: #569cd6;">auto</span> <span style="color: #569cd6;">const</span>&amp; [extension, info] : stats.files) {
+            total_files += info.num_files;
+            total_size += info.total_size;
+         }
+
+         std::println(
+            <span style="color: #ce9178;">"{:_^60}\ncontains: {} files, {} folders\nsize: {} ({} bytes)\nerrors: {}"</span>,
+            <span style="color: #ce9178;">""</span>,
+            format_tools::thousands_separated{total_files},
+            format_tools::thousands_separated{stats.num_directories},
+            format_tools::binary_size{total_size},
+            format_tools::thousands_separated{total_size},
+            stats.num_errors
+         );
+      }
+   }
+
+   <span style="color: #569cd6;">return</span> c_tools::exit_success;
+}
