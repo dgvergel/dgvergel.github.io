@@ -45,12 +45,13 @@ $content-width: 1050px;
   border-radius: 6px !important;              
   padding: 15px 20px !important;              
   margin: 20px auto !important;               
+
+  box-sizing: border-box !important;
   
   // control de anchura responsiva:
-  width: 50% !important;                      
-  @media (max-width: 768px) {
-    width: 100% !important;
-  }
+  box-sizing: border-box;
+  width: 100%;
+  max-width: 750px;
 
   // formato del texto plano (simula la etiqueta <pre>):
   color: #2a2a2a !important;
@@ -80,11 +81,12 @@ $content-width: 1050px;
   line-height: 1.6 !important;
   text-align: left !important;
 
+  box-sizing: border-box;
+  
   // control de anchura responsiva:
-  width: 85% !important;
-  @media (max-width: 768px) {
-    width: 100% !important;
-  }
+  box-sizing: border-box;
+  width: 100%;
+  max-width: 850px;
 
   // estilo específico para palabras de código dentro de la nota
   code {
