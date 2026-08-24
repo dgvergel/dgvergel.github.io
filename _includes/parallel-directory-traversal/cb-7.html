@@ -1,0 +1,19 @@
+<span style="color: #569cd6;">auto</span> <span style="color: #569cd6;">const</span> [files, num_directories, num_errors]
+   = statistics::run_directory_statistics(root, <span style="color: #b5cea8; text-align: justify;">8</span><span style="color: #6a9955; text-align: justify;">/*workers*/</span>);
+
+<span style="color: #569cd6;">auto</span> <span style="color: #569cd6;">const</span> extension = <span style="color: #ce9178;">".txt"</span>;
+<span style="color: #569cd6;">if</span> (
+   <span style="color: #569cd6;">auto</span> <span style="color: #569cd6;">const</span> it = files.find(extension);
+   it != files.end()
+){
+   <span style="color: #569cd6;">auto</span> <span style="color: #569cd6;">const</span>&amp; [num_files, total_size] = it-&gt;second;
+   std::println(
+      <span style="color: #ce9178;">"{} files, {} ({} bytes)"</span>,
+      format_tools::thousands_separated{num_files},
+      format_tools::binary_size{total_size},
+      format_tools::thousands_separated{total_size}
+   );
+}
+<span style="color: #569cd6;">else</span> {
+   std::println(<span style="color: #ce9178;">"no {} files found"</span>, extension);
+}
