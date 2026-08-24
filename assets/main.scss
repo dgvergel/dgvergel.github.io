@@ -8,14 +8,9 @@
  * Based on the Minima theme (Copyright (c) Jekyll authors, MIT License).
  */
 
-@import "minima";
+$content-width: 1050px;
 
-// ensanchar el contenedor principal del blog para código y texto técnico
-.wrapper {
-  max-width: 1050px !important;
-  padding-right: 30px !important;
-  padding-left: 30px !important;
-}
+@import "minima";
 
 // apuntar al título principal h1 de las páginas con plantilla "page":
 .page-content .post-title {
