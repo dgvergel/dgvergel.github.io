@@ -59,7 +59,7 @@
    }
 
    <span style="color: #c586c0;">[[nodiscard]]</span>
-   <span style="color: #569cd6;">auto</span> active() <span style="color: #569cd6;">const</span> -&gt; std::<span style="color: #569cd6;">size_t</span>
+   <span style="color: #569cd6;">auto</span> active() <span style="color: #569cd6;">const</span> -&gt; std::size_t
    {
       <span style="color: #569cd6;">auto</span> lock = std::lock_guard{mtx_};
       <span style="color: #569cd6;">return</span> active_;
