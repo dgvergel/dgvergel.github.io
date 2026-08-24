@@ -113,3 +113,22 @@ $content-width: 1050px;
 .footnotes a {
   overflow-wrap: anywhere;
 }
+
+// categorías:
+.post-categories {
+  margin-top: 2rem;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+}
+
+.post-categories span {
+  display: inline-block;
+  padding: 0.2rem 0.65rem;
+  font-size: 0.85rem;
+  line-height: 1.4;
+  color: #665;
+  background-color: #f5f5f5;
+  border: 1px solid #ddd;
+  border-radius: 0.5rem;
+}
