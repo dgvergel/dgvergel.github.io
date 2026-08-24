@@ -106,13 +106,13 @@ directory, (ii) inability to retrieve information about a specific entry, or (ii
 iterating through a directory.
 
 The `run_directory_statistics()` function is responsible for coordinating the parallel execution.
-It initializes a `dynamic_task_queue<std::filesystem::path>` with the root directory and launches a
+It initializes a `dynamic_task_queue<filesystem::path>` with the root directory and launches a
 configurable number of worker threads, `num_workers`, each of which produces a `directory_statistics`
 object containing the partial statistics gathered during its work. Specifically, `num_workers - 1`
 workers are launched asynchronously using `std::async`[^1], while the main thread acts as an additional
 worker processing tasks from the shared queue.
 
-Each pending directory `dir` is represented as a task stored in the `dynamic_task_queue<std::filesystem::path>`,
+Each pending directory `dir` is represented as a task stored in the `dynamic_task_queue<filesystem::path>`,
 with `std::filesystem::is_directory(dir) == true`. Workers execute the `process_directories()` function,
 which acquires directories from the queue through `acquire()`, inspects their contents, and records
 statistics for the files found, grouped by extension and cumulative size. Subdirectories discovered
