@@ -10,11 +10,11 @@ I hold a Bachelor's degree in Physics from the University of Seville and a Ph.D.
 
 ## Nature of the content
 
-The content of this blog's posts, including text, source code, diagrams, images, and any other original material, is provided solely for educational and informational purposes. Nothing published on this website should be construed as professional, legal, financial, engineering, or other specialised advice.
+This blog is a personal, non-commercial initiative aimed at sharing knowledge and experience in programming, software development, and related technical topics. The materials published on this blog's posts, including text, source code, diagrams, images, and other original content, are provided for educational and informational purposes only and should not be regarded as professional, legal, financial, engineering, or other specialised advice.
 
 ## Warranty and liability
 
-The aforementioned content is provided "AS IS", without warranties of any kind, either express or implied. The author (Daniel Gómez Vergel) shall not be held liable under any circumstances for any damages or losses arising from the use of such content.
+The aforementioned content is provided "AS IS", without warranties of any kind, either express or implied. To the extent permitted by applicable law, the author shall not be liable for damages or losses arising from their use.
 
 ## Copyright and licensing
 
@@ -34,7 +34,7 @@ The aforementioned content is provided "AS IS", without warranties of any kind, 
 
 This blog is hosted on GitHub Pages, a static website hosting service provided by GitHub.
 
-According to GitHub, when a visitor accesses a GitHub Pages site, the visitor's IP address may be logged and stored for security and operational purposes, regardless of whether the visitor is signed in to GitHub.
+According to GitHub, when a GitHub Pages site is visited, the visitor's IP address is logged and stored for security purposes, regardless of whether the visitor has signed into GitHub or not. For additional information, see GitHub's documentation on [What is GitHub Pages?](https://docs.github.com/en/pages/getting-started-with-github-pages/what-is-github-pages).
 
 GitHub may also process technical information associated with access to its services and may use cookies or similar technologies in accordance with the [GitHub General Privacy Statement](https://docs.github.com/en/site-policy/privacy-policies/github-general-privacy-statement).
 
