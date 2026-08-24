@@ -1,0 +1,167 @@
+<span style="color: #569cd6;">export</span> <span style="color: #569cd6;">module</span> concurrency_tools.dynamic_task_queue;
+
+<span style="color: #569cd6;">import</span> std;
+
+<span style="color: #569cd6;">export</span> <span style="color: #569cd6;">namespace</span> concurrency_tools {
+
+<span style="color: #569cd6;">template</span>&lt;<span style="color: #569cd6;">typename</span> T&gt;
+<span style="color: #569cd6;">concept</span> nothrow_move_constructible
+   = std::is_nothrow_move_constructible_v&lt;T&gt;;
+
+<span style="color: #6a9955;">// cola de trabajo concurrente bloqueante para algoritmos en</span>
+<span style="color: #6a9955;">// los que las tareas pueden generar dinámicamente nuevas tareas:</span>
+
+<span style="color: #569cd6;">template</span>&lt;<span style="color: #569cd6;">nothrow_move_constructible</span> T&gt;
+<span style="color: #569cd6;">class</span> dynamic_task_queue {
+<span style="color: #569cd6;">public:</span>
+   <span style="color: #569cd6;">class</span> acquired_task;<span style="color: #6a9955;">
+</span>
+   <span style="color: #569cd6;">template</span>&lt;<span style="color: #569cd6;">typename</span> S&gt;
+      <span style="color: #569cd6;">requires</span> std::constructible_from&lt;T, S&amp;&amp;&gt;
+   <span style="color: #569cd6;">explicit</span> dynamic_task_queue(S<span style="color: #569cd6;">&amp;&amp;</span> initial)
+   {
+      tasks_.emplace(std::forward&lt;S&gt;(initial));
+   }
+
+   dynamic_task_queue(dynamic_task_queue <span style="color: #569cd6;">const</span>&amp;) = <span style="color: #569cd6;">delete</span>;
+   <span style="color: #569cd6;">auto</span> <span style="color: #569cd6;">operator</span>=(dynamic_task_queue <span style="color: #569cd6;">const&amp;</span>) -&gt; dynamic_task_queue&amp; = <span style="color: #569cd6;">delete</span>;
+
+   <span style="color: #c586c0;">[[nodiscard]]</span>
+   <span style="color: #569cd6;">auto</span> acquire() -&gt; std::optional&lt;acquired_task&gt;
+   {
+      <span style="color: #569cd6;">auto</span> lock = std::unique_lock{mtx_};
+
+      cv_.wait(lock, [<span style="color: #569cd6;">this</span>]{
+         <span style="color: #569cd6;">return</span> active_ == <span style="color: #b5cea8;">0</span> or not tasks_.empty();
+      });
+
+      <span style="color: #569cd6;">if</span> (tasks_.empty()) {<span style="color: #6a9955;"> // ⇔ finished() == true</span>
+         <span style="color: #569cd6;">return</span> std::nullopt;
+      }
+
+      <span style="color: #569cd6;">auto</span> res = std::optional&lt;acquired_task&gt;{
+         std::in_place,
+         *<span style="color: #569cd6;">this</span>,
+         std::move(tasks_.front())
+      };
+
+      tasks_.pop();
+      ++active_;
+
+      <span style="color: #569cd6;">return</span> res;
+   }
+
+   <span style="color: #c586c0;">[[nodiscard]]</span>
+   <span style="color: #569cd6;">auto</span> empty() <span style="color: #569cd6;">const</span> -&gt; <span style="color: #569cd6;">bool</span>
+   {
+      <span style="color: #569cd6;">auto</span> lock = std::lock_guard{mtx_};
+      <span style="color: #569cd6;">return</span> tasks_.empty();
+   }
+
+   <span style="color: #c586c0;">[[nodiscard]]</span>
+   <span style="color: #569cd6;">auto</span> active() <span style="color: #569cd6;">const</span> -&gt; std::<span style="color: #569cd6;">size_t</span>
+   {
+      <span style="color: #569cd6;">auto</span> lock = std::lock_guard{mtx_};
+      <span style="color: #569cd6;">return</span> active_;
+   }
+
+   <span style="color: #c586c0;">[[nodiscard]]</span>
+   <span style="color: #569cd6;">auto</span> finished() <span style="color: #569cd6;">const</span> -&gt; <span style="color: #569cd6;">bool</span>
+   {
+      <span style="color: #569cd6;">auto</span> lock = std::lock_guard{mtx_};
+      <span style="color: #569cd6;">return</span> tasks_.empty() and active_ == <span style="color: #b5cea8;">0</span>;
+   }
+
+<span style="color: #569cd6;">private:</span>
+   std::queue&lt;T&gt; tasks_;
+   std::size_t active_ = <span style="color: #b5cea8;">0</span>;
+
+   <span style="color: #569cd6;">mutable</span> std::mutex mtx_;
+   std::condition_variable cv_;
+
+<span style="color: #6a9955;">   // nota sobre noexcept: un fallo durante la incorporación de nuevas</span>
+<span style="color: #6a9955;">   // tareas se considera irrecuperable y provoca std::terminate()</span>
+   <span style="color: #569cd6;">template</span>&lt;<span style="color: #569cd6;">typename</span> S&gt;
+      <span style="color: #569cd6;">requires</span> std::is_nothrow_constructible_v&lt;T, S&amp;&amp;&gt;
+   <span style="color: #569cd6;">void</span> complete(std::vector&lt;S&gt;<span style="color: #569cd6;">&amp;&amp;</span> new_tasks) <span style="color: #569cd6;">noexcept</span>
+   {
+      <span style="color: #569cd6;">auto</span> globally_finished = <span style="color: #569cd6;">false</span>;
+      <span style="color: #569cd6;">auto</span> has_pending_work = <span style="color: #569cd6;">false</span>;
+      {
+         <span style="color: #569cd6;">auto</span> lock = std::lock_guard{mtx_};
+
+         <span style="white-space: normal;"><span style="color: #569cd6;">contract_assert</span></span><span style="white-space: normal;">(active_ != </span><span style="white-space: normal;"><span style="color: #b5cea8;">0</span></span><span style="white-space: normal;">);</span>
+         --active_;
+
+         <span style="color: #569cd6;">for</span> (<span style="color: #569cd6;">auto</span>&amp; t : new_tasks) {
+            tasks_.emplace(std::move(t));
+         }
+         globally_finished = tasks_.empty() and active_ == <span style="color: #b5cea8;">0</span>;
+         has_pending_work = <span style="color: #569cd6;">not</span> tasks_.empty();
+      }
+
+      <span style="color: #569cd6;">if</span> (globally_finished) {
+         cv_.notify_all();
+      }
+      <span style="color: #569cd6;">else</span> <span style="color: #569cd6;">if</span> (has_pending_work) {
+         cv_.notify_one();
+      }
+   }
+};
+    
+<span style="color: #6a9955;">// -----------------------------------------</span>
+
+<span style="color: #569cd6;">template</span>&lt;<span style="color: #569cd6;">nothrow_move_constructible</span> T&gt;
+<span style="color: #569cd6;">class</span> dynamic_task_queue&lt;T&gt;::acquired_task {
+<span style="color: #569cd6;">public:</span>
+   acquired_task(
+      dynamic_task_queue&lt;T&gt;&amp; queue,
+      T<span style="color: #569cd6;">&amp;&amp;</span> value
+   ) <span style="color: #569cd6;">noexcept</span>
+      : queue_opt_{queue}, value_{std::move(value)}, new_tasks_{}
+   { }
+
+   acquired_task(acquired_task <span style="color: #569cd6;">const</span>&amp;) = <span style="color: #569cd6;">delete</span>;
+   <span style="color: #569cd6;">auto</span> <span style="color: #569cd6;">operator</span>=(acquired_task <span style="color: #569cd6;">const</span>&amp;) -&gt; acquired_task&amp; = <span style="color: #569cd6;">delete</span>;
+
+   acquired_task(acquired_task<span style="color: #569cd6;">&amp;&amp;</span> other) <span style="color: #569cd6;">noexcept</span>
+      : queue_opt_{other.queue_opt_},
+        value_{std::move(other.value_)},
+        new_tasks_{std::move(other.new_tasks_)}
+   {
+      other.queue_opt_ = std::nullopt;
+   }
+
+   <span style="color: #569cd6;">auto</span> <span style="color: #569cd6;">operator</span>=(acquired_task<span style="color: #569cd6;">&amp;&amp;</span>) -&gt; acquired_task&amp; = <span style="color: #569cd6;">delete</span>;
+
+   <span style="color: #569cd6;">auto</span> get() <span style="color: #569cd6;">const</span> <span style="color: #569cd6;">noexcept</span> -&gt; T <span style="color: #569cd6;">const</span>&amp;
+   {
+      <span style="color: #569cd6;">return</span> value_;
+   }
+
+   <span style="color: #569cd6;">auto</span> get() <span style="color: #569cd6;">noexcept</span> -&gt; T&amp;
+   {
+      <span style="color: #569cd6;">return</span> value_;
+   }
+
+   <span style="color: #569cd6;">template</span>&lt;<span style="color: #569cd6;">typename</span> S&gt;
+      <span style="color: #569cd6;">requires</span> std::constructible_from&lt;T, S&amp;&amp;&gt;
+   <span style="color: #569cd6;">void</span> add_task(S<span style="color: #569cd6;">&amp;&amp;</span> task)
+   {
+      new_tasks_.emplace_back(std::forward&lt;S&gt;(task));
+   }
+
+   ~acquired_task()
+   {
+      <span style="color: #569cd6;">if</span> (queue_opt_) {
+         queue_opt_-&gt;complete(std::move(new_tasks_));
+      }
+   }
+<span style="color: #569cd6;">private:</span>
+   std::optional&lt;dynamic_task_queue&lt;T&gt;&amp;&gt; queue_opt_;
+   T value_;
+   std::vector&lt;T&gt; new_tasks_;
+};
+
+}<span style="color: #6a9955;"> // namespace concurrency_tools
+</span>
