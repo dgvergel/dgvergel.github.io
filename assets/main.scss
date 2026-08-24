@@ -7,25 +7,23 @@
 .page-content .post-title {
   text-align: left;        
   border-bottom: 1px solid #e8e8e8; // crea la fina línea horizontal (color por defecto de Minima)
-  padding-bottom: 15px;       // espacio entre el texto y la línea
-  margin-bottom: 30px;        // espacio entre la línea y el contenido inferior
+  padding-bottom: 15px;             // espacio entre el texto y la línea
+  margin-bottom: 30px;              // espacio entre la línea y el contenido inferior
 }
 
-// personalización de los bloques de código:
-pre, code {
-  font-family: 'Courier New', Courier, monospace !important;
-  font-size: 0.9em !important;
-}
-
-div.highlighter-rouge, figure.highlight {
-  background-color: #f8f9fa; // fondo claro suave
-  border: 1px solid #e1e4e8; // borde fino sutil
-  border-radius: 6px;        // esquinas redondeadas
-  margin-bottom: 1.5rem;
-}
-
-pre.highlight {
-  padding: 16px !important;
-  margin: 0 !important;
-  overflow: auto; // barra de desplazamiento suave si el código es largo
+// estilo unificado para bloques importados de código:
+.dgv-cb {
+  // estilos de maquetación del bloque (bordes y espaciado)
+  background-color: #1e1e1e !important;       // fondo oscuro
+  margin: 1.8rem 0 !important;                // margen con los párrafos externos
+  padding: 16px 24px !important;              // acolchado arriba/abajo y lados
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.18) !important; // sombra con relieve
+  
+  // estilos del formato de texto (sustituye la configuración en línea)
+  color: #d4d4d4 !important;                  // color del texto base sin colorear
+  font-family: Consolas, "Courier New", monospace !important;
+  font-size: 14px !important;
+  line-height: 19px !important;               // espaciado vertical ligeramente mejorado
+  white-space: pre !important;                // respeta saltos de línea y espacios del código
+  overflow-x: auto !important;                // barra de desplazamiento horizontal suave
 }
