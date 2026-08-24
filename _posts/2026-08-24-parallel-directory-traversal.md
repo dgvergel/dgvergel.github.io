@@ -224,6 +224,6 @@ about a specific extension. As an example:
 
 ### Bibliography
 
-[^1]: cppreference – std::async– https://en.cppreference.com/cpp/thread/async
-[^2]: cppreference – std::filesystem::directory_iterator – https://en.cppreference.com/cpp/filesystem/directory_iterator
-[^3]: cppreference – std::thread::hardware_concurrency – https://cppreference.com/cpp/thread/thread/hardware_concurrency
+[^1]: cppreference – [std::async](https://en.cppreference.com/cpp/thread/async)
+[^2]: cppreference – [std::filesystem::directory_iterator](https://en.cppreference.com/cpp/filesystem/directory_iterator)
+[^3]: cppreference – [std::thread::hardware_concurrency](https://cppreference.com/cpp/thread/thread/hardware_concurrency)
