@@ -3,7 +3,7 @@ layout: post
 title: "Parallel directory traversal: A dynamic queue approach"
 date: 2026-08-24
 categories: [concurrency, cpp26, dynamic-task-queue]
-permalink: /:year/:month/:day/parallel-directory-traversal
+permalink: /2026/08/24/parallel-directory-traversal/
 ---
 
 ### Introduction
