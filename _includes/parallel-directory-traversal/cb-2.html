@@ -10,11 +10,13 @@
 &nbsp; &nbsp;std::uintmax_t num_files = <span style="color: #b5cea8; text-align: left;">0</span>;
 &nbsp; &nbsp;std::<span style="white-space: normal;">uintmax_t</span><span style="white-space: normal;">&nbsp;total_size =&nbsp;<span style="color: #b5cea8; text-align: left; white-space: pre;">0</span>;</span>
 };
-<span style="color: #6a9955;">// resultado total o parcial producido por un worker:</span>
+
+<span style="color: #6a9955;">// total result or partial result produced by a worker:</span>
 <span style="color: #569cd6;">export</span> <span style="color: #569cd6;">struct</span> directory_statistics { 
 &nbsp; &nbsp;std::map&lt;std::string, extension_statistics&gt; files;
 &nbsp; &nbsp;std::<span style="white-space: normal;">uintmax_t</span><span style="white-space: normal;">&nbsp;num_directories =&nbsp;<span style="color: #b5cea8; text-align: left; white-space: pre;">0</span>;<br />&nbsp; &nbsp;std::uintmax_t num_errors =&nbsp;<span style="color: #b5cea8; text-align: left; white-space: pre;">0</span>;</span>
 };
+
 <span style="color: #569cd6;">using</span> directory_queue = concurrency_tools::dynamic_task_queue&lt;std::filesystem::path&gt;;
 
 <span style="color: #c586c0; text-align: left;">[[nodiscard]]</span>
@@ -23,22 +25,22 @@
 &nbsp; &nbsp;<span style="color: #569cd6;">auto</span> res = directory_statistics{};
 
 &nbsp; &nbsp;<span style="color: #569cd6;">while</span> (<span style="color: #569cd6;">auto</span> directory = directories.acquire()) {
-<span style="color: #6a9955;">&nbsp; &nbsp; &nbsp; // sólo procesamos el directorio 'dir'; los subdirectorios</span>
-<span style="color: #6a9955;">&nbsp; &nbsp; &nbsp; // encontrados pasarán a la cola y serán procesados
-      // posteriormente por algún worker:</span>
+<span style="color: #6a9955;">&nbsp; &nbsp; &nbsp; // we only process the 'dir' directory; any subdirectories</span>
+<span style="color: #6a9955;">&nbsp; &nbsp; &nbsp; // discovered are placed in the queue and will be processed
+      // later by some worker:</span>
 &nbsp; &nbsp; &nbsp; <span style="color: #569cd6;">auto const</span>&amp; dir = directory-&gt;get();
 &nbsp; &nbsp; &nbsp; <span style="color: #569cd6;">auto</span> ec = std::error_code{};
 &nbsp; &nbsp; &nbsp; <span style="color: #569cd6;">auto</span> it = std::filesystem::directory_iterator{dir, ec};
 &nbsp; &nbsp; &nbsp; <span style="color: #569cd6;">if</span> (ec) {
-<span style="color: #6a9955;">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;// no podemos acceder al directorio; la tarea actual se</span>
-<span style="color: #6a9955;">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;// completará automáticamente tras 'continue':</span>
+<span style="color: #6a9955;">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;// we cannot access the directory; the current task</span>
+<span style="color: #6a9955;">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;// will complete automatically after 'continue':</span>
 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;++res.num_errors;
 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<span style="color: #569cd6;">continue</span>;
 &nbsp; &nbsp; &nbsp; }
 
 &nbsp; &nbsp; &nbsp; <span style="color: #569cd6;">auto</span> end = std::filesystem::directory_iterator{};
 &nbsp; &nbsp; &nbsp; <span style="color: #569cd6;">for</span> (; it != end; it.increment(ec)) {
-&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<span style="color: #569cd6;">if</span> (ec) {<span style="color: #6a9955;"> // error al avanzar por el directorio</span>
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<span style="color: #569cd6;">if</span> (ec) {<span style="color: #6a9955;"> // error iterating through the directory</span>
             ++res.num_errors;
 &nbsp; &nbsp; &nbsp; &nbsp;&nbsp;    <span style="color: #569cd6;">break</span>;
 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;}
@@ -67,14 +69,13 @@
 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; total_size += size;
 &nbsp; &nbsp; &nbsp; &nbsp;  }
       } 
-&nbsp; &nbsp;} <span style="color: #6a9955;">// destrucción del acquired_task 'directory' y llamada automática</span>
-<span style="color: #6a9955;">     // a complete() antes de la próxima iteración del bucle, incorporando</span>
-<span style="color: #6a9955;">     // los subdirectorios encontrados a la cola de tareas</span>
+&nbsp; &nbsp;} <span style="color: #6a9955;">// destruction of the acquired_task 'directory' and automatic call</span>
+<span style="color: #6a9955;">     // to complete() before the next loop iteration, adding</span>
+<span style="color: #6a9955;">     // the discovered subdirectories to the task queue</span>
 
 &nbsp; &nbsp;<span style="color: #569cd6;">return</span> res;
 }
 
-<span style="color: #6a9955;">// fusiona el resultado de un worker en el resultado global:</span>
 <span style="color: #569cd6;">void</span> merge_statistics(
 &nbsp; &nbsp;directory_statistics&amp; destination,
 &nbsp; &nbsp;directory_statistics <span style="color: #569cd6;">const</span>&amp; source
