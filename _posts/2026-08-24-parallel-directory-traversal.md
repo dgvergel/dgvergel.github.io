@@ -82,3 +82,7 @@ the acquired value, it stores a vector of new tasks discovered during processing
 out of scope, its destructor automatically invokes `complete()`, transferring the accumulated new tasks
 to the queue and signaling the completion of the original task. Thus, the `acquire/complete` protocol
 is guaranteed by design using the RAII technique:
+
+<div class = "dgv-cb">{% include parallel-directory-traversal/cb-1.html %}</div>
+
+To be continued...
