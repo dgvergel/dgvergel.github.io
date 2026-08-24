@@ -183,7 +183,8 @@ achieved when increasing the number of workers:
 {% include parallel-directory-traversal/cb-6.html %}
 </div>
 
-<div class="dgv-note">The number of worker threads <code>num_workers</code> defaults to <code>std::thread::hardware_concurrency()</code>[^3], which
+<div class="dgv-note" markdown="1">The number of worker threads <code>num_workers</code> defaults to
+<code>std::thread::hardware_concurrency()</code>[^3], which
 provides an estimate of the concurrency level available on the system, typically matching the number
 of hardware threads. However, this value should be interpreted as a suggestive upper bound and not
 necessarily as the optimal number of workers. In practice, performance can saturate with a lower
