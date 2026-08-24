@@ -9,4 +9,5 @@ plugins:
   - jekyll-seo-tag
   
 header_pages:
+  - posts.md
   - about.md
