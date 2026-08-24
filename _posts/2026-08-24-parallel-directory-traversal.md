@@ -88,4 +88,8 @@ is guaranteed by design using the RAII technique:
 {% include parallel-directory-traversal/cb-1.html %}
 </div>
 
+<div class="dgv-cb">
+{% include parallel-directory-traversal/cb-2.html %}
+</div>
+
 To be continued...
