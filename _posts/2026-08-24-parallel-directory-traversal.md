@@ -6,6 +6,8 @@ categories: [c++, c++26, concurrency]
 permalink: /2026/08/24/parallel-directory-traversal/
 ---
 
+{% include post-categories.html %}
+
 ### Introduction
 
 In this article, we will take an in-depth look at a concurrent programming example in C++.
@@ -226,5 +228,3 @@ about a specific extension. As an example:
 [^1]: cppreference – [std::async](https://en.cppreference.com/cpp/thread/async)
 [^2]: cppreference – [std::filesystem::directory_iterator](https://en.cppreference.com/cpp/filesystem/directory_iterator)
 [^3]: cppreference – [std::thread::hardware_concurrency](https://cppreference.com/cpp/thread/thread/hardware_concurrency)
-
-{% include post-categories.html %}
