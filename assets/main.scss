@@ -88,7 +88,7 @@ $content-width: 1050px;
   width: 100%;
   max-width: 850px;
 
-  // estilo específico para palabras de código dentro de la nota
+  // estilo específico para palabras de código dentro de la nota:
   code {
     background-color: rgba(46, 160, 67, 0.15) !important;
     color: #1a7f37 !important;
@@ -97,4 +97,19 @@ $content-width: 1050px;
     font-family: Consolas, monospace !important;
     font-size: 0.9em !important;
   }
+}
+
+// pies de página ajustados a ancho de página:
+.footnotes {
+  overflow-wrap: break-word;
+  word-wrap: break-word;
+}
+
+.footnotes li {
+  overflow-wrap: break-word;
+  word-wrap: break-word;
+}
+
+.footnotes a {
+  overflow-wrap: anywhere;
 }
