@@ -1,0 +1,64 @@
+<span style="color: #569cd6;">export</span> <span style="color: #569cd6;">module</span> format_tools;
+
+<span style="color: #569cd6;">import</span> std;
+
+<span style="color: #569cd6;">export</span> <span style="color: #569cd6;">namespace</span> format_tools {
+
+   <span style="color: #569cd6;">struct</span> binary_size {
+      std::uint64_t value;
+   };
+
+   <span style="color: #569cd6;">struct</span> thousands_separated {
+      std::uint64_t value;
+   };
+
+}<span style="color: #6a9955;"> // namespace format_tools</span>
+
+<span style="color: #569cd6;">template</span>&lt;&gt;
+<span style="color: #569cd6;">struct</span> std::formatter&lt;format_tools::binary_size&gt;
+   : std::formatter&lt;std::string_view&gt;
+{
+   <span style="color: #569cd6;">template</span>&lt;<span style="color: #569cd6;">typename</span> format_context&gt;
+   <span style="color: #569cd6;">auto</span> format(
+      format_tools::binary_size <span style="color: #569cd6;">const</span>&amp; bsz,
+      format_context&amp; ctx
+   ) <span style="color: #569cd6;">const</span>
+   {
+      <span style="color: #569cd6;">constexpr</span> <span style="color: #569cd6;">auto</span> KiB = <span style="color: #b5cea8;">1024.0</span>;
+      <span style="color: #569cd6;">constexpr</span> <span style="color: #569cd6;">auto</span> MiB = <span style="color: #b5cea8;">1024.0</span>*KiB;
+      <span style="color: #569cd6;">constexpr</span> <span style="color: #569cd6;">auto</span> GiB = <span style="color: #b5cea8;">1024.0</span>*MiB;
+
+      <span style="color: #569cd6;">auto</span> format_size = [](std::uint64_t value)
+         -&gt; std::pair&lt;double, std::string_view&gt;
+      {
+         <span style="color: #569cd6;">if</span> (value &gt;= GiB) { <span style="color: #569cd6;">return</span> {value/GiB, <span style="color: #ce9178;">"GiB"</span>}; }
+         <span style="color: #569cd6;">if</span> (value &gt;= MiB) { <span style="color: #569cd6;">return</span> {value/MiB, <span style="color: #ce9178;">"MiB"</span>}; }
+         <span style="color: #569cd6;">if</span> (value &gt;= KiB) { <span style="color: #569cd6;">return</span> {value/KiB, <span style="color: #ce9178;">"KiB"</span>}; }
+         <span style="color: #569cd6;">return</span> {<span style="color: #569cd6;">static_cast</span>&lt;<span style="color: #569cd6;">double</span>&gt;(value), <span style="color: #ce9178;">"bytes"</span>};
+      };
+
+      <span style="color: #569cd6;">auto</span> <span style="color: #569cd6;">const</span> [size, unit] = format_size(bsz.value);
+      <span style="color: #569cd6;">auto</span> <span style="color: #569cd6;">const</span> str = std::format(<span style="color: #ce9178;">"{:.1f} {}"</span>, size, unit);
+      <span style="color: #569cd6;">return</span> std::formatter&lt;std::string_view&gt;::format(str, ctx);
+   }
+};
+
+<span style="color: #569cd6;">template</span>&lt;&gt;
+<span style="color: #569cd6;">struct</span> std::formatter&lt;format_tools::thousands_separated&gt;
+   : std::formatter&lt;std::string_view&gt;
+{
+   <span style="color: #569cd6;">template</span>&lt;<span style="color: #569cd6;">typename</span> format_context&gt;
+   <span style="color: #569cd6;">auto</span> format(
+      format_tools::thousands_separated <span style="color: #569cd6;">const</span>&amp; n,
+      format_context&amp; ctx
+   ) <span style="color: #569cd6;">const</span>
+   {
+      <span style="color: #569cd6;">auto</span> str = std::to_string(n.value);
+
+      <span style="color: #569cd6;">for</span> (<span style="color: #569cd6;">auto</span> i = str.size(); i &gt; <span style="color: #b5cea8;">3uz</span>; i -= <span style="color: #b5cea8;">3</span>) {
+         str.insert(i - <span style="color: #b5cea8;">3</span>, <span style="color: #b5cea8;">1</span>, <span style="color: #ce9178;">'.'</span>);
+      }
+
+      <span style="color: #569cd6;">return</span> std::formatter&lt;std::string_view&gt;::format(str, ctx);
+   }
+};
