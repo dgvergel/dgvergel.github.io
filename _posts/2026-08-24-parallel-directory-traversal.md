@@ -226,7 +226,7 @@ about a specific extension. As an example:
 
 ---
 
-Note: This post is an English translation of my earlier post originally published in Spanish on Blogger: [here](https://dgvergel.blogspot.com/2026/08/programacion-concurrente-ix.html) (AI-assisted translation for grammar refinement).
+Note: This post is an English translation of my earlier post originally published in Spanish on Blogger as [Programación Concurrente IX](https://dgvergel.blogspot.com/2026/08/programacion-concurrente-ix.html) (AI-assisted translation for grammar refinement).
 
 ### Bibliography
 
