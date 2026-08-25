@@ -40,7 +40,8 @@
 
 &nbsp; &nbsp; &nbsp; <span style="color: #569cd6;">auto</span> end = std::filesystem::directory_iterator{};
 &nbsp; &nbsp; &nbsp; <span style="color: #569cd6;">for</span> (; it != end; it.increment(ec)) {
-&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<span style="color: #6a9955;">// ec contains the result of the previous increment(), if any:</span>
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<span style="color: #6a9955;">// at this point, ec is clear in the first iteration; thereafter,</span>
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<span style="color: #6a9955;">// it contains the result of the previous increment():</span>
 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<span style="color: #569cd6;">if</span> (ec) {<span style="color: #6a9955;"> // error iterating through the directory</span>
             ++res.num_errors;
 &nbsp; &nbsp; &nbsp; &nbsp;&nbsp;    <span style="color: #569cd6;">break</span>;
