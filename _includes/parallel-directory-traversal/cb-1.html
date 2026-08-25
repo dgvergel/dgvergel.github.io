@@ -32,7 +32,7 @@
       <span style="color: #569cd6;">auto</span> lock = std::unique_lock{mtx_};
 
       cv_.wait(lock, [<span style="color: #569cd6;">this</span>]{
-         <span style="color: #569cd6;">return</span> active_ == <span style="color: #b5cea8;">0</span> or not tasks_.empty();
+         <span style="color: #569cd6;">return</span> active_ == <span style="color: #b5cea8;">0</span> <span style="color: #569cd6;">or not</span> tasks_.empty();
       });
 
       <span style="color: #569cd6;">if</span> (tasks_.empty()) {<span style="color: #6a9955;"> // ⇔ finished() == true</span>
@@ -90,7 +90,7 @@
       {
          <span style="color: #569cd6;">auto</span> lock = std::lock_guard{mtx_};
 
-         <span style="white-space: normal;"><span style="color: #569cd6;">contract_assert</span></span><span style="white-space: normal;">(active_ != </span><span style="white-space: normal;"><span style="color: #b5cea8;">0</span></span><span style="white-space: normal;">);</span>
+         <span style="color: #569cd6;">contract_assert</span>(active_ != <span style="color: #b5cea8;">0</span>);
          --active_;
 
          <span style="color: #569cd6;">for</span> (<span style="color: #569cd6;">auto</span>&amp; t : new_tasks) {
