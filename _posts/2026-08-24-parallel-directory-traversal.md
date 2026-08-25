@@ -24,6 +24,8 @@ available worker. As a result, multiple threads will be able to explore differen
 directory tree simultaneously while accumulating partial statistics that will ultimately be merged
 into a single global result.
 
+<!--more-->
+
 This approach will allow us to generate summaries such as the following for a given root directory:
 
 <div class="dgv-terminal-out"> .docx:  16 files (147.938.289 bytes)
