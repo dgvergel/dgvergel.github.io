@@ -14,3 +14,5 @@ header_pages:
 
 feed:
   excerpt_only: true
+
+excerpt_separator: "<!--more-->"
