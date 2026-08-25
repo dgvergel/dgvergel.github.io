@@ -104,7 +104,8 @@ present in the directory tree and their cumulative size.
 * The total number of subdirectories discovered.
 * The total number of errors encountered during the analysis, whether due to (i) failure to open a
 directory, (ii) inability to retrieve information about a specific entry, or (iii) inability to continue
-iterating through a directory.
+iterating through a directory. These errors are accumulated in a single counter for simplicity of
+implementation, but they could easily be broken down into separate counters.
 
 The `run_directory_statistics()` function is responsible for coordinating the parallel execution.
 It initializes a `dynamic_task_queue<filesystem::path>` with the root directory and launches a
@@ -128,7 +129,7 @@ subdirectories. The iteration order is unspecified by the standard, except that 
 is visited exactly once.
 
 <div class="dgv-note">It is worth emphasizing once again that, under this design, each worker maintains its own
-<code>directory_statistics object</code>, accumulating statistics only for the directories it processes.
+<code>directory_statistics</code> object, accumulating statistics only for the directories it processes.
 </div>
 
 Once the traversal has completed, the partial results are merged by `merge_statistics()`, which
