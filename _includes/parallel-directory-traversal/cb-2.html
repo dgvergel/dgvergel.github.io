@@ -98,8 +98,8 @@
 &nbsp; &nbsp;std::size_t num_workers
 )
 &nbsp; &nbsp;-&gt; directory_statistics
-&nbsp; &nbsp;pre(std::filesystem::is_directory(root))
 &nbsp; &nbsp;pre(num_workers &gt;= <span style="color: #b5cea8;">1</span>)
+&nbsp; &nbsp;<span style="color: #6a9955;">// precondition: std::filesystem::is_directory(root) must be true</span>
 {
 &nbsp; &nbsp;<span style="color: #569cd6;">auto</span> directories = directory_queue{root};
 &nbsp; &nbsp;<span style="color: #569cd6;">auto</span> futures = std::views::indices(num_workers - <span style="color: #b5cea8;">1</span>)
