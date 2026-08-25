@@ -6,14 +6,15 @@
 <span style="color: #569cd6;">namespace</span> statistics {
 
 <span style="color: #569cd6;">export</span> <span style="color: #569cd6;">struct</span> extension_statistics {
-&nbsp; &nbsp;std::uintmax_t num_files = <span style="color: #b5cea8; text-align: left;">0</span>;
-&nbsp; &nbsp;std::<span style="white-space: normal;">uintmax_t</span><span style="white-space: normal;">&nbsp;total_size =&nbsp;<span style="color: #b5cea8; text-align: left; white-space: pre;">0</span>;</span>
+&nbsp; &nbsp;std::uintmax_t num_files = <span style="color: #b5cea8;">0</span>;
+&nbsp; &nbsp;std::uintmax_t&nbsp;total_size =&nbsp;<span style="color: #b5cea8;">0</span>;
 };
 
 <span style="color: #6a9955;">// total result or partial result produced by a worker:</span>
 <span style="color: #569cd6;">export</span> <span style="color: #569cd6;">struct</span> directory_statistics { 
 &nbsp; &nbsp;std::map&lt;std::string, extension_statistics&gt; files;
-&nbsp; &nbsp;std::<span style="white-space: normal;">uintmax_t</span><span style="white-space: normal;">&nbsp;num_directories =&nbsp;<span style="color: #b5cea8; text-align: left; white-space: pre;">0</span>;<br />&nbsp; &nbsp;std::uintmax_t num_errors =&nbsp;<span style="color: #b5cea8; text-align: left; white-space: pre;">0</span>;</span>
+&nbsp; &nbsp;std::uintmax_t&nbsp;num_directories =&nbsp;<span style="color: #b5cea8;">0</span>;
+&nbsp; &nbsp;std::uintmax_t num_errors =&nbsp;<span style="color: #b5cea8;">0</span>;
 };
 
 <span style="color: #569cd6;">using</span> directory_queue = concurrency_tools::dynamic_task_queue&lt;std::filesystem::path&gt;;
