@@ -46,7 +46,7 @@
             ++res.num_errors;
 &nbsp; &nbsp; &nbsp; &nbsp;&nbsp;    <span style="color: #569cd6;">break</span>;
 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;}
-&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<span style="color: #569cd6;">auto</span> <span style="color: #569cd6;">const</span>&amp; entry = *it;
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<span style="color: #569cd6;">auto</span> <span style="color: #569cd6;">const</span> entry = *it;
 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<span style="color: #569cd6;">auto</span> <span style="color: #569cd6;">const</span> status = entry.symlink_status(ec);
 &nbsp; &nbsp; &nbsp;   &nbsp;<span style="color: #569cd6;">if</span> (ec) {
             ++res.num_errors;
