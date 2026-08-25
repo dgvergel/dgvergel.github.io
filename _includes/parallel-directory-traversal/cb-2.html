@@ -1,7 +1,3 @@
-<span style="color: #569cd6;">module</span>;
-
-<span style="color: #569cd6;">#include </span><span style="color: #ce9178;">&lt;cstdio&gt;</span>
-
 <span style="color: #569cd6;">export</span> <span style="color: #569cd6;">module</span> statistics.directory;
 
 <span style="color: #569cd6;">import</span> std;
@@ -42,11 +38,7 @@
 &nbsp; &nbsp; &nbsp; }
 
 &nbsp; &nbsp; &nbsp; <span style="color: #569cd6;">auto</span> end = std::filesystem::directory_iterator{};
-&nbsp; &nbsp; &nbsp; <span style="color: #569cd6;">for</span> (; it != end; it.increment(ec)) {
-&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<span style="color: #569cd6;">if</span> (ec) {<span style="color: #6a9955;"> // error iterating through the directory</span>
-            ++res.num_errors;
-&nbsp; &nbsp; &nbsp; &nbsp;&nbsp;    <span style="color: #569cd6;">break</span>;
-&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;}
+&nbsp; &nbsp; &nbsp; <span style="color: #569cd6;">while</span> (it != end) {
 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<span style="color: #569cd6;">auto</span> <span style="color: #569cd6;">const</span>&amp; entry = *it;
 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<span style="color: #569cd6;">auto</span> <span style="color: #569cd6;">const</span> status = entry.symlink_status(ec);
 &nbsp; &nbsp; &nbsp;   &nbsp;<span style="color: #569cd6;">if</span> (ec) {
@@ -71,6 +63,12 @@
 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;   ++num_files;
 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; total_size += size;
 &nbsp; &nbsp; &nbsp; &nbsp;  }
+
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;it.increment(ec);
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<span style="color: #569cd6;">if</span> (ec) {<span style="color: #6a9955;"> // error iterating through the directory</span>
+            ++res.num_errors;
+&nbsp; &nbsp; &nbsp; &nbsp;&nbsp;    <span style="color: #569cd6;">break</span>;
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;}
       } 
 &nbsp; &nbsp;} <span style="color: #6a9955;">// destruction of the acquired_task 'directory' and automatic call</span>
 <span style="color: #6a9955;">     // to complete() before the next loop iteration, adding</span>
