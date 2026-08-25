@@ -4,6 +4,10 @@ title: "Parallel directory traversal"
 date: 2026-08-24
 categories: [c++, c++26, concurrency]
 permalink: /2026/08/24/parallel-directory-traversal/
+excerpt: >
+  This article presents a parallel directory traversal
+  algorithm implemented in modern C++26 using modules,
+  contracts and concurrent programming techniques.
 ---
 
 {% include post-categories.html %}
