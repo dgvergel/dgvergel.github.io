@@ -1,6 +1,9 @@
 title: Reflections on Contemporary C++
 description: by Daniel Gómez Vergel
 
+author:
+  name: Daniel Gómez Vergel
+
 remote_theme: jekyll/minima@v2.5.2
 
 plugins:
@@ -14,5 +17,3 @@ header_pages:
 
 feed:
   excerpt_only: true
-
-excerpt_separator: "<!--more-->"
