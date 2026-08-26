@@ -81,9 +81,7 @@
 
 <span style="color: #6a9955;">   // note on noexcept: a failure while pushing new tasks</span>
 <span style="color: #6a9955;">   // is considered unrecoverable and triggers std::terminate()</span>
-   <span style="color: #569cd6;">template</span>&lt;<span style="color: #569cd6;">typename</span> S&gt;
-      <span style="color: #569cd6;">requires</span> std::is_nothrow_constructible_v&lt;T, S&amp;&amp;&gt;
-   <span style="color: #569cd6;">void</span> complete(std::vector&lt;S&gt;<span style="color: #569cd6;">&amp;&amp;</span> new_tasks) <span style="color: #569cd6;">noexcept</span>
+   <span style="color: #569cd6;">void</span> complete(std::vector&lt;T&gt;<span style="color: #569cd6;">&amp;&amp;</span> new_tasks) <span style="color: #569cd6;">noexcept</span>
    {
       <span style="color: #569cd6;">auto</span> globally_finished = <span style="color: #569cd6;">false</span>;
       <span style="color: #569cd6;">auto</span> has_pending_work = <span style="color: #569cd6;">false</span>;
