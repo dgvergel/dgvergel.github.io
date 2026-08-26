@@ -14,7 +14,7 @@ excerpt: >
 
 ### Introduction
 
-In this article, we will take an in-depth look at a concurrent programming example in C++.
+In this article, we will explore a concurrent programming example in C++ in detail.
 
 Given the path of a directory, our goal is to produce a statistical summary of the contents of its
 directory tree. For each file extension encountered (`.txt`, `.zip`, and so on), we will determine both
@@ -32,16 +32,16 @@ This approach will allow us to generate summaries such as the following for a gi
 
 <div class="dgv-terminal-out"> .docx:  16 files (147.938.289 bytes)
   .pdf:  28 files (72.191.677 bytes)
-  .png:   1 files (90.575 bytes)
- .xlsx:   1 files (88.162 bytes)
+  .png:    1 file (90.575 bytes)
+ .xlsx:    1 file (88.162 bytes)
 _____________________________________
 contains: 46 files, 5 folders
 size: 210.1 MiB (220.308.703 bytes)
 </div>
 
-<div class="dgv-note">We will use the C++26 standard, in particular contracts and <code>std::optional<T&></code>,
-together with the module system introduced in C++20, which allows us to efficiently organize the code into well-defined
-components. Should it be necessary, adapting the solution to the traditional structure based on header (<code>.hpp</code>) and
+<div class="dgv-note">We will use the C++26 standard, particularly contracts and <code>std::optional<T&></code>,
+together with the module system introduced in C++20. The latter allows us to organize the code efficiently into well-defined
+components. If necessary, adapting the solution to the traditional structure based on header (<code>.hpp</code>) and
 implementation (<code>.cpp</code>) files would be straightforward.
 </div>
 
@@ -56,10 +56,10 @@ This class keeps pending tasks of type `T` in a private standard queue named `ta
 In addition, it maintains a counter called `active_` that tracks the number of tasks currently being
 processed. This counter is incremented whenever a task is acquired and decremented when processing of that task completes.
 As a result, the queue can automatically detect global completion, which occurs when there are neither
-pending tasks nor tasks in progress. Formally, the global termination condition is `tasks_.empty() and active_ == 0`.
+pending tasks nor tasks in progress. The global termination condition is therefore: `tasks_.empty() and active_ == 0`.
 
 Both the queue and the counter are protected by a `std::mutex`, while a `std::condition_variable` is
-used to block worker threads whenever no work is available, and to wake them up when new tasks are
+used to block worker threads whenever no work is available and to wake them up when new tasks are
 added or when global completion is detected.
 
 <div class="dgv-note">It is important to note that an empty <code>tasks_</code> queue does not
@@ -70,7 +70,7 @@ to distinguish between these two situations.
 
 The queue interface will be based on an `acquire/complete` protocol, where every task acquisition by
 a worker via the `acquire()` member function must be paired with a subsequent call to the `complete()`
-function. The latter may register new derived tasks. Specifically:
+function. The latter may register newly discovered tasks. Specifically:
 
 * `acquire()`: If work is available, it pops a task and internally increments the active task counter
 `active_`. If there are no pending tasks but other workers are still processing work, the call blocks
@@ -78,20 +78,20 @@ until new work appears or the computation finishes. When there are no pending or
 it returns an empty result (`std::nullopt`) to indicate that the exploration is complete and workers
 can terminate.
 
-* `complete()`: Atomically performs two actions: (i) It logs the completion of a task previously acquired
+* `complete()`: Atomically performs two actions: (i) It records the completion of a task previously acquired
 via `acquire()` by decrementing the `active_` counter, and (ii) it pushes newly discovered tasks into
-the queue. If no pending or active tasks remain after the operation, it notifies the global completion
-of the computation so all workers can finish. If there is pending work (`tasks_.empty() == false`), it
+the queue. If no pending or active tasks remain after the operation, it signals global completion
+so all workers can finish. If there is pending work (`tasks_.empty() == false`), it
 wakes up a blocked worker.
 
 To prevent the programmer from having to call `complete()` manually and to guarantee proper task
 completion even in the presence of exceptions, `acquire()` does not directly return a task object of type
-`T`. Instead, it returns an optional value `std::optional` of an auxiliary `acquired_task` handle
-class. This class acts as an RAII object representing a task currently in progress. In addition to
+`T`. Instead, it returns a `std::optional` containing an instance of an auxiliary handle class named
+`acquired_task`. This class acts as an RAII object representing a task currently in progress. In addition to
 the acquired value, it stores a vector of new tasks discovered during processing. When the object goes
 out of scope, its destructor automatically invokes `complete()`, transferring the accumulated new tasks
 to the queue and signaling the completion of the original task. Thus, the `acquire/complete` protocol
-is guaranteed by design using the RAII technique:
+is enforced by design through RAII:
 
 <div class="dgv-cb">
 {% include parallel-directory-traversal/cb-1.html %}
@@ -99,7 +99,7 @@ is guaranteed by design using the RAII technique:
 
 ### Module 2: statistics.directory
 
-The next module implements the parallel analysis of a directory tree. Given a root directory (`root`),
+This module implements the parallel analysis of a directory tree. Given a root directory (`root`),
 it produces an object of type `directory_statistics` containing:
 
 * A `std::map` associative container that maps each file extension encountered (`.txt`, `.zip`, and so on)
@@ -114,7 +114,7 @@ implementation, but they could easily be broken down into separate counters.
 The `run_directory_statistics()` function is responsible for coordinating the parallel execution.
 It initializes a `dynamic_task_queue<filesystem::path>` with the root directory and launches a
 configurable number of worker threads, `num_workers`, each of which produces a `directory_statistics`
-object containing the partial statistics gathered during its work. Specifically, `num_workers - 1`
+object containing the partial statistics gathered during its execution. Specifically, `num_workers - 1`
 workers are launched asynchronously using `std::async`[^1], while the main thread acts as an additional
 worker processing tasks from the shared queue.
 
@@ -123,12 +123,12 @@ with `std::filesystem::is_directory(dir) == true`. Workers execute the `process_
 which acquires directories from the queue through `acquire()`, inspects their contents, and records
 statistics for the files found, grouped by extension and cumulative size. Subdirectories discovered
 during the traversal are not processed immediately; instead, they are registered as new tasks within
-the `acquired_task` object associated with the current directory. At its destruction, this object
-automatically transfers the accumulated tasks to the queue and signals completion of the original task
-through RAII.
+the `acquired_task` object associated with the current directory. Upon destruction, the object automatically
+transfers the accumulated tasks to the queue and signals completion of the original task.
+This behavior is implemented using RAII.
 
-The implementation of `process_directories()` is based on `std::filesystem::directory_iterator`[^2].
-This iterator visits only the entries contained directly within a directory and does not visit the
+The implementation of `process_directories()` is based on `std::filesystem::directory_iterator`[^2], which
+iterates over the entries contained within a directory but does not visit its
 subdirectories. The iteration order is unspecified by the standard, except that each directory entry
 is visited exactly once.
 
@@ -146,13 +146,13 @@ subdirectories visited.
 
 ### Auxiliary modules
 
-Before turning to the main program, we will define three simple auxiliary modules that provide
-compatibility layers for selected C library components, together with formatting utilities for program
-output. We begin by examining the compatibility modules:
+Before turning to the main program, we will define three simple auxiliary modules. Two of them provide thin
+wrappers around selected C library facilities, while the third offers formatting utilities for program output.
+We begin by examining the compatibility modules:
 
-* `c_tools.exit_codes`: Exposes the standard language termination values `EXIT_SUCCESS` and `EXIT_FAILURE`
-through the `c_tools` namespace. Its purpose is to facilitate the use of these values from modular code
-without relying directly on the macros defined in `<cstdlib>`.
+* `c_tools.exit_codes`: Exposes the standard termination values `EXIT_SUCCESS` and `EXIT_FAILURE`
+as `constexpr` variables within the `c_tools` namespace. Its purpose is to facilitate the use of these values from
+modular code without relying directly on the macros defined in `<cstdlib>`.
 
 * `c_tools.standard_streams`: Provides `noexcept` functions that return `std::FILE*` pointers to the standard
 `stdin`, `stdout`, and `stderr` streams defined in `<cstdio>`.
@@ -165,7 +165,7 @@ without relying directly on the macros defined in `<cstdlib>`.
 {% include parallel-directory-traversal/cb-4.html %}
 </div>
 
-Finally:
+The remaining auxiliary module is:
 
 * `format_tools`: Extends `std::format` through custom `std::formatter` specializations, allowing binary
 sizes to be displayed using more readable units (KiB, MiB, and GiB) and integral values to be formatted
@@ -177,7 +177,7 @@ with thousands separators:
 
 ### Benchmarks
 
-The following `main()` function serves as a benchmark for the various modules developed throughout
+The following `main()` function benchmarks the various modules developed throughout
 this article. It performs the statistical analysis of a directory tree specified as a command-line
 argument, using an increasing number of worker threads and measuring the execution time in each case.
 
@@ -220,9 +220,9 @@ errors: 0
 Here, the "vs. 1 worker" column expresses the percentage reduction in execution time relative to the
 sequential version.
 
-The associative container within the global `directory_statistics` result allows, among other actions,
-printing breakdowns like the one shown in the introduction of this article, or searching for information
-about a specific extension. As an example:
+The associative container within the final `directory_statistics` result can be used, among other things,
+to generate breakdowns like the one shown in the introduction or to retrieve statistics for a specific
+file extension. For example:
 
 <div class="dgv-cb">
 {% include parallel-directory-traversal/cb-7.html %}
