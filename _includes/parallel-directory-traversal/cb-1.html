@@ -20,7 +20,7 @@
       <span style="color: #569cd6;">requires</span> std::constructible_from&lt;T, S&amp;&amp;&gt;
    <span style="color: #569cd6;">explicit</span> dynamic_task_queue(S<span style="color: #569cd6;">&amp;&amp;</span> initial)
    {
-      tasks_.push(std::forward&lt;S&gt;(initial));
+      tasks_.emplace(std::forward&lt;S&gt;(initial));
    }
 
    dynamic_task_queue(dynamic_task_queue <span style="color: #569cd6;">const</span>&amp;) = <span style="color: #569cd6;">delete</span>;
