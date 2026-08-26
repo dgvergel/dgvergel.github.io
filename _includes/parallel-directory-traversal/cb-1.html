@@ -132,11 +132,13 @@
 
    <span style="color: #569cd6;">auto</span> <span style="color: #569cd6;">operator</span>=(acquired_task<span style="color: #569cd6;">&amp;&amp;</span>) -&gt; acquired_task&amp; = <span style="color: #569cd6;">delete</span>;
 
+   <span style="color: #c586c0;">[[nodiscard]]</span>
    <span style="color: #569cd6;">auto</span> get() <span style="color: #569cd6;">const</span> <span style="color: #569cd6;">noexcept</span> -&gt; T <span style="color: #569cd6;">const</span>&amp;
    {
       <span style="color: #569cd6;">return</span> value_;
    }
 
+   <span style="color: #c586c0;">[[nodiscard]]</span>
    <span style="color: #569cd6;">auto</span> get() <span style="color: #569cd6;">noexcept</span> -&gt; T&amp;
    {
       <span style="color: #569cd6;">return</span> value_;
