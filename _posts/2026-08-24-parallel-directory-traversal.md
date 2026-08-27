@@ -72,8 +72,8 @@ The queue interface will be based on an `acquire/complete` protocol, where every
 a worker via the `acquire()` member function must be paired with a subsequent call to the `complete()`
 function. The latter may register newly discovered tasks. Specifically:
 
-* `acquire()`: If work is available, it pops a task and internally increments the active task counter
-`active_`. If there are no pending tasks but other workers are still processing work, the call blocks
+* `acquire()`: If work is available, it pops a task and internally increments the `active_` task counter.
+* If there are no pending tasks but other workers are still processing work, the call blocks
 until new work appears or the computation finishes. When there are no pending or active tasks left,
 it returns an empty result (`std::nullopt`) to indicate that the exploration is complete and workers
 can terminate.
@@ -126,14 +126,14 @@ statistics for the files found, grouped by extension and cumulative size. Subdir
 during the traversal are not processed immediately; instead, they are registered as new tasks within
 the `acquired_task` object associated with the current directory. Upon destruction, the object automatically
 transfers the accumulated tasks to the queue and signals completion of the original task.
-This behavior is implemented using RAII.
+As we previously mentioned, this behavior is implemented using RAII.
 
 The implementation of `process_directories()` is based on `std::filesystem::directory_iterator`[^4], which
 iterates over the entries contained within a directory but does not visit its
 subdirectories. The iteration order is unspecified by the standard, except that each directory entry
 is visited exactly once.
 
-<div class="dgv-note">It is worth emphasizing once again that, under this design, each worker maintains its own
+<div class="dgv-note">As noted earlier, it is worth emphasizing that, under this design, each worker maintains its own
 <code>directory_statistics</code> object, accumulating statistics only for the directories it processes.
 </div>
 
@@ -224,7 +224,8 @@ sequential version.
 
 The associative container within the final `directory_statistics` result can be used, among other things,
 to generate breakdowns like the one shown in the introduction or to retrieve statistics for a specific
-file extension. For example:
+file extension. For instance, to determine the total number of `.txt` files and their cumulative size in
+a `root` directory, we would write:
 
 <div class="dgv-cb">
 {% include parallel-directory-traversal/cb-7.html %}
