@@ -24,7 +24,7 @@
    }
 
    dynamic_task_queue(dynamic_task_queue <span style="color: #569cd6;">const</span>&amp;) = <span style="color: #569cd6;">delete</span>;
-   <span style="color: #569cd6;">auto</span> <span style="color: #569cd6;">operator</span>=(dynamic_task_queue <span style="color: #569cd6;">const&amp;</span>) -&gt; dynamic_task_queue&amp; = <span style="color: #569cd6;">delete</span>;
+   <span style="color: #569cd6;">auto</span> <span style="color: #569cd6;">operator</span>=(dynamic_task_queue <span style="color: #569cd6;">const</span>&amp;) -&gt; dynamic_task_queue&amp; = <span style="color: #569cd6;">delete</span>;
 
    <span style="color: #c586c0;">[[nodiscard]]</span>
    <span style="color: #569cd6;">auto</span> acquire() -&gt; std::optional&lt;acquired_task&gt;
