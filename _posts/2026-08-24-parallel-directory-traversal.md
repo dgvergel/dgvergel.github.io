@@ -58,7 +58,7 @@ processed. This counter is incremented whenever a task is acquired and decrement
 As a result, the queue can automatically detect global completion, which occurs when there are neither
 pending tasks nor tasks in progress. The global termination condition is therefore: `tasks_.empty() and active_ == 0`.
 
-Both the queue and the counter are protected by a `std::mutex`, while a `std::condition_variable` is
+Both the queue and the counter are protected by a `std::mutex`[^1], while a `std::condition_variable`[^2] is
 used to block worker threads whenever no work is available and to wake them up when new tasks are
 added or when global completion is detected.
 
@@ -116,7 +116,7 @@ The `run_directory_statistics()` function is responsible for coordinating the pa
 It initializes a `dynamic_task_queue<filesystem::path>` with the root directory and launches a
 configurable number of worker threads, `num_workers`, each of which produces a `directory_statistics`
 object containing the partial statistics gathered during its execution. Specifically, `num_workers - 1`
-workers are launched asynchronously using `std::async`[^1], while the main thread acts as an additional
+workers are launched asynchronously using `std::async`[^3], while the main thread acts as an additional
 worker processing tasks from the shared queue.
 
 Each pending directory `dir` is represented as a task stored in the `dynamic_task_queue<filesystem::path>`,
@@ -128,7 +128,7 @@ the `acquired_task` object associated with the current directory. Upon destructi
 transfers the accumulated tasks to the queue and signals completion of the original task.
 This behavior is implemented using RAII.
 
-The implementation of `process_directories()` is based on `std::filesystem::directory_iterator`[^2], which
+The implementation of `process_directories()` is based on `std::filesystem::directory_iterator`[^4], which
 iterates over the entries contained within a directory but does not visit its
 subdirectories. The iteration order is unspecified by the standard, except that each directory entry
 is visited exactly once.
@@ -191,12 +191,12 @@ achieved when increasing the number of workers:
 </div>
 
 <div class="dgv-note" markdown="1">The number of worker threads <code>num_workers</code> defaults to
-<code>hardware_concurrency()</code>[^3], which
+<code>hardware_concurrency()</code>[^5], which
 provides an estimate of the concurrency level available on the system, typically matching the number
 of hardware threads. However, this value should be interpreted as an indicative upper bound and not
-necessarily as the optimal number of workers. In practice, performance can saturate with a lower
-thread count due to factors such as contention over the shared queue, the type of storage device,
-or the limitations of the file system itself.
+necessarily as the optimal number of workers. In practice, performance may saturate at a lower
+thread count due to factors such as contention over the shared queue, the underlying storage device,
+or limitations imposed by the file system itself.
 </div>
 
 As an example, on a system equipped with an 11th Gen Intel Core i5-1135G7 processor running at 2.40 GHz,
@@ -235,6 +235,8 @@ Note: This post is an English translation of my earlier post originally publishe
 
 ### Bibliography
 
-[^1]: cppreference – [std::async](https://en.cppreference.com/cpp/thread/async)
-[^2]: cppreference – [std::filesystem::directory_iterator](https://en.cppreference.com/cpp/filesystem/directory_iterator)
-[^3]: cppreference – [std::thread::hardware_concurrency](https://cppreference.com/cpp/thread/thread/hardware_concurrency)
+[^1]: cppreference – [std::mutex](https://en.cppreference.com/cpp/thread/mutex)
+[^2]: cppreference – [std::condition_variable](https://en.cppreference.com/cpp/thread/condition_variable)
+[^3]: cppreference – [std::async](https://en.cppreference.com/cpp/thread/async)
+[^4]: cppreference – [std::filesystem::directory_iterator](https://en.cppreference.com/cpp/filesystem/directory_iterator)
+[^5]: cppreference – [std::thread::hardware_concurrency](https://cppreference.com/cpp/thread/thread/hardware_concurrency)
