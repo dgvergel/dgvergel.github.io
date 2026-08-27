@@ -86,8 +86,8 @@ wakes up a blocked worker.
 
 To prevent the programmer from having to call `complete()` manually and to guarantee proper task
 completion even in the presence of exceptions, `acquire()` does not directly return a task object of type
-`T`. Instead, it returns a `std::optional` containing an instance of an auxiliary handle class named
-`acquired_task`. This class acts as an RAII object representing a task currently in progress. In addition to
+`T`. Instead, it returns a `std::optional` containing an instance of an auxiliary class named
+`acquired_task`. This class acts as an RAII handle representing a task currently in progress. In addition to
 the acquired value, it stores a vector of new tasks discovered during processing. When the object goes
 out of scope, its destructor automatically invokes `complete()`, transferring the accumulated new tasks
 to the queue and signaling the completion of the original task. Thus, the `acquire/complete` protocol
