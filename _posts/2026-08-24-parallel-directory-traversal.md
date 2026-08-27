@@ -73,7 +73,7 @@ a worker via the `acquire()` member function must be paired with a subsequent ca
 function. The latter may register newly discovered tasks. Specifically:
 
 * `acquire()`: If work is available, it pops a task and internally increments the `active_` task counter.
-* If there are no pending tasks but other workers are still processing work, the call blocks
+If there are no pending tasks but other workers are still processing work, the call blocks
 until new work appears or the computation finishes. When there are no pending or active tasks left,
 it returns an empty result (`std::nullopt`) to indicate that the exploration is complete and workers
 can terminate.
