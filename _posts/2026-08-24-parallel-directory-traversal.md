@@ -103,9 +103,9 @@ This module implements the parallel analysis of a directory tree. Given a root d
 it produces an object of type `directory_statistics` containing:
 
 * A `std::map` associative container that maps each file extension encountered (`.txt`, `.zip`, and so on)
-to an `extension_statistics` object. This object stores both the number of files with that extension
+to an `extension_statistics` object, which stores both the number of files with that extension
 present in the directory tree and their cumulative size. The use of `std::map` ensures that file extensions
-appear alphabetically in generated reports.
+appear alphabetically in generated reports, improving readability.
 * The total number of subdirectories discovered.
 * The total number of errors encountered during the analysis, whether due to (i) failure to open a
 directory, (ii) inability to retrieve information about a specific entry, or (iii) inability to continue
