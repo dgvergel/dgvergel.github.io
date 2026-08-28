@@ -14,7 +14,9 @@ excerpt: >
 
 ### Introduction
 
-In this article, we will explore a concurrent programming example in C++ in detail.
+In this article, we will examine a concurrent programming example in C++ in detail, using it as a case
+study to explore dynamic task coordination, work-completion detection, and the safe aggregation of partial
+results.
 
 Given the path of a directory, our goal is to produce a statistical summary of the contents of its
 directory tree. For each file extension encountered (`.txt`, `.zip`, and so on), we will determine both
@@ -237,8 +239,8 @@ Note: This post is an English translation of my earlier post originally publishe
 
 ### Bibliography
 
-[^1]: cppreference – [std::mutex](https://en.cppreference.com/cpp/thread/mutex)
-[^2]: cppreference – [std::condition_variable](https://en.cppreference.com/cpp/thread/condition_variable)
-[^3]: cppreference – [std::async](https://en.cppreference.com/cpp/thread/async)
-[^4]: cppreference – [std::filesystem::directory_iterator](https://en.cppreference.com/cpp/filesystem/directory_iterator)
-[^5]: cppreference – [std::thread::hardware_concurrency](https://cppreference.com/cpp/thread/thread/hardware_concurrency)
+[^1]: cppreference.com – [std::mutex](https://en.cppreference.com/cpp/thread/mutex)
+[^2]: cppreference.com – [std::condition_variable](https://en.cppreference.com/cpp/thread/condition_variable)
+[^3]: cppreference.com – [std::async](https://en.cppreference.com/cpp/thread/async)
+[^4]: cppreference.com – [std::filesystem::directory_iterator](https://en.cppreference.com/cpp/filesystem/directory_iterator)
+[^5]: cppreference.com – [std::thread::hardware_concurrency](https://cppreference.com/cpp/thread/thread/hardware_concurrency)
