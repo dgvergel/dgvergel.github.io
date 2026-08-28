@@ -74,11 +74,11 @@ The queue interface will be based on an `acquire/complete` protocol, where every
 a worker via the `acquire()` member function must be paired with a subsequent call to the `complete()`
 function. The latter may register newly discovered tasks. Specifically:
 
-* `acquire()`: If work is available, it pops a task and internally increments the `active_` task counter.
-If there are no pending tasks but other workers are still processing work, the call blocks
-until new work appears or the computation finishes. When there are no pending or active tasks left,
-it returns an empty result (`std::nullopt`) to indicate that the exploration is complete and workers
-can terminate.
+* `acquire()`: If work is available, it retrieves a task from the front of the queue, removes it from the
+pending-work list, and internally increments the `active_` task counter. If there are no pending tasks but
+other workers are still processing work, the call blocks until new work becomes available or the computation finishes.
+When there are neither pending nor active tasks left, the function returns an empty result (`std::nullopt`)
+that signals that no further work can be generated and that the worker may terminate.
 
 * `complete()`: Atomically performs two actions: (i) It records the completion of a task previously acquired
 via `acquire()` by decrementing the `active_` counter, and (ii) it pushes newly discovered tasks into
