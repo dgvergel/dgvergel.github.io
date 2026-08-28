@@ -70,9 +70,10 @@ and could generate additional tasks at a later stage. The purpose of the <code>a
 to distinguish between these two situations.
 </div>
 
-The queue interface will be based on an `acquire/complete` protocol, where every task acquisition by
-a worker via the `acquire()` member function must be paired with a subsequent call to the `complete()`
-function. The latter may register newly discovered tasks. Specifically:
+The queue interface will be based on an `acquire/complete` protocol, where every task acquired by a worker
+through the `acquire()` member function must eventually be reported as completed through a matching call to the `complete()`
+function. In addition, `complete()` may register any new tasks discovered during the processing of the acquired task.
+Specifically:
 
 * `acquire()`: If work is available, it retrieves a task from the front of the queue, removes it from the
 pending-work list, and internally increments the `active_` task counter. If there are no pending tasks but
