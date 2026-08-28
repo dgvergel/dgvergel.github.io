@@ -69,7 +69,7 @@
    <span style="color: #569cd6;">auto</span> finished() <span style="color: #569cd6;">const</span> -&gt; <span style="color: #569cd6;">bool</span>
    {
       <span style="color: #569cd6;">auto</span> lock = std::lock_guard{mtx_};
-      <span style="color: #569cd6;">return</span> tasks_.empty() and active_ == <span style="color: #b5cea8;">0</span>;
+      <span style="color: #569cd6;">return</span> tasks_.empty() <span style="color: #569cd6;">and</span> active_ == <span style="color: #b5cea8;">0</span>;
    }
 
 <span style="color: #569cd6;">private:</span>
@@ -94,7 +94,7 @@
          <span style="color: #569cd6;">for</span> (<span style="color: #569cd6;">auto</span>&amp; t : new_tasks) {
             tasks_.push(std::move(t));
          }
-         globally_finished = tasks_.empty() and active_ == <span style="color: #b5cea8;">0</span>;
+         globally_finished = tasks_.empty() <span style="color: #569cd6;">and</span> active_ == <span style="color: #b5cea8;">0</span>;
          has_pending_work = <span style="color: #569cd6;">not</span> tasks_.empty();
       }
 
