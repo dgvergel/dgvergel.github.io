@@ -15,7 +15,7 @@ excerpt: >
 ### Introduction
 
 In this article, we will examine a concurrent programming example in C++ in detail, using it as a case
-study to explore dynamic task coordination, work-completion detection, and the safe aggregation of partial
+study to explore dynamic task generation, work-completion detection, and the safe aggregation of partial
 results.
 
 Given the path of a directory, our goal is to produce a statistical summary of the contents of its
