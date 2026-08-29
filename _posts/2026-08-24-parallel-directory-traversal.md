@@ -117,9 +117,7 @@ implementation, but they could easily be broken down into separate counters.
 
 The `run_directory_statistics()` function is responsible for coordinating the parallel execution.
 It initializes a `dynamic_task_queue<filesystem::path>` with the root directory, where each task
-represents a directory pending analysis within the directory tree. As workers discover new
-subdirectories, they are dynamically added to the queue as additional tasks, whereas regular files
-are processed directly and never become tasks themselves. The function then launches a configurable
+represents a directory pending analysis within the directory tree. The function then launches a configurable
 number of worker threads, `num_workers`, each of which produces a `directory_statistics` object containing the
 partial statistics gathered during its execution. Specifically, `num_workers - 1` workers are launched
 asynchronously using `std::async`[^3], while the main thread acts as an additional worker processing tasks
@@ -127,6 +125,8 @@ from the shared queue.
 
 <div class="dgv-note">Each pending directory <code>dir</code> is represented as a task stored in the
 <code>dynamic_task_queue&lt;filesystem::path&gt;</code>, with <code>std::filesystem::is_directory(dir) == true</code>.
+As workers discover new subdirectories, they are dynamically added to the queue as additional tasks, whereas regular
+files are processed directly and never become tasks themselves.
 </div>
 
 Workers execute the `process_directories()` function, which repeatedly acquires directories from the queue
