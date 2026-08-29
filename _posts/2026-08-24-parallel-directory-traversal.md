@@ -116,20 +116,25 @@ iterating through a directory. These errors are accumulated in a single counter 
 implementation, but they could easily be broken down into separate counters.
 
 The `run_directory_statistics()` function is responsible for coordinating the parallel execution.
-It initializes a `dynamic_task_queue<filesystem::path>` with the root directory and launches a
-configurable number of worker threads, `num_workers`, each of which produces a `directory_statistics`
-object containing the partial statistics gathered during its execution. Specifically, `num_workers - 1`
-workers are launched asynchronously using `std::async`[^3], while the main thread acts as an additional
-worker processing tasks from the shared queue.
+It initializes a `dynamic_task_queue<filesystem::path>` with the root directory, where each task
+represents a directory pending analysis within the directory tree. As workers discover new
+subdirectories, they are dynamically added to the queue as additional tasks, whereas regular files
+are processed directly and never become tasks themselves. The function then launches a configurable
+number of worker threads, `num_workers`, each of which produces a `directory_statistics` object containing the
+partial statistics gathered during its execution. Specifically, `num_workers - 1` workers are launched
+asynchronously using `std::async`[^3], while the main thread acts as an additional worker processing tasks
+from the shared queue.
 
-Each pending directory `dir` is represented as a task stored in the `dynamic_task_queue<filesystem::path>`,
-with `std::filesystem::is_directory(dir) == true`. Workers execute the `process_directories()` function,
-which acquires directories from the queue through `acquire()`, inspects their contents, and records
-statistics for the files found, grouped by extension and cumulative size. Subdirectories discovered
-during the traversal are not processed immediately; instead, they are registered as new tasks within
-the `acquired_task` object associated with the current directory. Upon destruction, the object automatically
-transfers the accumulated tasks to the queue and signals completion of the original task.
-As we previously mentioned, this behavior is implemented using RAII.
+<div class="dgv-note">Each pending directory `dir` is represented as a task stored in the
+`dynamic_task_queue<filesystem::path>`, with `std::filesystem::is_directory(dir) == true`.
+</div>
+
+Workers execute the `process_directories()` function, which repeatedly acquires directories from the queue
+through `acquire()`, inspects their contents, and records statistics for the files found, grouped by extension
+and cumulative size. Subdirectories discovered during the traversal are not processed immediately; instead,
+they are registered as new tasks within the `acquired_task` object associated with the current directory.
+Upon destruction, the object automatically transfers the accumulated tasks to the queue and signals completion
+of the original task. As we previously mentioned, this behavior is implemented using RAII.
 
 The implementation of `process_directories()` is based on `std::filesystem::directory_iterator`[^4], which
 iterates over the entries contained within a directory but does not visit its
