@@ -125,8 +125,8 @@ partial statistics gathered during its execution. Specifically, `num_workers - 1
 asynchronously using `std::async`[^3], while the main thread acts as an additional worker processing tasks
 from the shared queue.
 
-<div class="dgv-note">Each pending directory `dir` is represented as a task stored in the
-`dynamic_task_queue<filesystem::path>`, with `std::filesystem::is_directory(dir) == true`.
+<div class="dgv-note">Each pending directory <code>dir</code> is represented as a task stored in the
+<code>dynamic_task_queue&lt;filesystem::path&gt;</code>, with <code>std::filesystem::is_directory(dir) == true</code>.
 </div>
 
 Workers execute the `process_directories()` function, which repeatedly acquires directories from the queue
