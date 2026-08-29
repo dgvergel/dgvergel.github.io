@@ -123,18 +123,19 @@ partial statistics gathered during its execution. Specifically, `num_workers - 1
 asynchronously using `std::async`[^3], while the main thread acts as an additional worker processing tasks
 from the shared queue.
 
+Each worker executes the `process_directories()` function, which repeatedly acquires directories from the queue
+through `acquire()`, inspects their contents, and updates the worker's local `directory_statistics` object
+with the statistics of the files found, grouped by extension and cumulative size. Subdirectories discovered during
+the traversal are not processed immediately; instead, they are registered as new tasks within the `acquired_task`
+object associated with the current directory. Upon destruction, the object automatically transfers the
+accumulated tasks to the queue and signals completion of the original task. As we previously mentioned, this
+behavior is implemented using RAII.
+
 <div class="dgv-note">Each pending directory <code>dir</code> is represented as a task stored in the
 <code>dynamic_task_queue&lt;filesystem::path&gt;</code>, with <code>std::filesystem::is_directory(dir) == true</code>.
 As workers discover new subdirectories, they are dynamically added to the queue as additional tasks, whereas regular
 files are processed directly and never become tasks themselves.
 </div>
-
-Workers execute the `process_directories()` function, which repeatedly acquires directories from the queue
-through `acquire()`, inspects their contents, and records statistics for the files found, grouped by extension
-and cumulative size. Subdirectories discovered during the traversal are not processed immediately; instead,
-they are registered as new tasks within the `acquired_task` object associated with the current directory.
-Upon destruction, the object automatically transfers the accumulated tasks to the queue and signals completion
-of the original task. As we previously mentioned, this behavior is implemented using RAII.
 
 The implementation of `process_directories()` is based on `std::filesystem::directory_iterator`[^4], which
 iterates over the entries contained within a directory but does not visit its
