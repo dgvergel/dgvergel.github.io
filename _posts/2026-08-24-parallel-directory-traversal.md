@@ -18,7 +18,7 @@ In this article, we will examine a concurrent programming example in C++ in deta
 study to explore dynamic task generation, work-completion detection, and the safe aggregation of partial
 results.
 
-Given the path of a directory, our goal is to produce a statistical summary of the contents of its
+Given a path directory, our goal is to produce a statistical summary of the contents of its
 directory tree. For each file extension encountered (`.txt`, `.zip`, and so on), we will determine both
 the number of files and their cumulative size. The analysis will also report the total number of
 subdirectories discovered during the traversal.
@@ -51,7 +51,7 @@ implementation (<code>.cpp</code>) files would be straightforward.
 
 We begin by implementing a blocking concurrent work queue, `dynamic_task_queue<T>`, specifically
 designed for scenarios in which tasks can dynamically generate additional tasks during their execution.
-Such a structure greatly simplifies the parallelization of graph traversals, including the directory
+This data structure greatly simplifies the parallelization of graph traversals, including the directory
 hierarchies considered in this article.
 
 This class keeps pending tasks of type `T` in a private standard queue named `tasks_`, of type `std::queue<T>`.
