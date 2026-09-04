@@ -142,7 +142,7 @@ iterates over the entries contained within a directory but does not visit its
 subdirectories. The iteration order is unspecified by the standard, except that each directory entry
 is visited exactly once.
 
-<div class="dgv-note">As noted earlier, it is worth emphasizing that, under this design, each worker maintains its own
+<div class="dgv-note">As noted earlier, under this design each worker maintains its own
 <code>directory_statistics</code> object, accumulating statistics only for the directories it processes.
 </div>
 
