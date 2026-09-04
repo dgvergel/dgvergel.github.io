@@ -206,8 +206,8 @@ of hardware threads. However, this value should be interpreted as an indicative 
 necessarily as the optimal number of workers. In practice, performance may saturate at a lower
 thread count due to factors such as contention on the shared queue, the underlying storage device,
 or limitations imposed by the file system itself. In particular, different storage technologies may
-scale quite differently: modern NVMe SSDs can often sustain higher degrees of concurrent access
-than mechanical drives.
+scale quite differently: modern NVMe SSDs are designed to handle significantly higher degrees of
+concurrent access than mechanical drives.
 </div>
 
 As an example, on a system equipped with an 11th Gen Intel Core i5-1135G7 processor running at 2.40 GHz,
