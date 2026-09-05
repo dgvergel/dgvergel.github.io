@@ -1,8 +1,9 @@
 ---
 layout: post
-title: "Parallel directory traversal"
+title: "Parallel Directory Traversal"
+author: Daniel Gómez Vergel
 date: 2026-08-24
-categories: [c++, c++26, concurrency]
+categories: [C++, C++26, concurrency]
 permalink: /2026/08/24/parallel-directory-traversal/
 excerpt: >
   This article presents a parallel directory traversal
