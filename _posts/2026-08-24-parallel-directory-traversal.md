@@ -57,7 +57,7 @@ This data structure greatly simplifies the parallelization of graph traversals, 
 hierarchies considered in this article.
 
 This class stores pending tasks of type `T` in a private `std::queue<T>` named `tasks_`.
-In addition, it maintains a counter, `active_`, that tracks the number of tasks currently being
+It also maintains a counter, `active_`, that tracks the number of tasks currently being
 processed. This counter is incremented whenever a task is acquired and decremented when the task completes.
 As a result, the queue can automatically detect global completion, which occurs when there are neither
 pending tasks nor tasks in progress. The global termination condition is therefore: `tasks_.empty() and active_ == 0`.
