@@ -21,7 +21,7 @@ study to explore dynamic task generation, work-completion detection, and the saf
 results.
 
 Given a directory path, our goal is to produce a statistical summary of the contents of its
-directory tree. For each file extension encountered (`.txt`, `.zip`, and so on), we will determine both
+directory tree. For each file extension found (`.txt`, `.zip`, and so on), we will determine both
 the number of files and their cumulative size. The analysis will also report the total number of
 subdirectories discovered during the traversal.
 
@@ -56,9 +56,9 @@ designed for scenarios in which tasks can dynamically generate additional tasks 
 This data structure greatly simplifies the parallelization of graph traversals, including the directory
 hierarchies considered in this article.
 
-This class keeps pending tasks of type `T` in a private standard queue named `tasks_`, of type `std::queue<T>`.
-In addition, it maintains a counter called `active_` that tracks the number of tasks currently being
-processed. This counter is incremented whenever a task is acquired and decremented when processing of that task completes.
+This class stores pending tasks of type `T` in a private `std::queue<T>` named `tasks_`.
+In addition, it maintains a counter, `active_`, that tracks the number of tasks currently being
+processed. This counter is incremented whenever a task is acquired and decremented when the task completes.
 As a result, the queue can automatically detect global completion, which occurs when there are neither
 pending tasks nor tasks in progress. The global termination condition is therefore: `tasks_.empty() and active_ == 0`.
 
@@ -66,9 +66,9 @@ Both the queue and the counter are protected by a `std::mutex`[^1], while a `std
 used to block worker threads whenever no work is available and to wake them up when new tasks are
 added or when global completion is detected.
 
-<div class="dgv-note">It is important to note that an empty <code>tasks_</code> queue does not
+<div class="dgv-note">Notice that an empty <code>tasks_</code> queue does not
 necessarily imply that the computation has finished: a worker thread may still be processing a task
-and could generate additional tasks at a later stage. The purpose of the <code>active_</code> counter is precisely
+and could generate additional tasks at a later stage. The role of the <code>active_</code> counter is precisely
 to distinguish between these two situations.
 </div>
 
