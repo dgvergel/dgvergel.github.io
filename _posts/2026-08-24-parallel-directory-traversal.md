@@ -29,8 +29,8 @@ In this implementation, we will parallelize the directory tree traversal itself.
 will process directories retrieved from a shared concurrent queue, discover any subdirectories they
 contain, and dynamically push them into the queue so that they can later be processed by any
 available worker. As a result, multiple threads will be able to explore different branches of the
-directory tree simultaneously while accumulating partial statistics that will ultimately be merged
-into a single global result.
+directory tree simultaneously. Each thread collects partial statistics, which will finally be
+merged into a single global result.
 
 This approach will allow us to generate summaries such as the following for a given root directory:
 
