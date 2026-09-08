@@ -1,0 +1,38 @@
+<span style="color: #569cd6;">import</span> std;
+<span style="color: #569cd6;">import</span> password_validator;
+
+<span style="color: #569cd6;">auto</span> main() -&gt; <span style="color: #569cd6;">int</span>
+{
+   <span style="color: #569cd6;">using</span> <span style="color: #569cd6;">namespace</span> password_validator;
+
+   <span style="color: #569cd6;">constexpr</span> <span style="color: #569cd6;">auto</span> check
+      = Password_validation&lt;<span style="color: #b5cea8;">8</span>, <span style="color: #b5cea8;">16</span>&gt;{}
+      | digit
+      | lower_case
+      | upper_case
+      | special;
+
+   <span style="color: #569cd6;">static_assert</span>(
+      std::same_as&lt;
+         std::remove_cv_t&lt;<span style="color: #569cd6;">decltype</span>(check)&gt;,
+         Password_validation&lt;
+            8, 16,
+            Digit_character,
+            Lower_case_character,
+            Upper_case_character,
+            Special_character
+         &gt;
+      &gt;
+   );
+
+   <span style="color: #569cd6;">auto</span> pwd = std::string{};
+
+   std::print(<span style="color: #ce9178;">"Insert a password: "</span>);
+   std::getline(std::cin, pwd);
+
+   std::println(
+      <span style="color: #ce9178;">"Password '{}' is {}"</span>,
+      pwd,
+      check(pwd) ? <span style="color: #ce9178;">"valid"</span> : <span style="color: #ce9178;">"invalid"</span>
+   );
+}
