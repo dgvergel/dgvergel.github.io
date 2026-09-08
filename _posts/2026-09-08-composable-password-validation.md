@@ -62,8 +62,8 @@ validation rule. The available policies are:
 {% include composable-password-validation/cb-2.html %}
 </div>
 
-For convenience, we also provide constant instances of each policy. As will explain later, this will
-allow us to select rules directly in pipeline expressions:
+For convenience, we also provide constant instances of each policy. As explained later, this will allow us
+to select rules directly within pipeline expressions:
 
 <div class="dgv-cb">
 {% include composable-password-validation/cb-3.html %}
