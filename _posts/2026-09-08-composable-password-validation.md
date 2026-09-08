@@ -19,7 +19,7 @@ independent validation policies. As a baseline requirement, our validator will v
 length falls within an allowed range, `[Min_sz, Max_sz]`, and that it does not contain ASCII whitespace characters. Additional rules can then be added to require the presence of digits, lowercase letters,
 uppercase letters, and/or special characters.
 
-A traditional object-oriented solution could rely on dynamic polymorphism and the Decorator pattern[^1][^2],
+A traditional object-oriented solution could rely on dynamic polymorphism and the Decorator pattern<sup>[^1],</sup>[^2],
 allowing validation policies to be selected and composed at runtime. In this article, we will take a
 different approach: policy selection will be performed entirely at compile time, making the validator
 configuration part of the type itself. As a result, the implementation will avoid virtual dispatch
