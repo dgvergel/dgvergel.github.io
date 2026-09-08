@@ -36,6 +36,6 @@
    <span style="color: #569cd6;">constexpr</span> <span style="color: #569cd6;">auto</span> operator()(<span style="color: #569cd6;">char</span> c) <span style="color: #569cd6;">const</span> <span style="color: #569cd6;">noexcept</span> -&gt; <span style="color: #569cd6;">bool</span>
    {
       <span style="color: #569cd6;">static</span> <span style="color: #569cd6;">constexpr</span> <span style="color: #569cd6;">auto</span> special = std::string_view{<span style="color: #ce9178;">"$!?#@%&amp;*^-"</span>};
-      <span style="color: #569cd6;">return</span> special.contains(<span style="color: #569cd6;">static_cast</span>&lt;<span style="color: #569cd6;">char</span>&gt;(c));
+      <span style="color: #569cd6;">return</span> special.contains(c);
    }
 };
