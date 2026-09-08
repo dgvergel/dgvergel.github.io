@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "Composable Password Validation"
+title: "Compile-Time Policy Composition for Password Validation"
 author: Daniel Gómez Vergel
 date: 2026-09-08
 categories: [C++26, concepts, policy-based-design, bitset, template-for]
