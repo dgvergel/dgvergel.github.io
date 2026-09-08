@@ -26,13 +26,12 @@
    );
 
    <span style="color: #569cd6;">auto</span> pwd = std::string{};
-
    std::print(<span style="color: #ce9178;">"Insert a password: "</span>);
    std::getline(std::cin, pwd);
 
    std::println(
       <span style="color: #ce9178;">"Password '{}' is {}"</span>,
       pwd,
-      check(pwd) ? <span style="color: #ce9178;">"valid"</span> : <span style="color: #ce9178;">"invalid"</span>
+      check(pwd)? <span style="color: #ce9178;">"valid"</span> : <span style="color: #ce9178;">"invalid"</span>
    );
 }
