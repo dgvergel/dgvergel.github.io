@@ -76,7 +76,7 @@ the set of character policies selected by the user.
 
 First, the `Character_policy` concept defines the requirements that every policy type must satisfy.
 In particular, a policy must be default-constructible and invocable with a `char` argument.
-The invocation must be `noexcept`, and its result must be convertible to `bool`.
+The invocation must be `noexcept`, and its result must be convertible to `bool`:
 
 <div class="dgv-cb">
 {% include composable-password-validation/cb-4.html %}
