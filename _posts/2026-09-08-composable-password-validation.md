@@ -82,8 +82,8 @@ The invocation must be `noexcept`, and its result must be convertible to `bool`:
 {% include composable-password-validation/cb-4.html %}
 </div>
 
-The `Password_validation` class template takes the minimum (`Min_sz`) and maximum (`Max_sz`) allowed
-password lengths as non-type template parameters, together with a policy parameter pack (`Policies...`,
+The `Password_validation` class template defined below takes the minimum (`Min_sz`) and maximum (`Max_sz`)
+allowed password lengths as non-type template parameters, together with a policy parameter pack (`Policies...`,
 possibly empty) specifying the requirements that a password must satisfy. A `static_assert` ensures
 that the lower bound does not exceed the upper bound. The public `policy_count` constant exposes
 `sizeof...(Policies)`, that is, the number of validation policies configured at compile time.
@@ -91,9 +91,9 @@ that the lower bound does not exceed the upper bound. The public `policy_count` 
 The validator's call operator, `operator()(std::string_view)`, performs the actual password validation
 in three stages:
 
-1. Verify that the password length lies within the allowed range `[Min_sz, Max_sz]`.
-2. Reject passwords containing ASCII whitespace characters.
-3. Verify that every policy in `Policies...` has been satisfied by at least one character in the password.
+1. Verifies that the password length lies within the allowed range `[Min_sz, Max_sz]`.
+2. Rejects passwords containing ASCII whitespace characters.
+3. Verifies that every policy in `Policies...` has been satisfied by at least one character in the password.
 
 The password is processed sequentially, with each character updating a validation state that
 records which policy requirements have already been satisfied. This state is stored in a `std::bitset<policy_count>`[^3], whose bits are in one-to-one correspondence with the policies in the
