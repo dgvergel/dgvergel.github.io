@@ -16,7 +16,8 @@ excerpt: >
 
 The goal of this article is to design a simple password validator that can be configured by composing
 independent validation policies. As a baseline requirement, our validator will verify that a password
-length falls within an allowed range, `[Min_sz, Max_sz]`, and that it does not contain ASCII whitespace characters. Additional rules can then be added to require the presence of digits, lowercase letters,
+length falls within an allowed range, `[Min_sz, Max_sz]`, and that it does not contain ASCII whitespace characters.
+Additional rules can then be added to require the presence of digits, lowercase letters,
 uppercase letters, and/or special characters.
 
 A traditional object-oriented solution could rely on dynamic polymorphism and the Decorator pattern[^1]<sup>,</sup>[^2],
@@ -38,7 +39,8 @@ and uppercase letters:
 <div class="dgv-note">Although our library is fully <code>constexpr</code>-friendly and can therefore
 validate passwords at compile time, as demonstrated by the <code>static_assert</code> declarations
 above, its primary use case is runtime validation. The same validator object can be used in either
-context without any changes to the API.
+context without any changes to the API. See the <a href="#runtime-validation">last section</a> of the
+article for an example of execution at runtime.
 </div>
 
 For simplicity, the entire library will be implemented as a single `password_validator` module, so that
@@ -91,9 +93,9 @@ that the lower bound does not exceed the upper bound. The public `policy_count` 
 The validator's call operator, `operator()(std::string_view)`, performs the actual password validation
 in three stages:
 
-1. Verifies that the password length lies within the allowed range `[Min_sz, Max_sz]`.
-2. Rejects passwords containing ASCII whitespace characters.
-3. Verifies that every policy in `Policies...` has been satisfied by at least one character in the password.
+1. Verify that the password length lies within the allowed range `[Min_sz, Max_sz]`.
+2. Reject passwords containing ASCII whitespace characters.
+3. Verify that every policy in `Policies...` has been satisfied by at least one character in the password.
 
 The password is processed sequentially, with each character updating a validation state that
 records which policy requirements have already been satisfied. This state is stored in a `std::bitset<policy_count>`[^3], whose bits are in one-to-one correspondence with the policies in the
@@ -107,8 +109,10 @@ scan continues until the end of the password.
 
 Given a password character `c`, the `update()` function updates the validation state by
 evaluating only those policies that have not yet been satisfied. The implementation relies on a C++26
-`template for` expansion[^4] to iterate over the policy pack at compile time. The pack indexing expression `Policies...[Idx]` retrieves the `Idx`-th policy type within the parameter pack. Whenever a policy `P`
-returns `true` for the current character, the corresponding bit in the `std::bitset` is set.
+`template for` expansion[^4], causing the compiler to expand the loop body for every policy
+in the pack at compile time. The pack indexing expression `Policies...[Idx]` retrieves the `Idx`-th policy
+type within the parameter pack. Whenever a policy `P` returns `true` for the current character, the
+corresponding bit in the `std::bitset` is set.
 
 Since bits are only ever set and never reset, the number of satisfied requirements can only increase
 during the traversal. As an optimization, once the bit associated with a policy has been set, that
@@ -122,7 +126,7 @@ range whose size is known at compile time (iterating expansion).
 
 ### Pipeline composition
 
-Finally, the following overload of `operator|` allows validation policies to be added using a
+The following overload of `operator|` allows validation policies to be added using a
 pipeline-style syntax. Starting from a `Password_validation` object, the operator appends a new policy
 to the set of requirements and returns a new validator type that includes the additional policy. Before
 the new policy is added, a `static_assert` checks at compile time that a policy of the same type has
