@@ -1,6 +1,6 @@
 <span style="color: #569cd6;">export</span> <span style="color: #569cd6;">module</span> password_validator;
 
-import std;
+<span style="color: #569cd6;">import</span> std;
 
 <span style="color: #569cd6;">export</span> <span style="color: #569cd6;">namespace</span> password_validator {
 
@@ -11,7 +11,7 @@ import std;
    <span style="color: #c586c0;">[[nodiscard]]</span>
    <span style="color: #569cd6;">constexpr</span> <span style="color: #569cd6;">auto</span> operator()(<span style="color: #569cd6;">char</span> c) <span style="color: #569cd6;">const</span> <span style="color: #569cd6;">noexcept</span> -&gt; <span style="color: #569cd6;">bool</span>
    {
-      <span style="color: #569cd6;">return</span> c &gt;= <span style="color: #ce9178;">'0'</span> and c &lt;= <span style="color: #ce9178;">'9'</span>;
+      <span style="color: #569cd6;">return</span> c &gt;= <span style="color: #ce9178;">'0'</span> <span style="color: #569cd6;">and</span> c &lt;= <span style="color: #ce9178;">'9'</span>;
    }
 };
 
@@ -19,7 +19,7 @@ import std;
    <span style="color: #c586c0;">[[nodiscard]]</span>
    <span style="color: #569cd6;">constexpr</span> <span style="color: #569cd6;">auto</span> operator()(<span style="color: #569cd6;">char</span> c) <span style="color: #569cd6;">const</span> <span style="color: #569cd6;">noexcept</span> -&gt; <span style="color: #569cd6;">bool</span>
    {
-      <span style="color: #569cd6;">return</span> c &gt;= <span style="color: #ce9178;">'a'</span> and c &lt;= <span style="color: #ce9178;">'z'</span>;
+      <span style="color: #569cd6;">return</span> c &gt;= <span style="color: #ce9178;">'a'</span> <span style="color: #569cd6;">and</span> c &lt;= <span style="color: #ce9178;">'z'</span>;
    }
 };
 
@@ -27,7 +27,7 @@ import std;
    <span style="color: #c586c0;">[[nodiscard]]</span>
    <span style="color: #569cd6;">constexpr</span> <span style="color: #569cd6;">auto</span> operator()(<span style="color: #569cd6;">char</span> c) <span style="color: #569cd6;">const</span> <span style="color: #569cd6;">noexcept</span> -&gt; <span style="color: #569cd6;">bool</span>
    {
-      <span style="color: #569cd6;">return</span> c &gt;= <span style="color: #ce9178;">'A'</span> and c &lt;= <span style="color: #ce9178;">'Z'</span>;
+      <span style="color: #569cd6;">return</span> c &gt;= <span style="color: #ce9178;">'A'</span> <span style="color: #569cd6;">and</span> c &lt;= <span style="color: #ce9178;">'Z'</span>;
    }
 };
 
