@@ -9,7 +9,7 @@
    = check_0
    | digit;
 
-<span style="color: #569cd6;">static_assert</span>(not check_1(<span style="color: #ce9178;">"edmonddantes"</span>)); <span style="color: #6a9955;">// Ok</span>
+<span style="color: #569cd6;">static_assert</span>(<span style="color: #569cd6;">not</span> check_1(<span style="color: #ce9178;">"edmonddantes"</span>)); <span style="color: #6a9955;">// Ok</span>
 <span style="color: #569cd6;">static_assert</span>(check_1(<span style="color: #ce9178;">"edmonddantes34"</span>)); <span style="color: #6a9955;">// Ok</span>
 
 <span style="color: #569cd6;">constexpr</span> <span style="color: #569cd6;">auto</span> check_2
@@ -17,5 +17,5 @@
    | lower_case
    | upper_case;
 
-<span style="color: #569cd6;">static_assert</span>(not check_2(<span style="color: #ce9178;">"edmonddantes34"</span>)); <span style="color: #6a9955;">// Ok</span>
+<span style="color: #569cd6;">static_assert</span>(<span style="color: #569cd6;">not</span> check_2(<span style="color: #ce9178;">"edmonddantes34"</span>)); <span style="color: #6a9955;">// Ok</span>
 <span style="color: #569cd6;">static_assert</span>(check_2(<span style="color: #ce9178;">"EdmondDantes34"</span>)); <span style="color: #6a9955;">// Ok</span>
