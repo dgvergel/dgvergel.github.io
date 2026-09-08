@@ -5,10 +5,7 @@
    -&gt; <span style="color: #569cd6;">bool</span>
 {
    <span style="color: #569cd6;">static</span> <span style="color: #569cd6;">constexpr</span> <span style="color: #569cd6;">auto</span> white_space = std::string_view{<span style="color: #ce9178;">" \t\n\r\f\v"</span>};
-   <span style="color: #569cd6;">return</span> std::ranges::any_of(
-      pwd,
-      [=](<span style="color: #569cd6;">char</span> c){ <span style="color: #569cd6;">return</span> white_space.contains(c); }
-   );
+   <span style="color: #569cd6;">return</span> pwd.find_first_of(white_space) != std::string_view::npos;
 }
 
 <span style="color: #569cd6;">export</span>
