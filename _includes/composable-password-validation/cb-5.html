@@ -18,7 +18,7 @@
    <span style="color: #c586c0;">[[nodiscard]]</span>
    <span style="color: #569cd6;">constexpr</span> <span style="color: #569cd6;">auto</span> operator()(std::string_view pwd) <span style="color: #569cd6;">const</span> <span style="color: #569cd6;">noexcept</span> -&gt; <span style="color: #569cd6;">bool</span>
    {
-      <span style="color: #569cd6;">if</span> ((pwd.size() &lt; Min_sz or pwd.size() &gt; Max_sz)) {
+      <span style="color: #569cd6;">if</span> ((pwd.size() &lt; Min_sz <span style="color: #569cd6;">or</span> pwd.size() &gt; Max_sz)) {
          <span style="color: #569cd6;">return</span> <span style="color: #569cd6;">false</span>;
       }
       <span style="color: #569cd6;">if</span> (contains_white_space(pwd)) {
@@ -53,7 +53,7 @@
       <span style="color: #569cd6;">static</span> <span style="color: #569cd6;">constexpr</span> <span style="color: #569cd6;">auto</span> white_space = std::string_view{<span style="color: #ce9178;">" \t\n\r\f\v"</span>};
       <span style="color: #569cd6;">return</span> std::ranges::any_of(
          pwd,
-         <span style="color: #569cd6;">char</span> c { <span style="color: #569cd6;">return</span> white_space.contains(c); }
+         [=](<span style="color: #569cd6;">char</span> c){ <span style="color: #569cd6;">return</span> white_space.contains(c); }
       );
    }
 
@@ -62,11 +62,11 @@
       <span style="color: #569cd6;">char</span> c
    ) <span style="color: #569cd6;">noexcept</span>
    {
-      template <span style="color: #569cd6;">for</span> (
+      <span style="color: #569cd6;">template for</span> (
          <span style="color: #569cd6;">constexpr</span> <span style="color: #569cd6;">auto</span> Idx : std::views::indices(policy_count)
       ) {
          <span style="color: #569cd6;">using</span> P = Policies...[Idx];
-         <span style="color: #569cd6;">if</span> (not state.test(Idx) and P{}(c)) {
+         <span style="color: #569cd6;">if</span> (<span style="color: #569cd6;">not</span> state.test(Idx) <span style="color: #569cd6;">and</span> P{}(c)) {
             state.set(Idx);
          }
       }
