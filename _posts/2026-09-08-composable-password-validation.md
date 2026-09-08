@@ -138,6 +138,15 @@ validator configuration is encoded in its template arguments: no additional runt
 is required, and policy composition introduces no runtime overhead.
 </div>
 
+### Runtime validation
+
+Finally, as an example, the following `main()` function shows how to use the validator with strings
+entered at runtime:
+
+<div class="dgv-cb">
+{% include composable-password-validation/cb-7.html %}
+</div>
+
 ---
 
 ### Bibliography
