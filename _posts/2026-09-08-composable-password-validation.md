@@ -12,6 +12,9 @@ excerpt: >
 
 {% include post-categories.html %}
 
+### Table of Contents
+{:toc}
+
 ### Introduction
 
 The goal of this article is to design a simple password validator that can be configured by composing
