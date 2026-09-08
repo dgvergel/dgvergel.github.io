@@ -1,0 +1,74 @@
+<span style="color: #569cd6;">template</span>&lt;
+   std::size_t Min_sz,
+   std::size_t Max_sz = Min_sz,
+   <span style="color: #569cd6;">Character_policy</span>... Policies
+&gt;
+<span style="color: #569cd6;">class</span> Password_validation {
+   <span style="color: #569cd6;">static_assert</span>(
+      Min_sz &lt;= Max_sz,
+      <span style="color: #ce9178;">"the minimum password length cannot exceed "</span>
+      <span style="color: #ce9178;">"the maximum password length"</span>
+   );
+
+<span style="color: #569cd6;">public:</span>
+   <span style="color: #569cd6;">static</span> <span style="color: #569cd6;">constexpr</span> std::size_t policy_count = <span style="color: #569cd6;">sizeof...</span>(Policies);
+
+   <span style="color: #569cd6;">constexpr</span> Password_validation() = <span style="color: #569cd6;">default</span>;
+
+   <span style="color: #c586c0;">[[nodiscard]]</span>
+   <span style="color: #569cd6;">constexpr</span> <span style="color: #569cd6;">auto</span> operator()(std::string_view pwd) <span style="color: #569cd6;">const</span> <span style="color: #569cd6;">noexcept</span> -&gt; <span style="color: #569cd6;">bool</span>
+   {
+      <span style="color: #569cd6;">if</span> ((pwd.size() &lt; Min_sz or pwd.size() &gt; Max_sz)) {
+         <span style="color: #569cd6;">return</span> <span style="color: #569cd6;">false</span>;
+      }
+      <span style="color: #569cd6;">if</span> (contains_white_space(pwd)) {
+         <span style="color: #569cd6;">return</span> <span style="color: #569cd6;">false</span>;
+      }
+
+      <span style="color: #569cd6;">auto</span> state = std::bitset&lt;policy_count&gt;{};
+
+      <span style="color: #569cd6;">for</span> (<span style="color: #569cd6;">char</span> <span style="color: #569cd6;">const</span> c : pwd) {
+         update(state, c);
+         <span style="color: #569cd6;">if</span> (state.all()) {
+            <span style="color: #569cd6;">return</span> <span style="color: #569cd6;">true</span>;
+         }
+      }
+
+      <span style="color: #569cd6;">return</span> state.all();
+   }
+
+   <span style="color: #c586c0;">[[nodiscard]]</span>
+   <span style="color: #569cd6;">static</span> <span style="color: #569cd6;">constexpr</span> <span style="color: #569cd6;">auto</span> min_size() <span style="color: #569cd6;">noexcept</span> { <span style="color: #569cd6;">return</span> Min_sz; }
+
+   <span style="color: #c586c0;">[[nodiscard]]</span>
+   <span style="color: #569cd6;">static</span> <span style="color: #569cd6;">constexpr</span> <span style="color: #569cd6;">auto</span> max_size() <span style="color: #569cd6;">noexcept</span> { <span style="color: #569cd6;">return</span> Max_sz; }
+
+<span style="color: #569cd6;">private:</span>
+   <span style="color: #c586c0;">[[nodiscard]]</span>
+   <span style="color: #569cd6;">static</span> <span style="color: #569cd6;">constexpr</span> <span style="color: #569cd6;">auto</span> contains_white_space(
+      std::string_view pwd
+   ) <span style="color: #569cd6;">noexcept</span>
+      -&gt; <span style="color: #569cd6;">bool</span>
+   {
+      <span style="color: #569cd6;">static</span> <span style="color: #569cd6;">constexpr</span> <span style="color: #569cd6;">auto</span> white_space = std::string_view{<span style="color: #ce9178;">" \t\n\r\f\v"</span>};
+      <span style="color: #569cd6;">return</span> std::ranges::any_of(
+         pwd,
+         <span style="color: #569cd6;">char</span> c { <span style="color: #569cd6;">return</span> white_space.contains(c); }
+      );
+   }
+
+   <span style="color: #569cd6;">static</span> <span style="color: #569cd6;">constexpr</span> <span style="color: #569cd6;">void</span> update(
+      std::bitset&lt;policy_count&gt;<span style="color: #569cd6;">&amp;</span> state,
+      <span style="color: #569cd6;">char</span> c
+   ) <span style="color: #569cd6;">noexcept</span>
+   {
+      template <span style="color: #569cd6;">for</span> (
+         <span style="color: #569cd6;">constexpr</span> <span style="color: #569cd6;">auto</span> Idx : std::views::indices(policy_count)
+      ) {
+         <span style="color: #569cd6;">using</span> P = Policies...[Idx];
+         <span style="color: #569cd6;">if</span> (not state.test(Idx) and P{}(c)) {
+            state.set(Idx);
+         }
+      }
+   }
+};

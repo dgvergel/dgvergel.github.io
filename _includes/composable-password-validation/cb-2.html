@@ -1,0 +1,41 @@
+<span style="color: #569cd6;">export</span> <span style="color: #569cd6;">module</span> password_validator;
+
+import std;
+
+<span style="color: #569cd6;">export</span> <span style="color: #569cd6;">namespace</span> password_validator {
+
+<span style="color: #6a9955;">// ------------------------------------------------------------</span>
+<span style="color: #6a9955;">// policies:</span>
+
+<span style="color: #569cd6;">struct</span> Digit_character {
+   <span style="color: #c586c0;">[[nodiscard]]</span>
+   <span style="color: #569cd6;">constexpr</span> <span style="color: #569cd6;">auto</span> operator()(<span style="color: #569cd6;">char</span> c) <span style="color: #569cd6;">const</span> <span style="color: #569cd6;">noexcept</span> -&gt; <span style="color: #569cd6;">bool</span>
+   {
+      <span style="color: #569cd6;">return</span> c &gt;= <span style="color: #ce9178;">'0'</span> and c &lt;= <span style="color: #ce9178;">'9'</span>;
+   }
+};
+
+<span style="color: #569cd6;">struct</span> Lower_case_character {
+   <span style="color: #c586c0;">[[nodiscard]]</span>
+   <span style="color: #569cd6;">constexpr</span> <span style="color: #569cd6;">auto</span> operator()(<span style="color: #569cd6;">char</span> c) <span style="color: #569cd6;">const</span> <span style="color: #569cd6;">noexcept</span> -&gt; <span style="color: #569cd6;">bool</span>
+   {
+      <span style="color: #569cd6;">return</span> c &gt;= <span style="color: #ce9178;">'a'</span> and c &lt;= <span style="color: #ce9178;">'z'</span>;
+   }
+};
+
+<span style="color: #569cd6;">struct</span> Upper_case_character {
+   <span style="color: #c586c0;">[[nodiscard]]</span>
+   <span style="color: #569cd6;">constexpr</span> <span style="color: #569cd6;">auto</span> operator()(<span style="color: #569cd6;">char</span> c) <span style="color: #569cd6;">const</span> <span style="color: #569cd6;">noexcept</span> -&gt; <span style="color: #569cd6;">bool</span>
+   {
+      <span style="color: #569cd6;">return</span> c &gt;= <span style="color: #ce9178;">'A'</span> and c &lt;= <span style="color: #ce9178;">'Z'</span>;
+   }
+};
+
+<span style="color: #569cd6;">struct</span> Special_character {
+   <span style="color: #c586c0;">[[nodiscard]]</span>
+   <span style="color: #569cd6;">constexpr</span> <span style="color: #569cd6;">auto</span> operator()(<span style="color: #569cd6;">char</span> c) <span style="color: #569cd6;">const</span> <span style="color: #569cd6;">noexcept</span> -&gt; <span style="color: #569cd6;">bool</span>
+   {
+      <span style="color: #569cd6;">static</span> <span style="color: #569cd6;">constexpr</span> <span style="color: #569cd6;">auto</span> special = std::string_view{<span style="color: #ce9178;">"$!?#@%&amp;*^-"</span>};
+      <span style="color: #569cd6;">return</span> special.contains(<span style="color: #569cd6;">static_cast</span>&lt;<span style="color: #569cd6;">char</span>&gt;(c));
+   }
+};

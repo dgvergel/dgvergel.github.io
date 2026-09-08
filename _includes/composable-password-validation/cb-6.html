@@ -1,0 +1,29 @@
+<span style="color: #6a9955;">// ------------------------------------------------------------</span>
+<span style="color: #6a9955;">// pipeline composition:</span>
+
+<span style="color: #569cd6;">template</span>&lt;
+   std::<span style="color: #569cd6;">size_t</span> Min_sz,
+   std::<span style="color: #569cd6;">size_t</span> Max_sz,
+   <span style="color: #569cd6;">Character_policy</span>... Policies,
+   <span style="color: #569cd6;">Character_policy</span> New_policy
+&gt;
+[[nodiscard]]
+<span style="color: #569cd6;">constexpr</span> <span style="color: #569cd6;">auto</span> operator|(
+   Password_validation&lt;Min_sz, Max_sz, Policies...&gt;,
+   New_policy
+) <span style="color: #569cd6;">noexcept</span>
+{
+   <span style="color: #569cd6;">static_assert</span>(
+      (... and not std::same_as&lt;New_policy, Policies&gt;),
+      <span style="color: #ce9178;">"a password policy cannot be added more than once"</span>
+   );
+
+   <span style="color: #569cd6;">return</span> Password_validation&lt;
+      Min_sz,
+      Max_sz,
+      Policies...,
+      New_policy
+   &gt;{};
+}
+
+}<span style="color: #6a9955;"> // namespace password_validator</span>
