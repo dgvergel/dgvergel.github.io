@@ -31,7 +31,9 @@ characters (`check_0`), additional rules can be added through composition. Valid
 requires at least one digit, whereas `check_2` additionally requires the presence of both lowercase
 and uppercase letters:
 
+<div class="dgv-cb">
 {% include composable-password-validation/cb-1.html %}
+</div>
 
 <div class="dgv-note">Although our library is fully <code>constexpr</code>-friendly and can therefore
 validate passwords at compile time, as demonstrated by the <code>static_assert</code> declarations
@@ -56,12 +58,16 @@ validation rule. The available policies are:
 * `Upper_case_character`: the password must contain at least one uppercase letter.
 * `Special_character`: the password must contain at least one special character from the set `$!?#@%&*^-`.
 
+<div class="dgv-cb">
 {% include composable-password-validation/cb-2.html %}
+</div>
 
 For convenience, we also provide constant instances of each policy. As will explain later, this will
 allow us to select rules directly in pipeline expressions:
 
+<div class="dgv-cb">
 {% include composable-password-validation/cb-3.html %}
+</div>
 
 ### Validation engine
 
@@ -72,7 +78,9 @@ First, the `Character_policy` concept defines the requirements that every policy
 In particular, a policy must be default-constructible and invocable with a `char` argument.
 The invocation must be `noexcept`, and its result must be convertible to `bool`.
 
+<div class="dgv-cb">
 {% include composable-password-validation/cb-4.html %}
+</div>
 
 The `Password_validation` class template takes the minimum (`Min_sz`) and maximum (`Max_sz`) allowed
 password lengths as non-type template parameters, together with a policy parameter pack (`Policies...`,
@@ -93,7 +101,9 @@ records which policy requirements have already been satisfied. This state is sto
 As soon as all bits become set, validation succeeds and processing stops immediately; otherwise, the
 scan continues until the end of the password.
 
+<div class="dgv-cb">
 {% include composable-password-validation/cb-5.html %}
+</div>
 
 Given a password character `c`, the `update()` function updates the validation state by
 evaluating only those policies that have not yet been satisfied. The implementation relies on a C++26
@@ -118,7 +128,9 @@ to the set of requirements and returns a new validator type that includes the ad
 the new policy is added, a `static_assert` checks at compile time that a policy of the same type has
 not already been added:
 
+<div class="dgv-cb">
 {% include composable-password-validation/cb-6.html %}
+</div>
 
 <div class="dgv-note"> As discussed earlier, each application of <code>operator|</code> produces a
 new <code>Password_validation</code> type with an extended policy pack. As a consequence, the entire
