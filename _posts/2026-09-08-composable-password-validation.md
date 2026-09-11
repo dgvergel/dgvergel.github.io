@@ -36,7 +36,7 @@ and uppercase letters:
 {% include composable-password-validation/cb-1.html %}
 </div>
 
-<div class="dgv-note">Although our library is fully <code>constexpr</code>-friendly and can therefore
+<div class="dgv-note">Although our library is fully <code>constexpr</code> and can therefore
 validate passwords at compile time, as demonstrated by the <code>static_assert</code> declarations
 above, its primary use case is runtime validation. The same validator object can be used in either
 context without any changes to the API. See the <a href="#runtime-validation">last section</a> of the
@@ -127,8 +127,8 @@ range whose size is known at compile time (iterating expansion).
 ### Pipeline composition
 
 The following overload of `operator|` allows validation policies to be added using a
-pipeline-style syntax. Starting from a `Password_validation` object, the operator appends a new policy
-to the set of requirements and returns a new validator type that includes the additional policy. Before
+pipeline-style syntax. This operator takes a `Password_validation` object, adds a new policy to its
+requirements, and returns a new validator type that includes the new policy. Before
 the new policy is added, a `static_assert` checks at compile time that a policy of the same type has
 not already been added:
 
