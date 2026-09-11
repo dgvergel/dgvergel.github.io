@@ -107,8 +107,8 @@ scan continues until the end of the password.
 {% include composable-password-validation/cb-5.html %}
 </div>
 
-Given a password character `c`, the `update()` function updates the validation state by
-evaluating only those policies that have not yet been satisfied. The implementation relies on a C++26
+For each password character, the `update()` function evaluates the policies that have not yet been satisfied
+and updates the validation state accordingly. The implementation relies on a C++26
 `template for` expansion[^4], causing the compiler to expand the loop body for every policy
 in the pack at compile time. The pack indexing expression `Policies...[Idx]` retrieves the `Idx`-th policy
 type within the parameter pack. Whenever a policy `P` returns `true` for the current character, the
