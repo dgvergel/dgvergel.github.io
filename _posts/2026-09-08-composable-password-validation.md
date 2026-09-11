@@ -136,7 +136,7 @@ not already been added:
 {% include composable-password-validation/cb-6.html %}
 </div>
 
-<div class="dgv-note"> As discussed earlier, each application of <code>operator|</code> produces a
+<div class="dgv-note"> Each application of <code>operator|</code> produces a
 new <code>Password_validation</code> type with an extended policy pack. As a consequence, the entire
 validator configuration is encoded in its template arguments: no additional runtime storage
 is required, and policy composition introduces no runtime overhead.
