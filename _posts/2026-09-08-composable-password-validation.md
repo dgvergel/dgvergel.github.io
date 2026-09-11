@@ -16,8 +16,8 @@ excerpt: >
 
 The goal of this article is to design a simple password validator that can be configured by composing
 independent validation policies. As a baseline requirement, our validator will verify that a password
-length falls within an allowed range, `[Min_sz, Max_sz]`, and that it does not contain ASCII whitespace characters.
-Additional rules can then be added to require the presence of digits, lowercase letters,
+length falls within an allowed range, `[Min_sz, Max_sz]`, and that it does not contain ASCII whitespace
+characters. Additional rules can then be added to require the presence of digits, lowercase letters,
 uppercase letters, and/or special characters.
 
 A traditional object-oriented solution could rely on dynamic polymorphism and the Decorator pattern[^1]<sup>,</sup>[^2],
@@ -29,8 +29,8 @@ and perform no dynamic allocations.
 The following example illustrates how validation policies can be composed using the pipeline syntax.
 Starting from a validator that enforces only length constraints and the absence of whitespace
 characters (`check_0`), additional rules can be added through composition. Validator `check_1`
-requires at least one digit, whereas `check_2` additionally requires the presence of both lowercase
-and uppercase letters:
+additionally requires at least one digit, whereas `check_2` also requires the presence of both
+lowercase and uppercase letters:
 
 <div class="dgv-cb">
 {% include composable-password-validation/cb-1.html %}
