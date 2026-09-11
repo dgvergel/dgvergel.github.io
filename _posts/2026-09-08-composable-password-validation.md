@@ -15,8 +15,8 @@ excerpt: >
 ### Introduction
 
 The goal of this article is to design a simple password validator that can be configured by composing
-independent validation policies. As a baseline requirement, our validator will verify that a password
-length falls within an allowed range, `[Min_sz, Max_sz]`, and that it does not contain ASCII whitespace
+independent validation policies. As a baseline requirement, our validator will verify that the password
+length falls within the allowed range `[Min_sz, Max_sz]` and that the password contains no ASCII whitespace
 characters. Additional rules can then be added to require the presence of digits, lowercase letters,
 uppercase letters, and/or special characters.
 
