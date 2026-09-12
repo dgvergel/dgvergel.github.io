@@ -8,8 +8,8 @@
    <span style="color: #569cd6;">constexpr</span> <span style="color: #569cd6;">auto</span> check
       = Password_validation&lt;<span style="color: #b5cea8;">8</span>, <span style="color: #b5cea8;">16</span>&gt;{}
       | digit
-      | lower_case
-      | upper_case
+      | lowercase
+      | uppercase
       | special;
 
    <span style="color: #569cd6;">static_assert</span>(
@@ -18,8 +18,8 @@
          Password_validation&lt;
             8, 16,
             Digit_character,
-            Lower_case_character,
-            Upper_case_character,
+            Lowercase_character,
+            Uppercase_character,
             Special_character
          &gt;
       &gt;
