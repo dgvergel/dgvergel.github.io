@@ -1,5 +1,5 @@
 <span style="color: #569cd6;">export</span>
 <span style="color: #569cd6;">template</span>&lt;<span style="color: #569cd6;">typename</span> P&gt;
-<span style="color: #569cd6;">concept</span> Character_policy = <span style="color: #569cd6;">requires</span>(<span style="color: #569cd6;">char</span> c) {
+<span style="color: #569cd6;">concept</span> Character_policy = <span style="color: #569cd6;">requires</span> (<span style="color: #569cd6;">char</span> c) {
    { P{}(c) } <span style="color: #569cd6;">noexcept</span> -&gt; std::convertible_to&lt;<span style="color: #569cd6;">bool</span>&gt;;
 };
