@@ -17,8 +17,7 @@
 <span style="color: #569cd6;">class</span> Password_validation {
    <span style="color: #569cd6;">static_assert</span>(
       Min_sz &lt;= Max_sz,
-      <span style="color: #ce9178;">"the minimum password length cannot exceed "</span>
-      <span style="color: #ce9178;">"the maximum password length"</span>
+      <span style="color: #ce9178;">"minimum password length exceeds maximum length"</span>
    );
 <span style="color: #569cd6;">public:</span>
    <span style="color: #569cd6;">static</span> <span style="color: #569cd6;">constexpr</span> std::size_t policy_count = <span style="color: #569cd6;">sizeof...</span>(Policies);
