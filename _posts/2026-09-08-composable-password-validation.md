@@ -55,9 +55,9 @@ to build custom password validators. Each policy is implemented as a stateless f
 providing an `operator()(char)` predicate that checks whether a given character satisfies a particular
 validation rule. The available policies are:
 
-* `Digit_character`: the password must contain at least one digit.
-* `Lower_case_character`: the password must contain at least one lowercase letter.
-* `Upper_case_character`: the password must contain at least one uppercase letter.
+* `Digit_character`: the password must contain at least one digit (`0`-`9`).
+* `Lower_case_character`: the password must contain at least one lowercase letter (`a`-`z`).
+* `Upper_case_character`: the password must contain at least one uppercase letter (`A`-`Z`).
 * `Special_character`: the password must contain at least one special character from the set `$!?#@%&*^-`.
 
 <div class="dgv-cb">
@@ -87,7 +87,7 @@ The invocation must be `noexcept`, and its result must be convertible to `bool`:
 The `Password_validation` class template defined below takes the minimum (`Min_sz`) and maximum (`Max_sz`)
 allowed password lengths as non-type template parameters, together with a policy parameter pack (`Policies...`,
 possibly empty) specifying the requirements that a password must satisfy. A `static_assert` ensures
-that the lower bound does not exceed the upper bound. The public `policy_count` constant exposes
+that the lower bound does not exceed the upper bound. The public `policy_count` constant provides the value of
 `sizeof...(Policies)`, that is, the number of validation policies configured at compile time.
 
 The validator's call operator, `operator()(std::string_view)`, performs the actual password validation
@@ -129,7 +129,7 @@ range whose size is known at compile time (iterating expansion).
 The following overload of `operator|` allows validation policies to be added using a
 pipeline-style syntax. This operator takes a `Password_validation` object, adds a new policy to its
 requirements, and returns a new validator type that includes the new policy. Before
-the new policy is added, a `static_assert` checks at compile time that a policy of the same type has
+adding the new policy, a `static_assert` checks at compile time that a policy of the same type has
 not already been added:
 
 <div class="dgv-cb">
