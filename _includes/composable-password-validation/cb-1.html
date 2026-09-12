@@ -15,8 +15,8 @@
 
 <span style="color: #569cd6;">constexpr</span> <span style="color: #569cd6;">auto</span> check_2
    = check_1
-   | lower_case
-   | upper_case;
+   | lowercase
+   | uppercase;
 
 <span style="color: #569cd6;">static_assert</span>(<span style="color: #569cd6;">not</span> check_2(<span style="color: #ce9178;">"edmonddantes34"</span>)); <span style="color: #6a9955;">// no uppercase letter</span>
 <span style="color: #569cd6;">static_assert</span>(check_2(<span style="color: #ce9178;">"EdmondDantes34"</span>)); <span style="color: #6a9955;">// valid</span>
