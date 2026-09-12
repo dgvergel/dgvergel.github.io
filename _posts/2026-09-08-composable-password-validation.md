@@ -56,8 +56,8 @@ providing an `operator()(char)` predicate that checks whether a given character 
 validation rule. The available policies are:
 
 * `Digit_character`: the password must contain at least one digit (`0`-`9`).
-* `Lower_case_character`: the password must contain at least one lowercase letter (`a`-`z`).
-* `Upper_case_character`: the password must contain at least one uppercase letter (`A`-`Z`).
+* `Lowercase_character`: the password must contain at least one lowercase letter (`a`-`z`).
+* `Uppercase_character`: the password must contain at least one uppercase letter (`A`-`Z`).
 * `Special_character`: the password must contain at least one special character from the set `$!?#@%&*^-`.
 
 <div class="dgv-cb">
