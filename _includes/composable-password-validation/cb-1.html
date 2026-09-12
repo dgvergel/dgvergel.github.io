@@ -3,20 +3,20 @@
 <span style="color: #569cd6;">constexpr</span> <span style="color: #569cd6;">auto</span> check_0
    = Password_validation&lt;<span style="color: #b5cea8;">8</span>, <span style="color: #b5cea8;">16</span>&gt;{};
 
-<span style="color: #569cd6;">static_assert</span>(<span style="color: #569cd6;">not</span> check_0(<span style="color: #ce9178;">"edmond dantes"</span>)); <span style="color: #6a9955;">// Ok, invalid</span>
-<span style="color: #569cd6;">static_assert</span>(check_0(<span style="color: #ce9178;">"edmonddantes"</span>)); <span style="color: #6a9955;">// Ok, valid</span>
+<span style="color: #569cd6;">static_assert</span>(<span style="color: #569cd6;">not</span> check_0(<span style="color: #ce9178;">"edmond dantes"</span>)); <span style="color: #6a9955;">// contains whitespace</span>
+<span style="color: #569cd6;">static_assert</span>(check_0(<span style="color: #ce9178;">"edmonddantes"</span>)); <span style="color: #6a9955;">// valid</span>
 
 <span style="color: #569cd6;">constexpr</span> <span style="color: #569cd6;">auto</span> check_1
    = check_0
    | digit;
 
-<span style="color: #569cd6;">static_assert</span>(<span style="color: #569cd6;">not</span> check_1(<span style="color: #ce9178;">"edmonddantes"</span>)); <span style="color: #6a9955;">// Ok, invalid</span>
-<span style="color: #569cd6;">static_assert</span>(check_1(<span style="color: #ce9178;">"edmonddantes34"</span>)); <span style="color: #6a9955;">// Ok, valid</span>
+<span style="color: #569cd6;">static_assert</span>(<span style="color: #569cd6;">not</span> check_1(<span style="color: #ce9178;">"edmonddantes"</span>)); <span style="color: #6a9955;">// no digit</span>
+<span style="color: #569cd6;">static_assert</span>(check_1(<span style="color: #ce9178;">"edmonddantes34"</span>)); <span style="color: #6a9955;">// valid</span>
 
 <span style="color: #569cd6;">constexpr</span> <span style="color: #569cd6;">auto</span> check_2
    = check_1
    | lower_case
    | upper_case;
 
-<span style="color: #569cd6;">static_assert</span>(<span style="color: #569cd6;">not</span> check_2(<span style="color: #ce9178;">"edmonddantes34"</span>)); <span style="color: #6a9955;">// Ok, invalid</span>
-<span style="color: #569cd6;">static_assert</span>(check_2(<span style="color: #ce9178;">"EdmondDantes34"</span>)); <span style="color: #6a9955;">// Ok, valid</span>
+<span style="color: #569cd6;">static_assert</span>(<span style="color: #569cd6;">not</span> check_2(<span style="color: #ce9178;">"edmonddantes34"</span>)); <span style="color: #6a9955;">// no uppercase letter</span>
+<span style="color: #569cd6;">static_assert</span>(check_2(<span style="color: #ce9178;">"EdmondDantes34"</span>)); <span style="color: #6a9955;">// valid</span>
