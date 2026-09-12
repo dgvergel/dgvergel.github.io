@@ -74,7 +74,7 @@ to select rules directly within pipeline expressions:
 ### Validation engine
 
 We can now implement a variadic password validator parameterized by both the allowed length bounds and
-the set of character policies selected by the user.
+the set of character policies selected by the programmer.
 
 First, the `Character_policy` concept defines the requirements that every policy type must satisfy.
 In particular, a policy must be default-constructible and invocable with a `char` argument.
@@ -116,7 +116,7 @@ corresponding bit in the `std::bitset` is set.
 
 Since bits are only ever set and never reset, the number of satisfied requirements can only increase
 during the traversal. As an optimization, once the bit associated with a policy has been set, that
-policy is excluded from all subsequent evaluations.
+policy is excluded from subsequent evaluations.
 
 <div class="dgv-note"> The new C++26 <code>template for</code> statement (formally known as an expansion statement) allows a compound statement to be replicated at compile time for each element of: (i) an
 expression list (enumerating expansion), (ii) any entity that can be decomposed through structured
