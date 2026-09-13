@@ -47,7 +47,7 @@ size: 210.1 MiB (220.308.703 bytes)
 together with the module system introduced in C++20. The latter allows us to organize the code efficiently into well-defined
 components. If necessary, adapting the solution to the traditional structure based on header (<code>.hpp</code>) and
 implementation (<code>.cpp</code>) files would be straightforward.
-<br>
+<br><br>
 The project can already be compiled with GCC 16.2, which provides support for C++ contracts and modules. However, some module
 features are still unavailable, most notably private module fragments (<code>module :private;</code>).
 </div>
