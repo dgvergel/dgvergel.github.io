@@ -62,8 +62,8 @@ hierarchies considered in this article.
 The class stores pending tasks of type `T` in a private `std::queue<T>` named `tasks_`.
 It also maintains a counter, `active_`, that tracks the number of tasks currently being
 processed. This counter is incremented whenever a task is acquired and decremented when the task completes.
-The queue can therefore detect global completion automatically, which occurs when there are neither
-pending tasks nor tasks in progress. The global termination condition is: `tasks_.empty() and active_ == 0`.
+As a result, the queue can detect global completion automatically, which occurs when there are neither
+pending tasks nor tasks in progress. The global termination condition is therefore: `tasks_.empty() and active_ == 0`.
 
 Both the queue and the counter are protected by a `std::mutex`[^1], while a `std::condition_variable`[^2] is
 used to block worker threads whenever no work is available and to wake them up when new tasks are
