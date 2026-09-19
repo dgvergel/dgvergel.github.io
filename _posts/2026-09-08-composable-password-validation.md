@@ -14,7 +14,7 @@ excerpt: >
 
 ### Introduction
 
-The goal of this article is to design a simple password validator that can be configured by composing
+This article presents the design of a simple password validator that can be configured by composing
 independent validation policies. As a baseline requirement, our validator will verify that the password
 length falls within the allowed range `[Min_sz, Max_sz]` and that the password contains no ASCII whitespace
 characters. Additional rules can then be added to require the presence of digits, lowercase letters,
@@ -26,9 +26,15 @@ different approach: policy selection will be performed entirely at compile time,
 configuration part of the type itself. As a result, the implementation will avoid virtual dispatch
 and perform no dynamic allocations.
 
+<div class="dgv-note">Naturally, our implementation is not intended to be a general-purpose or production-ready
+password validation library. In particular, we will restrict ourselves to character-level policies. Instead, it
+serves as a vehicle for exploring useful C++ techniques, including policy-based design, concepts, and other modern
+language features.
+</div>
+
 The following example illustrates how validation policies can be composed using the pipeline syntax.
 Starting from a validator that enforces only length constraints and the absence of whitespace
-characters (`check_0`), additional rules can be added through composition. Validator `check_1`
+characters (`check_0`), additional policies can be added incrementally. Validator `check_1`
 additionally requires at least one digit, whereas `check_2` also requires the presence of both
 lowercase and uppercase letters:
 
