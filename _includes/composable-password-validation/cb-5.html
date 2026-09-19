@@ -1,11 +1,11 @@
 <span style="color: #c586c0;">[[nodiscard]]</span>
-<span style="color: #569cd6;">constexpr</span> <span style="color: #569cd6;">auto</span> contains_white_space(
+<span style="color: #569cd6;">constexpr</span> <span style="color: #569cd6;">auto</span> contains_whitespace(
    std::string_view pwd
 ) <span style="color: #569cd6;">noexcept</span>
    -&gt; <span style="color: #569cd6;">bool</span>
 {
-   <span style="color: #569cd6;">static</span> <span style="color: #569cd6;">constexpr</span> <span style="color: #569cd6;">auto</span> white_space = std::string_view{<span style="color: #ce9178;">" \t\n\r\f\v"</span>};
-   <span style="color: #569cd6;">return</span> pwd.find_first_of(white_space) != std::string_view::npos;
+   <span style="color: #569cd6;">static</span> <span style="color: #569cd6;">constexpr</span> <span style="color: #569cd6;">auto</span> whitespace = std::string_view{<span style="color: #ce9178;">" \t\n\r\f\v"</span>};
+   <span style="color: #569cd6;">return</span> pwd.find_first_of(whitespace) != std::string_view::npos;
 }
 
 <span style="color: #569cd6;">export</span>
@@ -30,7 +30,7 @@
       <span style="color: #569cd6;">if</span> ((pwd.size() &lt; Min_sz <span style="color: #569cd6;">or</span> pwd.size() &gt; Max_sz)) {
          <span style="color: #569cd6;">return</span> <span style="color: #569cd6;">false</span>;
       }
-      <span style="color: #569cd6;">if</span> (contains_white_space(pwd)) {
+      <span style="color: #569cd6;">if</span> (contains_whitespace(pwd)) {
          <span style="color: #569cd6;">return</span> <span style="color: #569cd6;">false</span>;
       }
 
