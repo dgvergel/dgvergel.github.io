@@ -16,7 +16,7 @@ excerpt: >
 
 ### Introduction
 
-This article presents a complete concurrent programming example in C++ and uses it as a case study
+This article presents a complete concurrent programming example in C++, using it as a case study
 to explore dynamic task generation, work-completion detection, and the safe aggregation of partial
 results.
 
@@ -86,7 +86,7 @@ other workers are still processing work, the call blocks until new work becomes 
 When there are neither pending nor active tasks left, the function returns an empty result (`std::nullopt`)
 that signals that no further work can be generated and that the worker may terminate.
 
-* `complete()`: Performs two related actions while holding the internal mutex: (i) it records the completion
+* `complete()`: Performs two actions while holding the internal mutex: (i) it records the completion
 of a task previously acquired via `acquire()` by decrementing the `active_` counter, and (ii) it pushes newly
 discovered tasks into the queue. If no pending or active tasks remain after the operation, it signals global
 completion so all workers can finish. If there is pending work (`tasks_.empty() == false`), it wakes up a
