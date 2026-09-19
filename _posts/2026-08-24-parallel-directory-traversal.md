@@ -3,7 +3,7 @@ layout: post
 title: "Parallel Directory Traversal"
 author: Daniel Gómez Vergel
 date: 2026-08-24
-last_modified_at: 2026-09-05
+last_modified_at: 2026-09-19
 categories: [C++26, concurrency, task-generation]
 permalink: /2026/08/24/parallel-directory-traversal/
 excerpt: >
@@ -56,14 +56,14 @@ features are still unavailable, most notably private module fragments (<code>mod
 
 We begin by implementing a blocking concurrent work queue, `dynamic_task_queue<T>`, specifically
 designed for scenarios in which tasks can dynamically generate additional tasks during their execution.
-This data structure greatly simplifies the parallelization of graph traversals, including the directory
+This data structure simplifies the parallelization of graph traversals, including the directory
 hierarchies considered in this article.
 
 The class stores pending tasks of type `T` in a private `std::queue<T>` named `tasks_`.
 It also maintains a counter, `active_`, that tracks the number of tasks currently being
 processed. This counter is incremented whenever a task is acquired and decremented when the task completes.
-As a result, the queue can automatically detect global completion, which occurs when there are neither
-pending tasks nor tasks in progress. The global termination condition is therefore: `tasks_.empty() and active_ == 0`.
+The queue can therefore detect global completion automatically, which occurs when there are neither
+pending tasks nor tasks in progress. The global termination condition is: `tasks_.empty() and active_ == 0`.
 
 Both the queue and the counter are protected by a `std::mutex`[^1], while a `std::condition_variable`[^2] is
 used to block worker threads whenever no work is available and to wake them up when new tasks are
@@ -83,8 +83,8 @@ Specifically:
 * `acquire()`: If work is available, it retrieves a task from the front of the queue, removes it from the
 pending-work list, and internally increments the `active_` task counter. If there are no pending tasks but
 other workers are still processing work, the call blocks until new work becomes available or the computation finishes.
-When there are neither pending nor active tasks left, the function returns an empty result (`std::nullopt`)
-that signals that no further work can be generated and that the worker may terminate.
+When there are neither pending nor active tasks left, the function returns an empty result (`std::nullopt`),
+signalling that the worker may terminate.
 
 * `complete()`: Performs two actions while holding the internal mutex: (i) it records the completion
 of a task previously acquired via `acquire()` by decrementing the `active_` counter, and (ii) it pushes newly
