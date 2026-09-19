@@ -27,7 +27,7 @@ configuration part of the type itself. As a result, the implementation will avoi
 and perform no dynamic allocations.
 
 <div class="dgv-note">Naturally, our implementation is not intended to be a general-purpose or production-ready
-password validation library. In particular, we will restrict ourselves to character-level policies, where each policy
+password validation library. In particular, we will focus exclusively on character-level policies, where each policy
 defines a property that at least one character in the password must satisfy. Rather, the example serves as a vehicle
 for exploring useful C++ techniques, including policy-based design, concepts, and other modern language features.
 </div>
@@ -102,7 +102,7 @@ in three stages:
 
 1. Verify that the password length lies within the allowed range `[Min_sz, Max_sz]`.
 2. Reject passwords containing ASCII whitespace characters.
-3. Verify that every policy in `Policies...` has been satisfied by at least one character in the password.
+3. Check that every policy in `Policies...` has been satisfied by at least one character in the password.
 
 The password is processed sequentially, with each character updating a validation state that
 records which policy requirements have already been satisfied. This state is stored in a `std::bitset<policy_count>`[^3],
@@ -119,7 +119,7 @@ For each password character, the `update()` function evaluates the policies that
 and updates the validation state accordingly. The implementation relies on a C++26
 `template for` expansion[^4], causing the compiler to expand the loop body for every policy
 in the pack at compile time. The pack indexing expression `Policies...[Idx]` retrieves the `Idx`-th policy
-type within the parameter pack. Whenever a policy `P` returns `true` for the current character, the
+type within the parameter pack. Whenever a policy `P` evaluates to `true` for the current character, the
 corresponding bit in the `std::bitset` is set.
 
 Since bits are only ever set and never reset, the number of satisfied requirements can only increase
