@@ -16,8 +16,8 @@ excerpt: >
 
 ### Introduction
 
-In this article, we will examine a concurrent programming example in C++ in detail, using it as a case
-study to explore dynamic task generation, work-completion detection, and the safe aggregation of partial
+This article presents a complete concurrent programming example in C++ and uses it as a case study
+to explore dynamic task generation, work-completion detection, and the safe aggregation of partial
 results.
 
 Given a directory path, our goal is to produce a statistical summary of the contents of its
@@ -59,7 +59,7 @@ designed for scenarios in which tasks can dynamically generate additional tasks 
 This data structure greatly simplifies the parallelization of graph traversals, including the directory
 hierarchies considered in this article.
 
-This class stores pending tasks of type `T` in a private `std::queue<T>` named `tasks_`.
+The class stores pending tasks of type `T` in a private `std::queue<T>` named `tasks_`.
 It also maintains a counter, `active_`, that tracks the number of tasks currently being
 processed. This counter is incremented whenever a task is acquired and decremented when the task completes.
 As a result, the queue can automatically detect global completion, which occurs when there are neither
@@ -86,11 +86,11 @@ other workers are still processing work, the call blocks until new work becomes 
 When there are neither pending nor active tasks left, the function returns an empty result (`std::nullopt`)
 that signals that no further work can be generated and that the worker may terminate.
 
-* `complete()`: Atomically performs two actions: (i) It records the completion of a task previously acquired
-via `acquire()` by decrementing the `active_` counter, and (ii) it pushes newly discovered tasks into
-the queue. If no pending or active tasks remain after the operation, it signals global completion
-so all workers can finish. If there is pending work (`tasks_.empty() == false`), it
-wakes up a blocked worker.
+* `complete()`: Performs two related actions while holding the internal mutex: (i) it records the completion
+of a task previously acquired via `acquire()` by decrementing the `active_` counter, and (ii) it pushes newly
+discovered tasks into the queue. If no pending or active tasks remain after the operation, it signals global
+completion so all workers can finish. If there is pending work (`tasks_.empty() == false`), it wakes up a
+blocked worker.
 
 To prevent the programmer from having to call `complete()` manually and to guarantee proper task
 completion even in the presence of exceptions, `acquire()` does not directly return a task object of type
