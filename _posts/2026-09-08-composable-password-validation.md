@@ -29,7 +29,8 @@ and perform no dynamic allocations.
 <div class="dgv-note">Naturally, our implementation is not intended to be a general-purpose or production-ready
 password validation library. In particular, we will focus exclusively on character-level policies, where each policy
 defines a property that at least one character in the password must satisfy. Rather, the example serves as a vehicle
-for exploring useful C++ techniques, including policy-based design, concepts, and other modern language features.
+for exploring useful C++ techniques, including policy-based design, concepts, and other modern language features
+such as <code>template for</code> expansions.
 </div>
 
 The following example illustrates how validation policies can be composed using the pipeline syntax.
@@ -49,10 +50,10 @@ context without any changes to the API. See the <a href="#runtime-validation">la
 article for an example of execution at runtime.
 </div>
 
-For simplicity, the entire library will be implemented as a single `password_validator` module, so that
-all of its functionality is made available through a single `import password_validator;` declaration.
-The complete module can be reconstructed simply by concatenating the code fragments presented in the
-following sections.
+For simplicity, the entire library will be implemented as a single `password_validator` module,
+making all its functionality available through a single `import password_validator;` declaration.
+The complete module may be reconstructed by simply concatenating the code fragments presented in the
+following sections. The project has been tested with GCC 16.2.
 
 ### Character-level policies
 
