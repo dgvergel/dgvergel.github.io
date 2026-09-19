@@ -2,7 +2,7 @@
 layout: post
 title: "Compile-Time Policy Composition for Password Validation"
 author: Daniel Gómez Vergel
-date: 2026-09-08
+date: 2026-09-19
 categories: [C++26, concepts, policy-based-design, bitset, template-for]
 permalink: /2026/09/08/composable-password-validation/
 excerpt: >
@@ -27,9 +27,9 @@ configuration part of the type itself. As a result, the implementation will avoi
 and perform no dynamic allocations.
 
 <div class="dgv-note">Naturally, our implementation is not intended to be a general-purpose or production-ready
-password validation library. In particular, we will restrict ourselves to character-level policies. Instead, it
-serves as a vehicle for exploring useful C++ techniques, including policy-based design, concepts, and other modern
-language features.
+password validation library. In particular, we will restrict ourselves to character-level policies, where each policy
+defines a property that at least one character in the password must satisfy. Rather, the example serves as a vehicle
+for exploring useful C++ techniques, including policy-based design, concepts, and other modern language features.
 </div>
 
 The following example illustrates how validation policies can be composed using the pipeline syntax.
@@ -58,8 +58,9 @@ following sections.
 
 The following listing introduces the set of character-level validation policies that can be composed
 to build custom password validators. Each policy is implemented as a stateless function object
-providing an `operator()(char)` predicate that checks whether a given character satisfies a particular
-validation rule. The available policies are:
+providing an `operator()(char)` predicate that determines whether a given character satisfies a particular
+property. When such a policy is incorporated into a validator, the validator requires that at least
+one character in the password satisfy the predicate. The available policies are:
 
 * `Digit_character`: the password must contain at least one digit (`0`-`9`).
 * `Lowercase_character`: the password must contain at least one lowercase letter (`a`-`z`).
@@ -104,7 +105,8 @@ in three stages:
 3. Verify that every policy in `Policies...` has been satisfied by at least one character in the password.
 
 The password is processed sequentially, with each character updating a validation state that
-records which policy requirements have already been satisfied. This state is stored in a `std::bitset<policy_count>`[^3], whose bits are in one-to-one correspondence with the policies in the
+records which policy requirements have already been satisfied. This state is stored in a `std::bitset<policy_count>`[^3],
+whose bits are in one-to-one correspondence with the policies in the
 `Policies...` pack. Each bit indicates whether the corresponding requirement has been met. 
 As soon as all bits become set, validation succeeds and processing stops immediately; otherwise, the
 scan continues until the end of the password.
@@ -124,7 +126,8 @@ Since bits are only ever set and never reset, the number of satisfied requiremen
 during the traversal. As an optimization, once the bit associated with a policy has been set, that
 policy is excluded from subsequent evaluations.
 
-<div class="dgv-note"> The new C++26 <code>template for</code> statement (formally known as an expansion statement) allows a compound statement to be replicated at compile time for each element of: (i) an
+<div class="dgv-note"> The new C++26 <code>template for</code> statement (formally known as an expansion statement)
+allows a compound statement to be replicated at compile time for each element of: (i) an
 expression list (enumerating expansion), (ii) any entity that can be decomposed through structured
 bindings (that is, a tuple-like type; this form is known as a destructuring expansion), and (iii) a
 range whose size is known at compile time (iterating expansion).
