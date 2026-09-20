@@ -20,6 +20,8 @@
       <span style="color: #ce9178;">"minimum password length exceeds maximum length"</span>
    );
 <span style="color: #569cd6;">public:</span>
+   <span style="color: #569cd6;">static</span> <span style="color: #569cd6;">constexpr</span> std::size_t min_size = Min_sz;
+   <span style="color: #569cd6;">static</span> <span style="color: #569cd6;">constexpr</span> std::size_t max_size = Max_sz;
    <span style="color: #569cd6;">static</span> <span style="color: #569cd6;">constexpr</span> std::size_t policy_count = <span style="color: #569cd6;">sizeof...</span>(Policies);
 
    <span style="color: #569cd6;">constexpr</span> Password_validation() = <span style="color: #569cd6;">default</span>;
@@ -49,12 +51,6 @@
          <span style="color: #569cd6;">return</span> state.all();
       }
    }
-
-   <span style="color: #c586c0;">[[nodiscard]]</span>
-   <span style="color: #569cd6;">static</span> <span style="color: #569cd6;">constexpr</span> <span style="color: #569cd6;">auto</span> min_size() <span style="color: #569cd6;">noexcept</span> { <span style="color: #569cd6;">return</span> Min_sz; }
-
-   <span style="color: #c586c0;">[[nodiscard]]</span>
-   <span style="color: #569cd6;">static</span> <span style="color: #569cd6;">constexpr</span> <span style="color: #569cd6;">auto</span> max_size() <span style="color: #569cd6;">noexcept</span> { <span style="color: #569cd6;">return</span> Max_sz; }
 
 <span style="color: #569cd6;">private:</span>
    <span style="color: #569cd6;">static</span> <span style="color: #569cd6;">constexpr</span> <span style="color: #569cd6;">void</span> update(
