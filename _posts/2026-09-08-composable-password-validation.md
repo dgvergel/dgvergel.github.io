@@ -2,7 +2,7 @@
 layout: post
 title: "Compile-Time Policy Composition for Password Validation"
 author: Daniel Gómez Vergel
-date: 2026-09-19
+date: 2026-09-20
 categories: [C++26, concepts, policy-based-design, bitset, template-for]
 permalink: /2026/09/08/composable-password-validation/
 excerpt: >
@@ -26,10 +26,10 @@ different approach: policy selection will be performed entirely at compile time,
 configuration part of the type itself. As a result, the implementation will avoid virtual dispatch
 and perform no dynamic allocations.
 
-<div class="dgv-note">Naturally, our implementation is not intended to be a general-purpose or production-ready
+<div class="dgv-note">Our implementation is not intended to be a general-purpose or production-ready
 password validation library. In particular, we will focus exclusively on character-level policies, where each policy
-defines a property that at least one character in the password must satisfy. Rather, the example serves as a vehicle
-for exploring useful C++ techniques, including policy-based design, concepts, and other modern language features
+defines a property that at least one character in the password must satisfy. Rather, the example is meant to showcase
+useful C++ techniques, including policy-based design, concepts, and other modern language features
 such as <code>template for</code> expansions.
 </div>
 
