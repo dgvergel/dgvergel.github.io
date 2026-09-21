@@ -129,13 +129,13 @@ policy is excluded from subsequent evaluations.
 
 <div class="dgv-note">The new C++26 <code>template for</code> construct, formally known as an expansion
 statement, allows a compound statement to be instantiated repeatedly at compile time for each element of
-one of three kinds of expansions:<br>
+one of three kinds of expansions:
+<br>
 <ol>
   <li>An enumerating expansion, which expands over a braced expression list.</li>
   <li>A destructuring expansion, which expands over the elements produced by a structured binding decomposition.</li>
   <li>An iterating expansion, which expands over an expansion-iterable range whose number of elements can be determined during constant evaluation.</li>
-</ol>
-</div>
+</ol></div>
 
 ### Pipeline composition
 
