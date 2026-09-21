@@ -2,7 +2,7 @@
 layout: post
 title: "Compile-Time Policy Composition for Password Validation"
 author: Daniel Gómez Vergel
-date: 2026-09-20
+date: 2026-09-21
 categories: [C++26, concepts, policy-based-design, bitset, template-for]
 permalink: /2026/09/08/composable-password-validation/
 excerpt: >
@@ -129,7 +129,7 @@ policy is excluded from subsequent evaluations.
 
 <div class="dgv-note">The new C++26 <code>template for</code> construct, formally known as an expansion
 statement, allows a compound statement to be instantiated repeatedly at compile time for each element of
-one of three kinds of expansions:
+one of three kinds of expansions:<br>
 <ol>
   <li>An enumerating expansion, which expands over a braced expression list.</li>
   <li>A destructuring expansion, which expands over the elements produced by a structured binding decomposition.</li>
