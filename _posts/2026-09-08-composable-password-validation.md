@@ -144,7 +144,7 @@ one of three kinds of expansions:
 
 The following overload of `operator|` allows validation policies to be added using a
 pipeline-style syntax. Given an existing validator configuration, the operator returns
-a new validator type with an additional policy requirement. Before adding the new policy,
+a new validator object whose type includes an additional policy requirement. Before adding the new policy,
 a `static_assert` checks at compile time that a policy of the same type has not already been added:
 
 <div class="dgv-cb">
