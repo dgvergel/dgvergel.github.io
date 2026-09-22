@@ -29,7 +29,7 @@
    <span style="color: #c586c0;">[[nodiscard]]</span>
    <span style="color: #569cd6;">constexpr</span> <span style="color: #569cd6;">auto</span> operator()(std::string_view pwd) <span style="color: #569cd6;">const</span> <span style="color: #569cd6;">noexcept</span> -&gt; <span style="color: #569cd6;">bool</span>
    {
-      <span style="color: #569cd6;">if</span> ((pwd.size() &lt; Min_sz <span style="color: #569cd6;">or</span> pwd.size() &gt; Max_sz)) {
+      <span style="color: #569cd6;">if</span> (pwd.size() &lt; Min_sz <span style="color: #569cd6;">or</span> pwd.size() &gt; Max_sz) {
          <span style="color: #569cd6;">return</span> <span style="color: #569cd6;">false</span>;
       }
       <span style="color: #569cd6;">if</span> (contains_whitespace(pwd)) {
