@@ -60,9 +60,11 @@ following sections. The project has been tested with GCC 16.2.
 
 The following listing introduces the set of character-level validation policies that can be composed
 to build custom password validators. Each policy is implemented as a stateless function object
-providing an `operator()(char)` predicate that determines whether a given character satisfies a particular
+providing an `operator()(char)` predicate that determines whether a given ASCII character satisfies a particular
 property. When such a policy is incorporated into a validator, the validator requires that at least
-one character in the password satisfy the predicate. The available policies are:
+one character in the password satisfy the predicate.
+
+The available policies are:
 
 * `Digit_character`: the password must contain at least one digit (`0`-`9`).
 * `Lowercase_character`: the password must contain at least one lowercase letter (`a`-`z`).
@@ -141,10 +143,9 @@ one of three kinds of expansions:
 ### Pipeline composition
 
 The following overload of `operator|` allows validation policies to be added using a
-pipeline-style syntax. This operator takes a `Password_validation` object, adds a new policy to its
-requirements, and returns a new validator type that includes the new policy. Before
-adding the new policy, a `static_assert` checks at compile time that a policy of the same type has
-not already been added:
+pipeline-style syntax. Given an existing validator configuration, the operator returns
+a new validator type with an additional policy requirement. Before adding the new policy,
+a `static_assert` checks at compile time that a policy of the same type has not already been added:
 
 <div class="dgv-cb">
 {% include composable-password-validation/cb-6.html %}
