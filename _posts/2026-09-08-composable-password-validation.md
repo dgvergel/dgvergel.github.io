@@ -66,7 +66,7 @@ one character in the password satisfy the predicate. The available policies are:
 * `Digit_character`: the password must contain at least one digit (`0`-`9`).
 * `Lowercase_character`: the password must contain at least one lowercase letter (`a`-`z`).
 * `Uppercase_character`: the password must contain at least one uppercase letter (`A`-`Z`).
-* `Special_character`: the password must contain at least one special character from the set `$!?#@%&*^-`.
+* `Special_character`: the password must contain at least one special character from the set `!"#$%&'()*+,-./:;<=>?@[\]^_`{|}~`.
 
 <div class="dgv-cb">
 {% include composable-password-validation/cb-2.html %}
