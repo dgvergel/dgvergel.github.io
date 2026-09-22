@@ -159,8 +159,8 @@ is required, and policy composition introduces no runtime overhead.
 
 ### Runtime validation
 
-Finally, as an example, the following `main()` function shows how to use the validator with strings
-entered at runtime:
+Finally, the following `main()` function demonstrates how the validator can be used with
+passwords entered at runtime:
 
 <div class="dgv-cb">
 {% include composable-password-validation/cb-7.html %}
