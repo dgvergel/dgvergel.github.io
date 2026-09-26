@@ -127,7 +127,7 @@ satisfied requirements can only increase during the traversal. As an optimizatio
 with a policy has been set, that policy is excluded from subsequent evaluations.
 </div>
 
-Internally, `update()` relies on a C++26 `template for` expansion[^4] to iterate over the policy pack at compile time.
+Internally, `update()` relies on a C++26 `template for` expansion[^4]<sup>,</sup>[^5] to iterate over the policy pack at compile time.
 The loop body is instantiated once for each policy in the pack. The pack indexing expression `Policies...[Idx]` retrieves
 the `Idx`-th policy type from the parameter pack. Whenever a policy `P` evaluates to `true` for the current
 character, the corresponding bit in the `std::bitset` is set.
@@ -139,7 +139,7 @@ one of three kinds of expansions:
 <ol>
   <li>An enumerating expansion, which expands over a braced expression list.</li>
   <li>A destructuring expansion, which expands over the elements produced by a structured binding decomposition.</li>
-  <li>An iterating expansion, which expands over an expansion-iterable range whose number of elements can be determined during constant evaluation.</li>
+  <li>An iterating expansion, which expands over an expansion-iterable expression whose number of elements can be determined during constant evaluation.</li>
 </ol></div>
 
 ### Pipeline composition
@@ -176,3 +176,4 @@ passwords entered at runtime:
 [^2]: Marius Bancila. 2018. *The Modern C++ Challenge*. Packt Publishing.
 [^3]: cppreference.com – [std::bitset](https://en.cppreference.com/cpp/utility/bitset)
 [^4]: cppreference.com – [template for expansion](https://cppreference.com/cpp/language/template_for)
+[^5]: C++ Working Draft – [Expansion statements](https://eel.is/c++draft/stmt.expand)
