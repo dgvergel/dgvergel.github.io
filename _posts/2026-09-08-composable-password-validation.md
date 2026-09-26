@@ -120,15 +120,17 @@ scan continues until the end of the password.
 </div>
 
 For each password character, the `update()` function evaluates the policies that have not yet been satisfied
-and updates the validation state accordingly. The implementation relies on a C++26
-`template for` expansion[^4], causing the compiler to expand the loop body for every policy
-in the pack at compile time. The pack indexing expression `Policies...[Idx]` retrieves the `Idx`-th policy
-type within the parameter pack. Whenever a policy `P` evaluates to `true` for the current character, the
-corresponding bit in the `std::bitset` is set.
+and updates the validation state accordingly.
 
-Since bits are only ever set and never reset, the number of satisfied requirements can only increase
-during the traversal. As an optimization, once the bit associated with a policy has been set, that
-policy is excluded from subsequent evaluations.
+<div class="dgv-note">Since bits are only ever set and never reset, the number of
+satisfied requirements can only increase during the traversal. As an optimization, once the bit associated
+with a policy has been set, that policy is excluded from subsequent evaluations.
+</div>
+
+The implementation relies on a C++26 `template for` expansion[^4], causing the compiler to expand the loop
+body for every policy in the pack at compile time. The pack indexing expression `Policies...[Idx]` retrieves
+the `Idx`-th policy type within the parameter pack. Whenever a policy `P` evaluates to `true` for the current
+character, the corresponding bit in the `std::bitset` is set.
 
 <div class="dgv-note">The new C++26 <code>template for</code> construct, formally known as an expansion
 statement, allows a compound statement to be instantiated repeatedly at compile time for each element of
