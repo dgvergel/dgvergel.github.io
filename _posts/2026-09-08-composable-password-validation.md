@@ -3,7 +3,7 @@ layout: post
 title: "Compile-Time Policy Composition for Password Validation"
 author: Daniel Gómez Vergel
 date: 2026-09-08
-last_modified_at: 2026-09-21
+last_modified_at: 2026-09-26
 categories: [C++26, concepts, policy-based-design, bitset, template-for]
 permalink: /2026/09/08/composable-password-validation/
 excerpt: >
@@ -127,8 +127,8 @@ satisfied requirements can only increase during the traversal. As an optimizatio
 with a policy has been set, that policy is excluded from subsequent evaluations.
 </div>
 
-The implementation relies on a C++26 `template for` expansion[^4], causing the compiler to expand the loop
-body for every policy in the pack at compile time. The pack indexing expression `Policies...[Idx]` retrieves
+Internally, `update()` relies on a C++26 `template for` expansion[^4] to iterate over the policy pack at compile time.
+The loop body is instantiated once for each policy in the pack. The pack indexing expression `Policies...[Idx]` retrieves
 the `Idx`-th policy type within the parameter pack. Whenever a policy `P` evaluates to `true` for the current
 character, the corresponding bit in the `std::bitset` is set.
 
