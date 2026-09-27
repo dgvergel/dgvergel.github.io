@@ -98,7 +98,10 @@ The invocation must be `noexcept`, and its result must be convertible to `bool`:
 The `Password_validation` class template defined below takes the minimum (`Min_sz`) and maximum (`Max_sz`)
 allowed password lengths as non-type template parameters, together with a policy parameter pack (`Policies...`,
 possibly empty) specifying the requirements that a password must satisfy. A `static_assert` ensures
-that the lower bound does not exceed the upper bound. The public `policy_count` constant provides the value of
+that the lower bound does not exceed the upper bound.
+
+The minimum and maximum password sizes can be accessed through the public static data members `min_size` and
+`max_size`, respectively. The public `policy_count` constant provides the value of
 `sizeof...(Policies)`, that is, the number of validation policies configured at compile time.
 
 The validator's call operator, `operator()(std::string_view)`, performs the actual password validation
