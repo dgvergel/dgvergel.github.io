@@ -130,10 +130,11 @@ satisfied requirements can only increase during the traversal. As an optimizatio
 with a policy has been set, that policy is excluded from subsequent evaluations.
 </div>
 
-Internally, `update()` relies on a C++26 `template for` expansion[^4]<sup>,</sup>[^5] to iterate over the
-indices of the policy pack at compile time. For each index `Idx`, the pack indexing expression `Policies...[Idx]`
-retrieves the `Idx`-th policy type from the parameter pack. If that policy evaluates to `true` for the current
-character, and its bit is not already set, the corresponding bit in the `std::bitset` is set.
+Internally, `update()` relies on a C++26 `template for` expansion[^4]<sup>,</sup>[^5] to expand the loop body
+once for each index of the policy pack, with `Idx` being a compile-time constant in each instantiation.
+For each index `Idx`, the pack indexing expression `Policies...[Idx]` retrieves the `Idx`-th policy type
+from the parameter pack. At runtime, if that policy evaluates to `true` for the current character and its bit is
+not already set, the corresponding bit in the `std::bitset` is set.
 
 <div class="dgv-note">The new C++26 <code>template for</code> construct, formally known as an expansion
 statement, allows a compound statement to be instantiated repeatedly at compile time for each element of
