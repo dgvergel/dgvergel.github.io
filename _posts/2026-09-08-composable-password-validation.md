@@ -30,7 +30,7 @@ and perform no dynamic allocations.
 <div class="dgv-note">Our implementation is not intended to be a general-purpose or production-ready
 password validation library. In particular, we will focus exclusively on character-level policies, where each policy
 defines a property that at least one character in the password must satisfy. Rather, the example serves as a vehicle
-for exploring useful C++ techniques, including policy-based design, concepts, and other modern language features
+for exploring useful C++ techniques, including policy-based design, concepts, and newer language features
 such as <code>template for</code> expansions.
 </div>
 
