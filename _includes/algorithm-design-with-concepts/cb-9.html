@@ -1,2 +1,6 @@
 <span style="color: #569cd6;">struct</span> Zstr_sentinel{ };
-<span style="color: #569cd6;">auto</span> operator==(<span style="color: #569cd6;">char</span> <span style="color: #569cd6;">const*</span> p, Zstr_sentinel<span style="color: #6a9955;"> /* no-name */</span>) { <span style="color: #569cd6;">return</span> *p == <span style="color: #ce9178;">'\0'</span>; }
+
+<span style="color: #569cd6;">constexpre auto</span> operator==(<span style="color: #569cd6;">char</span> <span style="color: #569cd6;">const*</span> p, Zstr_sentinel<span style="color: #6a9955;"> /* no-name */</span>) <span style="color: #569cd6;">noexcept</span> -> <span style="color: #569cd6;">bool</span>
+{
+   <span style="color: #569cd6;">return</span> *p == <span style="color: #ce9178;">'\0'</span>;
+}
