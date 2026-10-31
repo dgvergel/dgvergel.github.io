@@ -15,14 +15,19 @@ excerpt: >
 ### Introduction
 
 In this post, we will consider the problem of implementing the well-known insertion sort algorithm using generic
-programming techniques, so that it can be used with a variety of containers such as `std::vector` or `std::list`.
+programming techniques, so that it can be used with a variety of sequence containers such as `std::vector` or `std::list`.
 We will examine its implementation in light of the introduction of concepts, ranges, and projections into the C++20
 and subsequent standards[^1]<sup>,</sup>[^2]<sup>,</sup>[^3]<sup>,</sup>[^4].
 
-<div class="dgv-note">A concept is a named compile-time predicate that specifies requirements on template arguments and
+<div class="dgv-note">A **concept** is a named compile-time predicate that specifies requirements on template arguments and
 can be used to constrain the interfaces of class and function templates. By detecting violations of these constraints during
 compilation, concepts generally enable clearer and more informative diagnostic messages. Beyond expressing syntactic requirements,
 concepts are intended to model meaningful semantic categories and properties that can be reused across generic code.
+  
+A **range** identifies a sequence of elements to which a computation is to be applied. It can be specified by an iterator and a
+sentinel denoting its beginning and end, or by an iterator and a count specifying its beginning and number of elements.
+
+A **projection** is a transformation applied by an algorithm to an element before its value is inspected.
 </div>
 
 For the sole purpose of making the code easier to read, we will use the `using namespace std;` directive throughout the code.
@@ -36,10 +41,10 @@ satisfies the following properties:
 * Irreflexivity: `comp(a,a)` is false for every `a`.
 * Transitivity: `comp(a,b)` and `comp(b,c)` imply `comp(a,c)`.
 * If we define `equiv(a,b)` as `!comp(a,b) and !comp(b,a)`, then `equiv` must also be transitive:
-`equiv(a,b) and equiv(b,c)` imply `equiv(a,c)`.
+`equiv(a,b)` and `equiv(b,c)` imply `equiv(a,c)`.
 
 Under the above assumptions, `equiv` constitutes an equivalence relation, and `comp` induces a strict
-weak ordering on the equivalence classes established by `equiv`.
+total order on the set of equivalence classes induced by `equiv`.
 
 Let us consider the general case in which the `R` range contains at least two elements. During its
 first iteration, insertion sort must order the first two elements of `R`, that is, if `comp(R[1], R[0])`
@@ -68,45 +73,45 @@ and worst cases. The worst case occurs when the input sequence is arranged in th
 
 <div class="dgv-note">Admittedly, the appeal of insertion sort lies primarily in its relative ease of
 implementation and in its efficiency for small or nearly sorted ranges. In general-purpose production code,
-however, a standard library algorithm such as `std::ranges::sort` will usually be a more appropriate choice.
+however, a standard library algorithm such as <code>std::ranges::sort</code> will usually be a more appropriate choice,
+offering better asymptotic complexity and a highly optimized implementation.
 </div>
 
 Let us consider a half-open range `R = [first, last)` to be sorted using insertion sort,
-where `first` is an iterator of type `I` and `last` is a sentinel of type `S` (not necessarily the same
-type as `first`, as we shall see in a later example). Let `proj` denote a projection to be applied to the
-elements of the range. It may, for example, be a function object or a pointer to a data member.
-Such projections make it possible, for instance, to sort objects according to the ordering of one of their data members.
-Let `comp` denote the binary predicate evaluated on the projected values of the range elements. The range `R` is said to
-be ordered with respect to `comp` and `proj` if, for every iterator `i` referring to one of its elements, `std::invoke(comp, std::invoke(proj, *std::ranges::next(i,n)), std::invoke(proj,*i))` evaluates to `false` for every positive integer `n` such that
-`std::ranges::next(i, n)` still refers to a valid element of the range.
+where `first` is an iterator of type `I` and `last` is a sentinel of type `S` (which need not be the same
+type as `I`, as we shall see in a later example). Let `proj` denote a projection to be applied to the
+elements of the range. As we have already mentioned, a projection allows the sorting algorithm to apply
+transformations to range elements before comparing their values. It may, for example, be a function object
+or a pointer to a data member. This makes it possible, for instance, to sort objects according to the ordering
+of one of their data members.  Let `comp` denote the binary predicate evaluated on the projected values of the range
+elements. The range `R` is said to be ordered with respect to `comp` and `proj` if, for every iterator `i` referring to
+one of its elements, `std::invoke(comp, std::invoke(proj, *std::ranges::next(i,n)), std::invoke(proj,*i))` evaluates to
+`false` for every positive integer `n` such that `std::ranges::next(i, n)` still refers to a valid element of the range.
 
 <div class="dgv-note">The use of the standard function template <code>std::invoke</code> is justified in
 this generic programming context by the variety of callable entities that may be used to represent <code>comp</code>
 and <code>proj</code>, including function objects, function pointers, and pointers to members.
 </div>
 
-We shall introduce the following signature for the `insertion_sort` algorithm, making the constraints imposed on its argument
-types explicit in its interface:
+We shall introduce the following interface for the `insertion_sort` algorithm, making the constraints imposed on its
+argument types explicit:
 
 <div class="dgv-cb">
 {% include algorithm-design-with-concepts/cb-1.html %}
 </div>
 
 As we can see, we have specified a number of constraints both within the template parameter list
-(enclosed in angle brackets) and through the requires clause. In order of appearance:
+(enclosed in angle brackets) and through the `requires` clause. In order of appearance:
 
-1. The iterator type `I` must model the `std::forward_iterator` concept. In particular, it must be incrementable,
+* The iterator type `I` must model the `std::forward_iterator` concept. In particular, it must be incrementable (`++`),
 dereferenceable when it refers to an element, and support multiple passes over the same range.
-3. The type `S` must model `std::sentinel_for<S, I>`, allowing a value of type `S` to denote the end of a range whose
+* The type `S` must model `std::sentinel_for<S, I>`, allowing a value of type `S` to denote the end of a range whose
 iterator type is `I`. In particular, an iterator of type `I` must be equality-comparable with a sentinel of type `S`.
 Whenever `bool(first != last)` evaluates to `true`, `first` must be dereferenceable, and  `[++first, last)` must in turn denote a valid range.
-5. The types `I`, `Comp`, and `Proj` must jointly satisfy the standard concept `std::sortable`[^6], which is
+* The types `I`, `Comp`, and `Proj` must jointly satisfy the `std::sortable` concept[^6], which is
 defined as the conjunction of the concepts `std::permutable` and `std::indirect_strict_weak_order` (see the listing below).
-Among other requirements, these concepts mandate that objects of type `std::iter_value_t<I>`,
-referenced through the iterators, be movable and swappable, and that the predicate
-type `Comp` establish a strict weak ordering over the projected elements. In practice, however, the
-compiler can only verify that `Comp` defines a valid binary relation between such elements. The semantic
-requirements, namely irreflexivity and transitivity, must be guaranteed by the programmer.
+Among other requirements, `std::permutable` ensures that the iterator type supports the indirect movement, storage, and swapping of elements, while `std::indirect_strict_weak_order` requires the comparison predicate to induce a strict weak ordering on the projected elements.
+In practice, however, the compiler can verify only the syntactic requirements imposed on `Comp`; the semantic requirements of a strict weak ordering, including irreflexivity and transitivity, must be satisfied by the programmer.
 
 Omitting namespace qualification for clarity, `std::sortable` is defined essentially as follows:
 
@@ -140,16 +145,17 @@ Next, we shall implement the body of `insertion_sort` as a composition of well-k
 
 As an optimization, we take into account that if the range to be sorted, `[first, last)` , is empty
 or contains only a single element, the algorithm can terminate immediately. The compiler selects the
-first branch (A)  when `S` and `I` model `std::sized_sentinel_for` (as is the case, for example, for a pair of random-access iterators),
-in which case their distance can be obtained in constant time. Otherwise, the second branch (B) is used.
+first branch **(A)**  when `S` and `I` model `std::sized_sentinel_for` (as is the case, for example, for a pair of random-access iterators),
+in which case their distance can be obtained in constant time. Otherwise, the second branch **(B)** is used.
 This is typically the case, for example, with iterator pairs from `std::list` or `std::forward_list`.
 
 At the beginning of each `for` loop iteration, the subrange `[first, i)` is sorted. The current element,
-denoted by `i`, is then inserted into its proper position, after which `[first, ranges::next(i))` is sorted.
-The `std::ranges::upper_bound` algorithm (C) performs a binary search to locate the furthest
-iterator `j` within `[first, i]` such that `!bool(invoke(comp, invoke(proj,*i),invoke(proj,*k)))`
-evaluates to `true` for every iterator `k` in the subrange `[first, j)`. The `std::ranges::rotate`
-algorithm (D) then places the element pointed to by `i` at position `j` by means of a cyclic permutation.
+denotd by `i`, is then inserted into its proper position, after which `[first, ranges::next(i))` is sorted.
+To achieve this, the `std::ranges::upper_bound algorithm` **(C)** performs a binary search on the sorted subrange `[first, i)` to
+locate the insertion position `j` after any elements equivalent to the current one according to `comp` and `proj`. That is,
+`!bool(invoke(comp, invoke(proj, *i),invoke(proj, *k)))` evaluates to `true` for every iterator `k` in the subrange  [first, j)`.
+The `std::ranges::rotate` algorithm **(D)** then moves the element denoted by `i` to position `j` by means of a cyclic
+permutation of `[j, ranges::next(i))`.
 
 <div style="text-align: center; margin: 2em 0;">
   <img src="{{ '/assets/images/algorithm-design-with-concepts/fig-2.webp' | relative_url }}"
@@ -171,7 +177,7 @@ the iterator-sentinel pair used by the first version:
 In this version, we require the type `R` to satisfy the `std::ranges::forward_range` concept and
 subsequently require the range iterator type `std::ranges::iterator_t<R>`, the comparator type `Comp`,
 and the projection type `Proj` to satisfy the `std::sortable` concept. In particular, the expression
-`ranges::end(r)` will return an object that models `std::sentinel_for<ranges::sentinel_t<R>, ranges::iterator_t<R>>`.
+`ranges::end(r)` will return an object that models `std::sentinel_for<std::ranges::sentinel_t<R>, std::ranges::iterator_t<R>>`.
 
 ### Example 1: Movable but non-copyable elements
 
