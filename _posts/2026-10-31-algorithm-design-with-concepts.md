@@ -14,9 +14,9 @@ excerpt: >
 
 ### Introduction
 
-In this post, we will consider the problem of implementing the well-known insertion sort algorithm using generic programming techniques, so that it can be used with a variety of sequence containers such as `std::vector` or `std::list`. We will examine its implementation in light of the introduction of concepts, ranges, and projections into the C++20 and subsequent standards[^1]<sup>,</sup>[^2]<sup>,</sup>[^3]<sup>,</sup>[^4].
+In this post, we will consider the problem of implementing the well-known insertion sort algorithm using generic programming techniques, so that it can be used with a variety of containers such as `std::vector` or `std::list`. We will examine its implementation in light of the introduction of concepts, ranges, and projections into the C++20 and subsequent standards[^1]<sup>,</sup>[^2]<sup>,</sup>[^3]<sup>,</sup>[^4].
 
-<div class="dgv-note">A concept is a named compile-time predicate which is part of the interface of a class or function template and constrains the types of data with which it may operate. Detecting violations of such constraints early generally leads to error messages that are easier to understand and trace. Rather than serving merely as syntactic constraints, the goal is to model genuine semantic categories that can be reused by the programmer.
+<div class="dgv-note">A concept is a named compile-time predicate that specifies requirements on template arguments and can be used to constrain the interfaces of class and function templates. By detecting violations of these constraints during compilation, concepts generally enable clearer and more informative diagnostic messages. Beyond expressing syntactic requirements, concepts are intended to model meaningful semantic categories and properties that can be reused across generic code.
 </div>
 
 For the sole purpose of making the code easier to read, we will use the `using namespace std;` directive throughout the code.
