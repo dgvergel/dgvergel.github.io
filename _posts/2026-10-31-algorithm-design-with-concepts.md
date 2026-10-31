@@ -24,7 +24,7 @@ For the sole purpose of making our code easier to read, we will introduce the fo
 <div class="dgv-terminal-out">using namespace std;
 </div>
 
-### Character-level policies
+### Insertion sorting
 
 Let `R` be a range to be sorted according to a given binary predicate `comp`, which
 must establish a strict weak ordering over the operands it compares. That is, we assume that `comp`
@@ -70,19 +70,12 @@ type as `first`, as we shall see in a later example). Let `proj` denote a projec
 the elements of the range. For example, it may take the form of a unary function object whose
 `operator()` accepts a reference to a constant element of the range and returns a suitable transformation
 of that element. Such projections make it possible, for instance, to sort containers of aggregates
-according to the natural ordering of one of their data members.
-
-Let `comp` denote the binary predicate evaluated on the projected values of the range elements.
-The range `R` is said to be ordered with respect to `comp` and `proj` if, for every iterator `i`
-referring to one of its elements,
-
-`invoke(comp,invoke(proj,*ranges::next(i,n)),invoke(proj,*i))`
-
+according to the natural ordering of one of their data members. Let `comp` denote the binary predicate evaluated on
+the projected values of the range elements. The range `R` is said to be ordered with respect to `comp` and `proj` if,
+for every iterator `i` referring to one of its elements, `invoke(comp,invoke(proj,*ranges::next(i,n)),invoke(proj,*i))`
 evaluates to `false` for every non-negative integer `n` such that `std::ranges::next(i, n)` still
-refers to a valid element of the range.
-
-The use of the standard function template `std::invoke` is justified in this generic programming
-context by the variety of callable entities that may be used to represent `comp` and `proj`,
+refers to a valid element of the range. The use of the standard function template `std::invoke` is justified in
+this generic programming context by the variety of callable entities that may be used to represent `comp` and `proj`,
 including function objects and function pointers.
 
 We shall introduce the following signature for the `insertion_sort algorithm`, making explicit in its
@@ -131,7 +124,7 @@ With our version of the algorithm, we are able to operate on forward iterators, 
 {% include algorithm-design-with-concepts/cb-3.html %}
 </div>
 
-Next, we shall implement the body of `insertion_sort` as a composition of well-known standard algorithms [^7]<sup>,</sup>[^8]:
+Next, we shall implement the body of `insertion_sort` as a composition of well-known standard algorithms[^7]<sup>,</sup>[^8]:
 
 <div class="dgv-cb">
 {% include algorithm-design-with-concepts/cb-4.html %}
@@ -147,12 +140,7 @@ will be used instead, as happens with pairs of forward or bidirectional iterator
 The preceding `for` loop maintains the subrange `[first, i]` in sorted order at every iteration,
 assuming that the single-element subrange `[first, next(first))` is already sorted.
 The `std::ranges::upper_bound` algorithm `(C)` performs a binary search to locate the furthest
-iterator `j` within `[first, i]` such that
-
-<div class="dgv-cb">
-{% include algorithm-design-with-concepts/cb-5.html %}
-</div>
-
+iterator `j` within `[first, i]` such that `!bool(invoke(comp, invoke(proj,*i),invoke(proj,*k)))`
 evaluates to `true` for every iterator `k` in the subrange `[first, j)`. The `std::ranges::rotate`
 algorithm (D) then places the element pointed to by `i` at position `j` by means of a cyclic permutation.
 
@@ -171,7 +159,7 @@ We shall also provide an overload of the algorithm that operates directly on a r
 the iterator-sentinel pair used by the first version:
 
 <div class="dgv-cb">
-{% include algorithm-design-with-concepts/cb-6.html %}
+{% include algorithm-design-with-concepts/cb-5.html %}
 </div>
 
 In this version, we require the type `R` to satisfy the `std::ranges::forward_range` concept and
@@ -184,7 +172,7 @@ and the projection type `Proj` to satisfy the `std::sortable` concept. In partic
 The following code shows how the previous algorithm can be used to sort an array of movable but non-copyable elements, in this case, `std::unique_ptr<int>` smart pointers. The comparator, defined as a lambda expression, takes two such pointers and dereferences them to establish the natural ordering of the integers they point to:
 
 <div class="dgv-cb">
-{% include algorithm-design-with-concepts/cb-7.html %}
+{% include algorithm-design-with-concepts/cb-6.html %}
 </div>
 
 The memory layout of the array in the example would follow a scheme like the one below, before and after sorting (transferring ownership of the integers when necessary):
@@ -196,6 +184,16 @@ The memory layout of the array in the example would follow a scheme like the one
 </div>
 
 Alternatively, the array could be sorted using a projection that dereferences the pointers:
+
+<div class="dgv-cb">
+{% include algorithm-design-with-concepts/cb-7.html %}
+</div>
+
+### Example 2: Projections
+
+As we have seen, projections allow the sorting algorithm to apply transformations to the elements of
+the range before comparing them. As a further example, the following simple code sorts a vector of `Book`
+objects based on one of their public attributes, the price, using `ranges::greater` to sort them in descending order:
 
 <div class="dgv-cb">
 {% include algorithm-design-with-concepts/cb-8.html %}
