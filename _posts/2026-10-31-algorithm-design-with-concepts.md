@@ -213,11 +213,11 @@ The following example, which sorts a C-style null-terminated string (zero-termin
 {% include algorithm-design-with-concepts/cb-10.html %}
 </div>
 
-A more detailed explanation of the Zstr_sentinel type can be found in reference [^9].
+A more detailed explanation of the Zstr_sentinel type can be found in reference[^9].
 
 ### Example 4: Compile-Time Sorting
 
-We will conclude this article by putting C++’s compile-time computation capabilities to the test once again. The reader will no doubt have noticed that the `insertion_sort` sorting algorithm overloads have been declared with the `constexpr` specifier. This allows them to be executed at compile time, provided that the call constitutes a constant expression [^10].
+We will conclude this article by putting C++’s compile-time computation capabilities to the test once again. The reader will no doubt have noticed that the `insertion_sort` sorting algorithm overloads have been declared with the `constexpr` specifier. This allows them to be executed at compile time, provided that the call constitutes a constant expression[^10].
 
 As an example, let us define the following `Sorted_array<T, N>` class template, which publicly inherits from `std::array<T, N>`. Given an arbitrary array, a comparator, and a projection, the class constructor will store and sort the data by calling `insertion_sort`:
 
@@ -259,7 +259,7 @@ Its x86-64 assembly code (compiled with GCC 16.2 with -O3 optimization and -DNDE
 
 It is striking that, in this case, the code in our article ultimately results in such a small set of instructions.
 
-Interestingly, the Clang 23.1.0 compiler is able to unroll the `for` loop used for printing and produce a sequence of calls to `printf` [^12]. This optimization can improve the execution speed of our program at the cost of increasing the size of the executable:
+Interestingly, the Clang 23.1.0 compiler is able to unroll the `for` loop used for printing and produce a sequence of calls to `printf`[^12]. This optimization can improve the execution speed of our program at the cost of increasing the size of the executable:
 
 <div class="dgv-terminal-out">main:
         push    rbx
