@@ -1,0 +1,12 @@
+<span style="color: #569cd6;">template</span>&lt;
+&nbsp; &nbsp;<span style="color: #569cd6;">forward_iterator</span> I,
+&nbsp; &nbsp;sentinel_for&lt;I&gt; <span style="color: #569cd6;">S</span>,
+&nbsp; &nbsp;<span style="color: #569cd6;">typename</span> Comp = ranges::<span style="color: #569cd6;">less</span>,
+&nbsp; &nbsp;<span style="color: #569cd6;">typename</span> Proj = identity
+&gt;
+<span style="color: #569cd6;">requires</span> sortable&lt;I, Comp, Proj&gt;
+<span style="color: #6a9955;">// -----------------------------</span>
+<span style="color: #569cd6;">constexpr</span> <span style="color: #569cd6;">void</span> insertion_sort(I first, S last, Comp comp = Comp{}, Proj proj = Proj{})
+{
+<span style="color: #6a9955;">&nbsp; &nbsp;// ...</span>
+}
