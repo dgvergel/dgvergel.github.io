@@ -1,6 +1,6 @@
 <span style="color: #569cd6;">template</span>&lt;
 &nbsp; &nbsp;ranges::forward_range R,
-&nbsp; &nbsp;<span style="color: #569cd6;">typename</span> Comp = ranges:less,
+&nbsp; &nbsp;<span style="color: #569cd6;">typename</span> Comp = ranges::less,
 &nbsp; &nbsp;<span style="color: #569cd6;">typename</span> Proj = identity
 &gt;
 <span style="color: #569cd6;">requires</span> sortable&lt;ranges::iterator_t&lt;R&gt;, Comp, Proj&gt;
