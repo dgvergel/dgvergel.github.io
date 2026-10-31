@@ -49,7 +49,7 @@ already sorted subrange `{R[0], R[1], R[2]}`, and so on until the entire range `
 The following figure shows, from left to right and from top to bottom, the successive iterations involved
 in sorting the set of natural numbers `R = {5, 3, 1, 2}` in ascending order:
 
-<div style="text-align: center;">
+<div style="text-align: center; margin: 2em 0;">
   <img src="{{ '/assets/images/algorithm-design-with-concepts/fig-1.webp' | relative_url }}"
        alt="Figure 1"
        style="max-width: 100%; height: auto;">
@@ -144,7 +144,7 @@ iterator `j` within `[first, i]` such that `!bool(invoke(comp, invoke(proj,*i),i
 evaluates to `true` for every iterator `k` in the subrange `[first, j)`. The `std::ranges::rotate`
 algorithm (D) then places the element pointed to by `i` at position `j` by means of a cyclic permutation.
 
-<div style="text-align: center;">
+<div style="text-align: center; margin: 2em 0;">
   <img src="{{ '/assets/images/algorithm-design-with-concepts/fig-2.webp' | relative_url }}"
        alt="Figure 2"
        style="max-width: 100%; height: auto;">
@@ -167,7 +167,7 @@ subsequently require the range iterator type `std::ranges::iterator_t<R>`, the c
 and the projection type `Proj` to satisfy the `std::sortable` concept. In particular, the expression
 `ranges::end(r)` will return an object that models `std::sentinel_for<std::ranges::iterator_t<R>>`.
 
-### Example 1: Movable but Non-Copyable Elements
+### Example 1: Movable but non-copyable elements
 
 The following code shows how the previous algorithm can be used to sort an array of movable but non-copyable elements, in this case, `std::unique_ptr<int>` smart pointers. The comparator, defined as a lambda expression, takes two such pointers and dereferences them to establish the natural ordering of the integers they point to:
 
@@ -177,7 +177,7 @@ The following code shows how the previous algorithm can be used to sort an array
 
 The memory layout of the array in the example would follow a scheme like the one below, before and after sorting (transferring ownership of the integers when necessary):
 
-<div style="text-align: center;">
+<div style="text-align: center; margin: 2em 0;">
   <img src="{{ '/assets/images/algorithm-design-with-concepts/fig-3.webp' | relative_url }}"
        alt="Figure 3"
        style="max-width: 100%; height: auto;">
@@ -201,7 +201,8 @@ objects based on one of their public attributes, the price, using `ranges::great
 
 ### Example 3: Sentinels
 
-The following example, which sorts a C-style null-terminated string (zero-terminated string), illustrates a situation in which the iterator type I (a char const*) and the sentinel type S (named Zstr_sentinel) are different:
+The following example, which sorts a C-style null-terminated string (zero-terminated string), illustrates a situation in which
+the iterator type `I` (a `char const*`) and the sentinel type `S` (named `Zstr_sentinel`) are different:
 
 <div class="dgv-cb">
 {% include algorithm-design-with-concepts/cb-9.html %}
@@ -211,9 +212,9 @@ The following example, which sorts a C-style null-terminated string (zero-termin
 {% include algorithm-design-with-concepts/cb-10.html %}
 </div>
 
-A more detailed explanation of the Zstr_sentinel type can be found in reference[^9].
+A more detailed explanation of the `Zstr_sentinel` type can be found in reference[^9].
 
-### Example 4: Compile-Time Sorting
+### Example 4: Compile-time sorting
 
 We will conclude this article by putting C++’s compile-time computation capabilities to the test once again. The reader will no doubt have noticed that the `insertion_sort` sorting algorithm overloads have been declared with the `constexpr` specifier. This allows them to be executed at compile time, provided that the call constitutes a constant expression[^10].
 
@@ -301,7 +302,7 @@ Interestingly, the Clang 23.1.0 compiler is able to unroll the `for` loop used f
 [^6]: cppreference.com - [std::sortable](https://en.cppreference.com/w/cpp/iterator/sortable)
 [^7]: cppreference.com - [std::rotate](https://en.cppreference.com/w/cpp/algorithm/rotate)
 [^8]: Stack Overflow - [How to implement classic sorting algorithms in modern C++?](https://stackoverflow.com/questions/24650626/how-to-implement-classic-sorting-algorithms-in-modern-c)
-[^9] foonathan::​blog() - [C++20’s Iterator Sentinels](https://foonathan.net/2020/03/iterator-sentinel/)
+[^9]: foonathan::​blog() - [C++20’s Iterator Sentinels](https://foonathan.net/2020/03/iterator-sentinel/)
 [^10]: cppreference.com - [Constant expression](https://en.cppreference.com/w/c/language/constant_expression)
 [^11]: Compiler Explorer - [Test with GCC](https://godbolt.org/z/dKqqaofY1)
 [^12]: Eric Niebler - [Quicksort of an array of ints at compile-time using C++17 constexpr](https://twitter.com/ericniebler/status/1270832838754004992)
