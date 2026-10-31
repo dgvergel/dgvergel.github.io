@@ -1,0 +1,12 @@
+<span style="color: #569cd6;">auto</span> ptrs = array{
+&nbsp; &nbsp;make_unique&lt;<span style="color: #569cd6;">int</span>&gt;(<span style="color: #b5cea8;">5</span>),
+&nbsp; &nbsp;make_unique&lt;<span style="color: #569cd6;">int</span>&gt;(<span style="color: #b5cea8;">1</span>),
+&nbsp; &nbsp;make_unique&lt;<span style="color: #569cd6;">int</span>&gt;(<span style="color: #b5cea8;">7</span>),
+&nbsp; &nbsp;make_unique&lt;<span style="color: #569cd6;">int</span>&gt;(-<span style="color: #b5cea8;">2</span>)
+};
+
+insertion_sort(ptrs, [](<span style="color: #569cd6;">auto</span> <span style="color: #569cd6;">const&amp;</span> p1, <span style="color: #569cd6;">auto</span> <span style="color: #569cd6;">const&amp;</span> p2){ <span style="color: #569cd6;">return</span> *p1 &lt; *p2; });
+
+<span style="color: #569cd6;">for</span> (<span style="color: #569cd6;">auto</span> <span style="color: #569cd6;">const</span>&amp; p : ptrs) {
+&nbsp; &nbsp;fmt::print(<span style="color: #ce9178;">"{} "</span>, *p);<span style="color: #6a9955;">  // output: -2 1 /span>
+}
