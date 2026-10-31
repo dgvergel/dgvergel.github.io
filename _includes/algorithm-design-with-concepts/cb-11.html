@@ -1,4 +1,4 @@
-<span style="color: #569cd6;">template</span>&lt;<span style="color: #569cd6;">movable</span> T, <span style="color: #569cd6;">size_t</span> N, <span style="color: #569cd6;">typename</span> Comp = ranges::<span style="color: #569cd6;">less</span>, <span style="color: #569cd6;">typename</span> Proj = identity&gt;
+<span style="color: #569cd6;">template</span>&lt;<span style="color: #569cd6;">movable</span> T, <span style="color: #569cd6;">size_t</span> N, <span style="color: #569cd6;">typename</span> Comp = ranges::less, <span style="color: #569cd6;">typename</span> Proj = identity&gt;
 <span style="color: #569cd6;">struct</span> Sorted_array : array&lt;T, N&gt; {
 &nbsp; &nbsp;<span style="color: #569cd6;">using</span> Data = array&lt;T, N&gt;;
 &nbsp; &nbsp;<span style="color: #569cd6;">constexpr</span> <span style="color: #569cd6;">explicit</span> Sorted_array(Data<span style="color: #569cd6;">&amp;&amp;</span> entries, Comp comp = Comp{}, Proj proj = Proj{})
