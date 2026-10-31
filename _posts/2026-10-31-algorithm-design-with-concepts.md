@@ -193,9 +193,9 @@ Alternatively, the array could be sorted using a projection that dereferences th
 
 ### Example 2: Projections
 
-As we have seen, projections allow the sorting algorithm to apply transformations to the elements of
-the range before comparing them. As a further example, the following simple code sorts a vector of `Book`
-objects based on one of their public attributes, the price, using `ranges::greater` to sort them in descending order:
+As we have seen, projections allow the sorting algorithm to specify which value derived from each range element is
+to be used for comparison. As a further example, the following simple code sorts a vector of `Book`
+objects according to one of their public data members, `price`, using `ranges::greater` to sort the books in descending order:
 
 <div class="dgv-cb">
 {% include algorithm-design-with-concepts/cb-8.html %}
@@ -203,8 +203,8 @@ objects based on one of their public attributes, the price, using `ranges::great
 
 ### Example 3: Sentinels
 
-The following example, which sorts a C-style null-terminated string (zero-terminated string), illustrates a situation in which
-the iterator type `I` (a `char const*`) and the sentinel type `S` (named `Zstr_sentinel`) are different:
+The following example sorts a C-style null-terminated string and illustrates a situation in which
+the iterator type `I` (a `char*`) and the sentinel type `S` (named `Zstr_sentinel`) are different:
 
 <div class="dgv-cb">
 {% include algorithm-design-with-concepts/cb-9.html %}
@@ -218,7 +218,7 @@ A more detailed explanation of the `Zstr_sentinel` type can be found in referenc
 
 ### Example 4: Compile-time sorting
 
-We will conclude this article by putting C++’s compile-time computation capabilities to the test once again. The reader will no doubt have noticed that the `insertion_sort` sorting algorithm overloads have been declared with the `constexpr` specifier. This allows them to be executed at compile time, provided that the call constitutes a constant expression[^10].
+We will conclude this article by putting C++’s compile-time computation capabilities to the test once again. The reader will no doubt have noticed that the `insertion_sort` overloads have been declared `constexpr`. This allows them to be evaluated at compile time when invoked in a context that requires a constant expression[^10].
 
 As an example, let us define the following `Sorted_array<T, N>` class template, which publicly inherits from `std::array<T, N>`. Given an arbitrary array, a comparator, and a projection, the class constructor will store and sort the data by calling `insertion_sort`:
 
@@ -232,7 +232,7 @@ Let us consider the following simple program:
 {% include algorithm-design-with-concepts/cb-12.html %}
 </div>
 
-Its x86-64 assembly code (compiled with GCC 16.2 with -O3 optimization and -DNDEBUG) shows that the global integer array entries (with static storage duration and stored in the data segment) is constructed and sorted in descending order at compile time[^11]:
+The generated x86-64 assembly (compiled with GCC 16.2 with -O3 optimization and -DNDEBUG) shows that entries, which has static storage duration, is emitted directly with its elements already arranged in descending order[^11]. No run-time sorting code is generated:
 
 <div class="dgv-terminal-out">.LC0:
         .string "%d\n"
@@ -258,7 +258,8 @@ Its x86-64 assembly code (compiled with GCC 16.2 with -O3 optimization and -DNDE
         .long   -3
 </div>
 
-It is striking that, in this case, the code in our article ultimately results in such a small set of instructions.
+It is striking that none of the machinery used to sort the array appears in the generated run-time code:
+the executable contains only the already sorted data and the instructions required to print it.
 
 Interestingly, the Clang 23.1.0 compiler is able to unroll the `for` loop used for printing and produce a sequence of calls to `printf`[^12]. This optimization can improve the execution speed of our program at the cost of increasing the size of the executable:
 
