@@ -155,7 +155,7 @@ At the beginning of each `for` loop iteration, the subrange `[first, i)` is sort
 denotd by `i`, is then inserted into its proper position, after which `[first, ranges::next(i))` is sorted.
 To achieve this, the `std::ranges::upper_bound algorithm` **(C)** performs a binary search on the sorted subrange `[first, i)` to
 locate the insertion position `j` after any elements equivalent to the current one according to `comp` and `proj`. That is,
-`!bool(invoke(comp, invoke(proj, *i),invoke(proj, *k)))` evaluates to `true` for every iterator `k` in the subrange  [first, j)`.
+`!bool(invoke(comp, invoke(proj, *i),invoke(proj, *k)))` evaluates to `true` for every iterator `k` in the subrange `[first, j)`.
 The `std::ranges::rotate` algorithm **(D)** then moves the element denoted by `i` to position `j` by means of a cyclic
 permutation of `[j, ranges::next(i))`.
 
