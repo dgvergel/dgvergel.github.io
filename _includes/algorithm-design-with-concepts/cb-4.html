@@ -1,7 +1,7 @@
 <span style="color: #569cd6;">template</span>&lt;
 &nbsp; &nbsp;<span style="color: #569cd6;">forward_iterator</span> I,
 &nbsp; &nbsp;sentinel_for&lt;I&gt; S,
-&nbsp; &nbsp;<span style="color: #569cd6;">typename</span> Comp = ranges::<span style="color: #569cd6;">less</span>,
+&nbsp; &nbsp;<span style="color: #569cd6;">typename</span> Comp = ranges::less,
 &nbsp; &nbsp;<span style="color: #569cd6;">typename</span> Proj = identity
 &gt;
 <span style="color: #569cd6;">requires</span> sortable&lt;I, Comp, Proj&gt;
