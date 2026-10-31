@@ -49,11 +49,6 @@ already sorted subrange `{R[0], R[1], R[2]}`, and so on until the entire range `
 The following figure shows, from left to right and from top to bottom, the successive iterations involved
 in sorting the set of natural numbers `R = {5, 3, 1, 2}` in ascending order:
 
-<figure>
-  <img src="{{ '_includes/algorithm-design-with-concepts/fig-1.webp' | relative_url }}" alt="Description of the chart" />
-  <figcaption>Figure 1: This is the caption.</figcaption>
-</figure>
-
 ![Figure 1]('_includes/algorithm-design-with-concepts/fig-1.webp'  | relative_url)
 
 Let `n` denote the number of elements to be sorted. This algorithm has a time complexity of `O(n)`
