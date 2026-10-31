@@ -49,7 +49,7 @@ already sorted subrange `{R[0], R[1], R[2]}`, and so on until the entire range `
 The following figure shows, from left to right and from top to bottom, the successive iterations involved
 in sorting the set of natural numbers `R = {5, 3, 1, 2}` in ascending order:
 
-![Figure 1]('_includes/algorithm-design-with-concepts/fig-1.webp'  | relative_url)
+![Figure 1]({{'assets/images/algorithm-design-with-concepts/fig-1.webp' | relative_url}})
 
 Let `n` denote the number of elements to be sorted. This algorithm has a time complexity of `O(n)`
 in the best-case scenario (when the input sequence is
@@ -152,7 +152,7 @@ iterator `j` within `[first, i]` such that
 evaluates to `true` for every iterator `k` in the subrange `[first, j)`. The `std::ranges::rotate`
 algorithm (D) then places the element pointed to by `i` at position `j` by means of a cyclic permutation.
 
-![Figure 2]('_includes/algorithm-design-with-concepts/fig-2.webp' | relative_url)
+![Figure 2]({{'assets/images/algorithm-design-with-concepts/fig-2.webp' | relative_url}})
 
 It is worth noting, in particular, how every operation performed within the function body conforms
 exactly to the constraints imposed on its arguments. Also note that the comparator and projection
@@ -181,7 +181,7 @@ The following code shows how the previous algorithm can be used to sort an array
 
 The memory layout of the array in the example would follow a scheme like the one below, before and after sorting (transferring ownership of the integers when necessary):
 
-![Figure 3]('_includes/algorithm-design-with-concepts/fig-3.webp' | relative_url)
+![Figure 3]({{'assets/images/algorithm-design-with-concepts/fig-3.webp' | relative_url}})
 
 Alternatively, the array could be sorted using a projection that dereferences the pointers:
 
