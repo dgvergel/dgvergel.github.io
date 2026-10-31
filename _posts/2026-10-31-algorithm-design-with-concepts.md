@@ -19,15 +19,15 @@ programming techniques, so that it can be used with a variety of sequence contai
 We will examine its implementation in light of the introduction of concepts, ranges, and projections into the C++20
 and subsequent standards[^1]<sup>,</sup>[^2]<sup>,</sup>[^3]<sup>,</sup>[^4].
 
-<div class="dgv-note">A **concept** is a named compile-time predicate that specifies requirements on template arguments and
+<div class="dgv-note">A <b>concept</b> is a named compile-time predicate that specifies requirements on template arguments and
 can be used to constrain the interfaces of class and function templates. By detecting violations of these constraints during
 compilation, concepts generally enable clearer and more informative diagnostic messages. Beyond expressing syntactic requirements,
 concepts are intended to model meaningful semantic categories and properties that can be reused across generic code.
-  
-A **range** identifies a sequence of elements to which a computation is to be applied. It can be specified by an iterator and a
+<br>
+A <b>range</b> identifies a sequence of elements to which a computation is to be applied. It can be specified by an iterator and a
 sentinel denoting its beginning and end, or by an iterator and a count specifying its beginning and number of elements.
-
-A **projection** is a transformation applied by an algorithm to an element before its value is inspected.
+<br>
+A <b>projection</b> is a transformation applied by an algorithm to an element before its value is inspected.
 </div>
 
 For the sole purpose of making the code easier to read, we will use the `using namespace std;` directive throughout the code.
