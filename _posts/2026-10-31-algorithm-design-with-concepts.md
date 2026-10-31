@@ -247,7 +247,8 @@ Let us consider the following simple program:
 {% include algorithm-design-with-concepts/cb-12.html %}
 </div>
 
-The generated x86-64 assembly (compiled with GCC 16.2 with -O3 optimization and -DNDEBUG) shows that entries, which has static storage duration, is emitted directly with its elements already arranged in descending order[^11]. No run-time sorting code is generated:
+The generated x86-64 assembly (compiled with GCC 16.2 using -O3 and -DNDEBUG) shows that the sorting of `entries` has been
+completed at compile time: its elements already appear in descending order, and no run-time sorting code is generated:
 
 <div class="dgv-terminal-out">.LC0:
         .string "%d\n"
