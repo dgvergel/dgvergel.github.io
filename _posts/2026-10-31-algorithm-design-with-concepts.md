@@ -294,6 +294,7 @@ Interestingly, the Clang 23.1.0 compiler is able to unroll the `for` loop used f
 </div>
 
 ---
+Note: This post is an English translation of my earlier post originally published in Spanish on Blogger as [Programando con C++20 (Parte I): Concepts](https://dgvergel.blogspot.com/2020/06/programando-cpp20-parte-i.html).
 
 ### Bibliography
 
