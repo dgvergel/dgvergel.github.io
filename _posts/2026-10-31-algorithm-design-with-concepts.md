@@ -235,7 +235,7 @@ A more detailed explanation of the `Zstr_sentinel` type can be found in referenc
 
 We will conclude this article by putting C++’s compile-time computation capabilities to the test once again. The reader will no doubt have noticed that the `insertion_sort` overloads have been declared `constexpr`. This allows them to be evaluated at compile time when invoked in a context that requires a constant expression[^10].
 
-As an example, let us define the following `Sorted_array<T, N>` class template, which publicly inherits from `std::array<T, N>`. Given an arbitrary array, a comparator, and a projection, the class constructor will store and sort the data by calling `insertion_sort`:
+As an example, let us define the following `Sorted_array<T, N>` class template, which publicly inherits from `std::array<T, N>`. Given an array rvalue, a comparator, and a projection, the class constructor will store and sort the data by calling `insertion_sort`:
 
 <div class="dgv-cb">
 {% include algorithm-design-with-concepts/cb-11.html %}
