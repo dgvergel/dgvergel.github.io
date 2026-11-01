@@ -274,10 +274,12 @@ completed at compile time: its elements already appear in descending order, and 
         .long   -3
 </div>
 
-It is striking that none of the machinery used to sort the array appears in the generated run-time code:
+Remarkably, none of the machinery used to sort the array appears in the generated run-time code:
 the executable contains only the already sorted data and the instructions required to print it.
 
-Interestingly, the Clang 23.1.0 compiler is able to unroll the `for` loop used for printing and produce a sequence of calls to `printf`[^12]. Such a transformation may improve execution speed in some circumstances, at the cost of increasing the size of the generated code:
+Interestingly, the Clang 23.1.0 compiler is able to unroll the `for` loop used for printing and produce
+a sequence of calls to `printf`[^12]. Such a transformation may improve execution speed in some circumstances,
+at the cost of increasing the size of the generated code:
 
 <div class="dgv-terminal-out">main:
         push    rbx
