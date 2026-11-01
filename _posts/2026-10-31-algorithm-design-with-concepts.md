@@ -121,10 +121,11 @@ Omitting namespace qualification for clarity, `std::sortable` is defined essenti
 {% include algorithm-design-with-concepts/cb-2.html %}
 </div>
 
-Note that we do not require objects of type `std::iter_value_t<I>` to be copyable.
+<div class="dgv-note">Note that we do not require objects of type <code>std::iter_value_t<I></code> to be copyable.
 Copyability would be a stronger requirement than necessary and would prevent the algorithm from supporting
-move-only types. We wish, for example, to sort ownership-enforcing smart pointers such as `std::unique_ptr`
+move-only types. We wish, for example, to sort ownership-enforcing smart pointers such as <code>std::unique_ptr</code>
 according to the values of the objects they own, a case that we will examine later.
+</div>
 
 The default sorting policy adopted by the `insertion_sort` algorithm is provided by `std::ranges::less`,
 while the default projection is the function object type `std::identity`, whose `operator()` returns
