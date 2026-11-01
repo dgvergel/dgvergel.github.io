@@ -52,7 +52,7 @@ evaluates to `true`, the two elements must be swapped; otherwise, they remain in
 Next, we insert the third element, `R[2]` (if it exists), into the correct position within the already
 sorted subrange `{R[0], R[1]}`. At this point, the first three elements of `R` are correctly ordered.
 We then insert the fourth element, `R[3]` (if it exists), into its proper position with respect to the
-already sorted subrange `{R[0], R[1], R[2]}`, and so on until the entire range `R` has been sorted.
+already sorted subrange `{R[0], R[1], R[2]}`, and so on until the entire range `R` has been sorted.[^5]
 
 <div class="dgv-note">Here, we use <code>R[i]</code> as a convenient notation for the <code>i</code>-th
 element of the range. It does not imply random access to the elements of <code>R</code>.
@@ -66,10 +66,6 @@ in sorting the sequence `R = {5, 3, 1, 2}` in ascending order:
        alt="Figure 1"
        style="max-width: 100%; height: auto;">
 </div>
-
-Let `n` denote the number of elements to be sorted. This algorithm has a time complexity of `O(n)`
-in the best case scenario (when the input sequence is already sorted) and `O(n²)` in both the average
-and worst cases. The worst case occurs when the input sequence is arranged in the reverse of the desired order.[^5]
 
 <div class="dgv-note">Admittedly, the appeal of insertion sort lies primarily in its relative ease of
 implementation and in its efficiency for small or nearly sorted ranges. In general-purpose production code,
