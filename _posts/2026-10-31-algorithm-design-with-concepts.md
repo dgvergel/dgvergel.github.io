@@ -152,12 +152,12 @@ in which case their distance can be obtained in constant time. Otherwise, the se
 This is typically the case, for example, with iterator pairs from `std::list` or `std::forward_list`.
 
 At the beginning of each `for` loop iteration, the subrange `[first, i)` is sorted. The current element,
-denoted by `i`, is then inserted into its proper position, after which `[first, ranges::next(i))` is sorted.
+denoted by `i`, is then inserted into its proper position, after which `[first, std::ranges::next(i))` is sorted.
 To achieve this, the `std::ranges::upper_bound algorithm` **(C)** performs a binary search on the sorted subrange `[first, i)` to
 locate the insertion position `j` after any elements equivalent to the current one according to `comp` and `proj`. That is,
 `!bool(std::invoke(comp, std::invoke(proj, *i), std::invoke(proj, *k)))` evaluates to `true` for every iterator `k` in the subrange `[first, j)`.
 The `std::ranges::rotate` algorithm **(D)** then moves the element denoted by `i` to position `j` by means of a cyclic
-permutation of `[j, ranges::next(i))`.
+permutation of `[j, std::ranges::next(i))`.
 
 <div style="text-align: center; margin: 2em 0;">
   <img src="{{ '/assets/images/algorithm-design-with-concepts/fig-2.webp' | relative_url }}"
