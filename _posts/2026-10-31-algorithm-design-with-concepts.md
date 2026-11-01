@@ -179,8 +179,7 @@ the iterator-sentinel pair used by the first version:
 
 In this version, we require the type `R` to satisfy the `std::ranges::forward_range` concept and
 subsequently require the range iterator type `std::ranges::iterator_t<R>`, the comparator type `Comp`,
-and the projection type `Proj` to satisfy the `std::sortable` concept. In particular, the expression
-`std::ranges::end(r)` will return an object that models `std::sentinel_for<std::ranges::sentinel_t<R>, std::ranges::iterator_t<R>>`.
+and the projection type `Proj` to satisfy the `std::sortable` concept.
 
 ### Example 1: Movable but non-copyable elements
 
