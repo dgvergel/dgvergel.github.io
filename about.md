@@ -6,7 +6,9 @@ permalink: /about/
 
 ## Author of the blog
 
-I hold a Bachelor's degree in Physics from the University of Seville and a Ph.D. in Theoretical Physics from the Complutense University of Madrid. I currently serve as Head of the Department of Technology & Education at Universidad Europea de Andalucía (Málaga, Spain), where I teach Physics and Programming courses within the Bachelor's Degree in Computer Engineering.
+I hold a Bachelor's degree in Physics from the University of Seville and a Ph.D. in Theoretical Physics from the Complutense University of Madrid. I currently serve as Head of the Department of Technology & Education at Universidad Europea de Andalucía (Málaga, Spain), where I teach courses in Physics and Programming within the Bachelor’s Degree in Computer Engineering.
+
+You can also find me on [LinkedIn](https://www.linkedin.com/in/dgvergel/).
 
 ## Nature of the content
 
@@ -18,15 +20,15 @@ The aforementioned content is provided "AS IS", without warranties of any kind, 
 
 ## Copyright and licensing
 
-1. Unless otherwise stated, all original content published in this blog's posts is © Daniel Gómez Vergel. All rights reserved. Its reproduction, distribution, modification, or public communication, in whole or in part, is prohibited without the author's prior express written consent, except where permitted by applicable law or by the permissions granted in this notice.
+1. Unless otherwise stated, all original content published in the posts on this blog is © Daniel Gómez Vergel. All rights reserved. Its reproduction, distribution, modification, or public communication, in whole or in part, is prohibited without the author's prior express written consent, except where permitted by applicable law or by the permissions granted in this notice.
 
-2. Unless otherwise stated, the original source code created by the author and published in this blog's posts is distributed under the Creative Commons Attribution 4.0 International (CC BY 4.0) license. Its use is governed by the terms of that license, which in particular require proper attribution of the code's authorship. This license applies only to the source code and does not automatically extend to the accompanying text, diagrams, images, or other materials.
-   
-3. This blog uses the Minima Jekyll theme, which is third-party software distributed under the MIT License. Minima and any other third-party software or materials remain subject to their respective licenses and copyright notices.
+2. Unless otherwise stated, the original source code created by the author and published in this blog's posts is distributed under the Creative Commons Attribution 4.0 International (CC BY 4.0) license. Its use is governed by the terms of that license, which in particular require proper attribution of the code's authorship. This license applies only to the source code and does not automatically extend to the accompanying text, diagrams, images, or other materials. For the applicable license terms, see [Creative Commons Attribution 4.0 International](https://creativecommons.org/licenses/by/4.0/) and [Creative Commons Attribution 4.0 International Legal Code](https://creativecommons.org/licenses/by/4.0/legalcode.en).
 
-4. Images generated with the assistance of artificial intelligence may be identified as such where appropriate. Copyright ownership, licensing, and permitted uses of such images may depend on the terms of the service provider and applicable law.
+3. This blog uses the Minima Jekyll theme, which is third-party software distributed under the MIT License. Minima and any other third-party software or materials remain subject to their respective licenses and copyright notices. See the [Minima license](https://github.com/jekyll/minima/blob/2.5-stable/LICENSE.txt).
 
-5. Any intellectual property rights belonging to third-parties with respect to libraries, trademarks, algorithms, technologies, or any other elements mentioned in the posts remain the property of their respective owners.
+4. Images generated with the assistance of artificial intelligence may be identified as such where appropriate. No claim of copyright ownership is made by this notice with respect to such images. Their legal status and permitted uses are subject to applicable law and, where relevant, to the terms of the service used to generate them.
+
+5. Any intellectual property rights belonging to third parties in libraries, trademarks, algorithms, technologies, or other elements mentioned in the posts remain the property of their respective owners.
 
 ## Privacy notice
 
@@ -44,4 +46,4 @@ The author has not deliberately incorporated third-party advertising services, a
 
 The blog does not provide comment systems, contact forms, newsletters, user accounts or other mechanisms managed by the author for the direct collection of visitors' personal data.
 
-Last technical review: August 23, 2026.
+Last technical review: November 1, 2026.
