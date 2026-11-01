@@ -99,6 +99,47 @@ $content-width: 1050px;
   }
 }
 
+// estilo para definiciones:
+.dgv-def {
+  // contenedor principal:
+  background-color: rgb(240, 245, 252) !important;
+  border-left: 4px solid rgb(57, 115, 185) !important;
+  border-top: 1px solid rgba(57, 115, 185, 0.12) !important;
+  border-right: 1px solid rgba(57, 115, 185, 0.12) !important;
+  border-bottom: 1px solid rgba(57, 115, 185, 0.12) !important;
+  border-radius: 0 6px 6px 0 !important;
+  padding: 15px 20px !important;
+  margin: 24px auto !important;
+
+  // tipografía:
+  color: #24292f !important;
+  font-size: 15px !important;
+  line-height: 1.6 !important;
+  text-align: left !important;
+
+  // anchura responsive:
+  box-sizing: border-box;
+  width: 85%;
+  max-width: 850px;
+
+  // código inline:
+  code {
+    background-color: rgba(57, 115, 185, 0.12) !important;
+    color: #24558A !important;
+    padding: 2px 6px !important;
+    border-radius: 4px !important;
+    font-family: Consolas, monospace !important;
+    font-size: 0.9em !important;
+  }
+
+  // líneas horizontales dentro de las notas:
+  hr {
+    border: 0 !important;
+    border-top: 2px solid #3973B9 !important;
+    margin: 0.8em 0 !important;
+  }
+}
+
 // categorías:
 .post-categories {
   margin-top: 1.2rem !important;
