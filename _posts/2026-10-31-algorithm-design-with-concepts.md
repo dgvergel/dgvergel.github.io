@@ -3,7 +3,7 @@ layout: post
 title: "Algorithm Design with Concepts, Ranges, and Projections"
 author: Daniel Gómez Vergel
 date: 2026-10-31
-last_modified_at: 2026-10-31
+last_modified_at: 2026-11-01
 categories: [C++, algorithms, concepts, projections, ranges]
 permalink: /2026/10/31/algorithm-design-with-concepts/
 excerpt: >
@@ -68,7 +68,7 @@ in sorting the sequence `R = {5, 3, 1, 2}` in ascending order:
 
 Let `n` denote the number of elements to be sorted. This algorithm has a time complexity of `O(n)`
 in the best case scenario (when the input sequence is already sorted) and `O(n²)` in both the average
-and worst cases. The worst case occurs when the input sequence is arranged in the reverse of the desired order[^5].
+and worst cases. The worst case occurs when the input sequence is arranged in the reverse of the desired order.[^5]
 
 <div class="dgv-note">Admittedly, the appeal of insertion sort lies primarily in its relative ease of
 implementation and in its efficiency for small or nearly sorted ranges. In general-purpose production code,
@@ -233,7 +233,7 @@ A more detailed explanation of the `Zstr_sentinel` type can be found in referenc
 
 ### Example 4: Compile-time sorting
 
-We will conclude this article by putting C++’s compile-time computation capabilities to the test once again. The reader will no doubt have noticed that the `insertion_sort` overloads have been declared `constexpr`. This allows them to be evaluated at compile time when invoked in a context that requires a constant expression[^10].
+We will conclude this article by putting C++’s compile-time computation capabilities to the test once again. The reader will no doubt have noticed that the `insertion_sort` overloads have been declared `constexpr`. This allows them to be evaluated at compile time when invoked in a context that requires a constant expression.[^10]
 
 As an example, let us define the following `Sorted_array<T, N, Comp, Proj>` class template, which publicly inherits from `std::array<T, N>`. Given an array rvalue, a comparator, and a projection, the class constructor will store and sort the data by calling `insertion_sort`:
 
@@ -278,7 +278,7 @@ Remarkably, none of the machinery used to sort the array appears in the generate
 the executable contains only the already sorted data and the instructions required to print it.
 
 Interestingly, the Clang 23.1.0 compiler is able to unroll the `for` loop used for printing and produce
-a sequence of calls to `printf`[^12]. Such a transformation may improve execution speed in some circumstances,
+a sequence of calls to `printf`.[^12] Such a transformation may improve execution speed in some circumstances,
 at the cost of increasing the size of the generated code:
 
 <div class="dgv-terminal-out">main:
