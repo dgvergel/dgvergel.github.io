@@ -15,7 +15,7 @@ excerpt: >
 ### Introduction
 
 In this post, we will use the well-known insertion sort algorithm as a case study in the design of generic algorithms.
-We will explore how concepts, ranges, and projections, introduced in C++20 and subsequent standards[^1],[^2],[^3],[^4],
+We will explore how concepts, ranges, and projections, introduced in C++20 and subsequent standards[^1]<sup>,</sup>[^2]<sup>,</sup>[^3]<sup>,</sup>[^4],
 can be used to express the requirements of the algorithm and allow it to operate on a variety of sequence containers,
 such as `std::vector` and `std::list`.
 
