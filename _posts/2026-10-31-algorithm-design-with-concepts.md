@@ -68,7 +68,7 @@ in sorting the sequence `R = {5, 3, 1, 2}` in ascending order:
 </div>
 
 <div class="dgv-note">Admittedly, the appeal of insertion sort lies primarily in its relative ease of
-implementation and in its efficiency for small or nearly sorted ranges. In general-purpose production code,
+implementation, which makes it a convenient case study for generic algorithm design. In general-purpose production code,
 however, a standard library algorithm such as <code>std::ranges::sort</code> will usually be a more appropriate choice,
 offering better asymptotic complexity and a highly optimized implementation.
 </div>
