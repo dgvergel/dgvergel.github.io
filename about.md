@@ -46,4 +46,6 @@ The author has not deliberately incorporated third-party advertising services, a
 
 The blog does not provide comment systems, contact forms, newsletters, user accounts or other mechanisms managed by the author for the direct collection of visitors' personal data.
 
+<hr style="margin: 0.8em 0;">
+
 Last technical review: November 1, 2026.
