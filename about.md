@@ -6,9 +6,16 @@ permalink: /about/
 
 ## Author of the blog
 
+<img src="/assets/images/dgvergel-portrait.webp"
+     alt="Daniel Gómez Vergel"
+     width="160"
+     style="float: right; margin: 0 0 1em 1.5em; border-radius: 8px;">
+
 I hold a Bachelor's degree in Physics from the University of Seville and a Ph.D. in Theoretical Physics from the Complutense University of Madrid. I currently serve as Head of the Department of Technology & Education at Universidad Europea de Andalucía (Málaga, Spain), where I teach courses in Physics and Programming within the Bachelor’s Degree in Computer Engineering.
 
 You can also find me on [LinkedIn](https://www.linkedin.com/in/dgvergel/).
+
+<div style="clear: both;"></div>
 
 ## Nature of the content
 
