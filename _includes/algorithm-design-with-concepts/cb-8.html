@@ -14,13 +14,13 @@
 insertion_sort(books, ranges::greater{}, &amp;Book::price);
 
 <span style="color: #569cd6;">for</span> (Book <span style="color: #569cd6;">const</span>&amp; b : books) {
-&nbsp; &nbsp;println(<span style="color: #ce9178;">"title: {:&lt;30} | price: {}"</span>, b.title, b.price);
+&nbsp; &nbsp;println(<span style="color: #ce9178;">"title: {:&lt;30} | price: {} €"</span>, b.title, b.price);
 }
 
 <span style="color: #6a9955;">/* output:</span>
-<span style="color: #6a9955;">&nbsp; &nbsp;title: The Count of Monte Cristo      | price: 12.89</span>
-<span style="color: #6a9955;">&nbsp; &nbsp;title: Chronicle of a Death Foretold  | price: 10.59</span>
-<span style="color: #6a9955;">&nbsp; &nbsp;title: A Study in Scarlet             | price: 9.89</span>
-<span style="color: #6a9955;">&nbsp; &nbsp;title: Romeo and Juliet               | price: 8.95</span>
-<span style="color: #6a9955;">&nbsp; &nbsp;title: War and Peace                  | price: 7.59  </span>
+<span style="color: #6a9955;">&nbsp; &nbsp;title: The Count of Monte Cristo      | price: 12.89 €</span>
+<span style="color: #6a9955;">&nbsp; &nbsp;title: Chronicle of a Death Foretold  | price: 10.59 €</span>
+<span style="color: #6a9955;">&nbsp; &nbsp;title: A Study in Scarlet             | price: 9.89 €</span>
+<span style="color: #6a9955;">&nbsp; &nbsp;title: Romeo and Juliet               | price: 8.95 €</span>
+<span style="color: #6a9955;">&nbsp; &nbsp;title: War and Peace                  | price: 7.59 €</span>
 <span style="color: #6a9955;">*/</span>
