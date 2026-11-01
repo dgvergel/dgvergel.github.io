@@ -324,5 +324,5 @@ Note: This post is an English translation of my earlier post originally publishe
 [^8]: Stack Overflow - [How to implement classic sorting algorithms in modern C++?](https://stackoverflow.com/questions/24650626/how-to-implement-classic-sorting-algorithms-in-modern-c)
 [^9]: foonathan::​blog() - [C++20’s Iterator Sentinels](https://foonathan.net/2020/03/iterator-sentinel/)
 [^10]: cppreference.com - [Constant expression](https://en.cppreference.com/w/c/language/constant_expression)
-[^11]: Compiler Explorer - [Test with GCC](https://godbolt.org/z/dKqqaofY1)
+[^11]: Compiler Explorer - [Test with GCC](https://godbolt.org/z/Wd99cq1Eh)
 [^12]: Eric Niebler - [Quicksort of an array of ints at compile-time using C++17 constexpr](https://twitter.com/ericniebler/status/1270832838754004992)
