@@ -12,7 +12,7 @@
 &nbsp; &nbsp;<span style="color: #569cd6;">if</span> <span style="color: #569cd6;">constexpr</span> (sized_sentinel_for&lt;S, I&gt;) {
 &nbsp; &nbsp; &nbsp; <span style="color: #569cd6;">if</span> (last - first &lt;= <span style="color: #b5cea8;">1</span>) <span style="color: #569cd6;">return</span>;<span style="color: #6a9955;">                              // (A)</span>
 &nbsp; &nbsp;} <span style="color: #569cd6;">else</span> {
-&nbsp; &nbsp; &nbsp; <span style="color: #569cd6;">if</span> (first == last or ranges::next(first) == last) <span style="color: #569cd6;">return</span>;<span style="color: #6a9955;">   // (B)</span>
+&nbsp; &nbsp; &nbsp; <span style="color: #569cd6;">if</span> (first == last <span style="color: #569cd6;">or</span> ranges::next(first) == last) <span style="color: #569cd6;">return</span>;<span style="color: #6a9955;">   // (B)</span>
 &nbsp; &nbsp;}
 
 &nbsp; &nbsp;<span style="color: #569cd6;">for</span> (I <span style="color: #569cd6;">const</span> i : views::iota(ranges::next(first), last)) {
