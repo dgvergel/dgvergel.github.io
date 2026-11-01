@@ -19,14 +19,14 @@ We will explore how concepts, ranges, and projections, introduced in C++20 and s
 can be used to express the requirements of the algorithm and allow it to operate on a variety of sequence containers,
 such as `std::vector` and `std::list`.
 
-<div class="dgv-note">A <b>concept</b> is a named compile-time predicate that specifies requirements on template arguments and
+<div class="dgv-def">A <b>concept</b> is a named compile-time predicate that specifies requirements on template arguments and
 can be used to constrain the interfaces of class and function templates. By detecting violations of these constraints during
 compilation, concepts generally enable clearer and more informative diagnostic messages. Beyond expressing syntactic requirements,
 concepts are intended to model meaningful semantic categories and properties that can be reused across generic code.
-<hr style="border: 0; border-top: 1px solid #2EA043; margin: 0.8em 0;">
+<hr>
 A <b>range</b> identifies a sequence of elements to which a computation is to be applied. It can be specified by an iterator and a
 sentinel denoting its beginning and end, or by an iterator and a count specifying its beginning and number of elements.
-<hr style="border: 0; border-top: 1px solid #2EA043; margin: 0.8em 0;">
+<hr>
 A <b>projection</b> is a transformation applied by an algorithm to an element before its value is inspected.
 </div>
 
