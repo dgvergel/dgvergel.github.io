@@ -108,7 +108,8 @@ Whenever `bool(first != last)` evaluates to `true`, `first` must be dereferencea
 * The types `I`, `Comp`, and `Proj` must jointly satisfy the `std::sortable` concept[^6], which is
 defined as the conjunction of the concepts `std::permutable` and `std::indirect_strict_weak_order` (see the listing below).
 Among other requirements, `std::permutable` ensures that the iterator type supports the indirect movement, storage, and swapping of elements, while `std::indirect_strict_weak_order` requires the comparison predicate to induce a strict weak ordering on the projected elements.
-In practice, however, the compiler can verify only the syntactic requirements imposed on `Comp`; the semantic requirements of a strict weak ordering, including irreflexivity and transitivity, must be satisfied by the programmer.
+In practice, however, the compiler can only verify that `Comp` can be used as a binary predicate on the projected elements; the semantic
+requirements of a strict weak ordering, including irreflexivity and transitivity, must be satisfied by the programmer.
 
 Omitting namespace qualification for clarity, `std::sortable` is defined essentially as follows:
 
