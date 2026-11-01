@@ -24,8 +24,9 @@ can be used to constrain the interfaces of class and function templates. By dete
 compilation, concepts generally enable clearer and more informative diagnostic messages. Beyond expressing syntactic requirements,
 concepts are intended to model meaningful semantic categories and properties that can be reused across generic code.
 <hr>
-A <b>range</b> identifies a collection of elements to which a computation is to be applied. It can be specified by an iterator and a
-sentinel denoting its beginning and end, respectively, or by an iterator and a count specifying its beginning and number of elements.
+A <b>range</b> identifies a collection of elements to which a computation is to be applied through iteration. It can be specified by
+an iterator and a sentinel denoting its beginning and end, respectively, or by an iterator and a count specifying its beginning and
+number of elements.
 <hr>
 A <b>projection</b> is a transformation applied by an algorithm to an element before its value is inspected.
 </div>
