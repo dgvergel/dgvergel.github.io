@@ -121,7 +121,7 @@ Omitting namespace qualification for clarity, `std::sortable` is defined essenti
 {% include algorithm-design-with-concepts/cb-2.html %}
 </div>
 
-<div class="dgv-note">Note that we do not require objects of type <code>std::iter_value_t<I></code> to be copyable.
+<div class="dgv-note">Note that we do not require objects of type <code>std::iter_value_t&lt;I&gt;</code> to be copyable.
 Copyability would be a stronger requirement than necessary and would prevent the algorithm from supporting
 move-only types. We wish, for example, to sort ownership-enforcing smart pointers such as <code>std::unique_ptr</code>
 according to the values of the objects they own, a case that we will examine later.
@@ -166,9 +166,10 @@ permutation of `[j, ranges::next(i))`.
        style="max-width: 100%; height: auto;">
 </div>
 
-It is worth noting, in particular, how every operation performed within the function body conforms
-exactly to the constraints imposed on its arguments. Also note that the comparator and projection
+<div class="dgv-note">It is worth noting, in particular, how every operation performed within the function
+body conforms exactly to the constraints imposed on its arguments. Also note that the comparator and projection
 objects are passed by value, consistently with the interfaces of the standard Ranges algorithms.
+</div>
 
 We shall also provide an overload of the algorithm that operates directly on a range, rather than on
 the iterator-sentinel pair used by the first version:
