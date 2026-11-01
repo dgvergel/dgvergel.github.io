@@ -229,7 +229,7 @@ the iterator type `I` (a `char*`) and the sentinel type `S` (named `Zstr_sentine
 {% include algorithm-design-with-concepts/cb-10.html %}
 </div>
 
-A more detailed explanation of the `Zstr_sentinel` type can be found in reference[^9].
+A more detailed explanation of the `Zstr_sentinel` type is available in the literature.[^9]
 
 ### Example 4: Compile-time sorting
 
