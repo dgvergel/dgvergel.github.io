@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "Algorithm Design with Concepts"
+title: "Algorithm Design with Concepts, Ranges, and Projections"
 author: Daniel Gómez Vergel
 date: 2026-10-31
 last_modified_at: 2026-10-31
@@ -14,10 +14,10 @@ excerpt: >
 
 ### Introduction
 
-In this post, we will consider the problem of implementing the well-known insertion sort algorithm using generic
-programming techniques, so that it can be used with a variety of sequence containers such as `std::vector` or `std::list`.
-We will examine its implementation in light of the introduction of concepts, ranges, and projections into the C++20
-and subsequent standards[^1]<sup>,</sup>[^2]<sup>,</sup>[^3]<sup>,</sup>[^4].
+In this post, we will use the well-known insertion sort algorithm as a case study in the design of generic algorithms.
+We will explore how concepts, ranges, and projections, introduced in C++20 and subsequent standards[^1],[^2],[^3],[^4],
+can be used to express the requirements of the algorithm and allow it to operate on a variety of sequence containers,
+such as `std::vector` and `std::list`.
 
 <div class="dgv-note">A <b>concept</b> is a named compile-time predicate that specifies requirements on template arguments and
 can be used to constrain the interfaces of class and function templates. By detecting violations of these constraints during
