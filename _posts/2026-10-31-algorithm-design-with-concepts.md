@@ -44,17 +44,15 @@ satisfies the following properties:
 
 Consequently, `equiv` partitions the elements into equivalence classes, on which `comp` induces a strict total ordering.
 
-Let us consider a range `R` containing at least two elements. During its
-first iteration, insertion sort must order the first two elements of `R`, that is, if `comp(R[1], R[0])`
-evaluates to `true`, the two elements must be swapped; otherwise, they remain in their original positions.
-Next, we insert the third element, `R[2]` (if it exists), into the correct position within the already
-sorted subrange `{R[0], R[1]}`. At this point, the first three elements of `R` are correctly ordered.
-We then insert the fourth element, `R[3]` (if it exists), into its proper position with respect to the
-already sorted subrange `{R[0], R[1], R[2]}`, and so on until the entire range `R` has been sorted.[^5]
-
-<div class="dgv-note">Here, we use <code>R[i]</code> as a convenient notation for the <code>i</code>-th
-element of the range. It does not imply random access to the elements of <code>R</code>.
-</div>
+Let us consider a range `R` containing at least two elements, denoted in their order of occurrence by `r₀, r₁, ...`.
+This notation does not imply random access.
+During its first iteration, insertion sort must order the first two elements of `R`,
+that is, if `comp(r₁, r₀)` evaluates to `true`, the two elements must be swapped;
+otherwise, they remain in their original positions. Next, we insert the third element, `r₂` (if it exists),
+into the correct position within the already sorted subrange `{r₀, r₁}`. At this point, the first
+three elements of `R` are correctly ordered. We then insert the fourth element, `r₃` (if it exists), into its
+proper position with respect to the already sorted subrange `{r₀, r₁, r₂}`, and so on
+until the entire range `R` has been sorted.[^5]
 
 The following figure shows, from left to right and from top to bottom, the successive iterations involved
 in sorting the sequence `R = {5, 3, 1, 2}` in ascending order:
