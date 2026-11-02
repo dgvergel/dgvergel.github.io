@@ -3,7 +3,7 @@ layout: post
 title: "Algorithm Design with Concepts, Ranges, and Projections"
 author: Daniel Gómez Vergel
 date: 2026-10-31
-last_modified_at: 2026-11-01
+last_modified_at: 2026-11-02
 categories: [C++, algorithms, concepts, projections, ranges]
 permalink: /2026/10/31/algorithm-design-with-concepts/
 excerpt: >
@@ -137,14 +137,14 @@ such as `std::array` and `std::vector`:
 </div>
 
 Next, we shall implement the body of `insertion_sort` as a composition of well-known standard
-algorithms.[^7]<sup>,</sup>[^8] This provides a direct and concise formulation that supports forward ranges,
-although not necessarily the most efficient possible implementation::
+algorithms.[^7]<sup>,</sup>[^8] This provides a direct and concise formulation that supports forward ranges (note
+that performance is not our primary concern here):
 
 <div class="dgv-cb">
 {% include algorithm-design-with-concepts/cb-4.html %}
 </div>
 
-As an optimization, we take into account that if the range to be sorted, `[first, last)` , is empty
+First, we take into account that if the range to be sorted, `[first, last)` , is empty
 or contains only a single element, the algorithm can terminate immediately. The compiler selects the
 first branch **(A)**  when `S` and `I` model `std::sized_sentinel_for` (as is the case, for example, for a pair of random-access iterators),
 in which case their distance can be obtained in constant time. Otherwise, the second branch **(B)** is used.
