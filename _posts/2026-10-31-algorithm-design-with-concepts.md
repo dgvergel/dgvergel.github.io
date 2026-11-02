@@ -136,7 +136,9 @@ such as `std::array` and `std::vector`:
 {% include algorithm-design-with-concepts/cb-3.html %}
 </div>
 
-Next, we shall implement the body of `insertion_sort` as a composition of well-known standard algorithms[^7]<sup>,</sup>[^8]:
+Next, we shall implement the body of `insertion_sort` as a composition of well-known standard
+algorithms.[^7]<sup>,</sup>[^8] This provides a direct and concise formulation that supports forward ranges,
+although not necessarily the most efficient possible implementation::
 
 <div class="dgv-cb">
 {% include algorithm-design-with-concepts/cb-4.html %}
