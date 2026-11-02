@@ -157,7 +157,7 @@ To locate the insertion position `j`, we distinguish two cases according to the 
 from the element immediately preceding `i`. The `std::ranges::find_if_not` algorithm **(C)** stops as soon as it finds
 an element that the current element does not precede according to `comp` and `proj`. The `base()` member of the resulting
 reverse iterator then yields the position immediately after that element.
-* `I` is only a forward iterator: the `std::ranges::upper_bound algorithm` **(D)** performs a binary search on the
+* `I` is only a forward iterator: the `std::ranges::upper_bound` algorithm **(D)** performs a binary search on the
 sorted subrange `[first, i)` to locate the insertion position.
 
 In either case, the resulting iterator `j` denotes a position after any previously processed elements equivalent to the
@@ -336,7 +336,7 @@ Note: This post is a translated and expanded version of an earlier article that 
 [^6]: cppreference.com - [std::sortable](https://en.cppreference.com/w/cpp/iterator/sortable)
 [^7]: cppreference.com - [std::ranges::find_if_not](https://en.cppreference.com/cpp/algorithm/ranges/find)
 [^8]: cppreference.com - [std::ranges::upper_bound](https://en.cppreference.com/cpp/algorithm/ranges/upper_bound)
-[^9]: cppreference.com - [std::rotate](https://en.cppreference.com/w/cpp/algorithm/rotate)
+[^9]: cppreference.com - [std::ranges::rotate](https://en.cppreference.com/cpp/algorithm/ranges/rotate)
 [^10]: Stack Overflow - [How to implement classic sorting algorithms in modern C++?](https://stackoverflow.com/questions/24650626/how-to-implement-classic-sorting-algorithms-in-modern-c)
 [^11]: foonathan::​blog() - [C++20’s Iterator Sentinels](https://foonathan.net/2020/03/iterator-sentinel/)
 [^12]: cppreference.com - [Constant expression](https://en.cppreference.com/w/c/language/constant_expression)
