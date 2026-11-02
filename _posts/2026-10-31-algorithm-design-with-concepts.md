@@ -146,16 +146,23 @@ that performance is not our primary concern here):
 
 First, we take into account that if the range to be sorted, `[first, last)` , is empty
 or contains only a single element, the algorithm can terminate immediately. The compiler selects the
-first branch **(A)**  when `S` and `I` model `std::sized_sentinel_for` (as is the case, for example, for a pair of random-access iterators),
-in which case their distance can be obtained in constant time. Otherwise, the second branch **(B)** is used.
-This is typically the case, for example, with iterator pairs from `std::list` or `std::forward_list`.
+first branch **(A)**  when `S` and `I` model `std::sized_sentinel_for` (as is the case, for example, for a pair of
+random-access iterators), in which case their distance can be obtained in constant time. Otherwise, the second
+branch **(B)** is used. This is typically the case, for example, with iterator pairs from `std::list` or `std::forward_list`.
 
 At the beginning of each `for` loop iteration, the subrange `[first, i)` is sorted. The current element,
 denoted by `i`, is then inserted into its proper position, after which `[first, std::ranges::next(i))` is sorted.
-To achieve this, the `std::ranges::upper_bound algorithm` **(C)** performs a binary search on the sorted subrange `[first, i)` to
-locate the insertion position `j` after any elements equivalent to the current one according to `comp` and `proj`. That is,
-`!bool(std::invoke(comp, std::invoke(proj, *i), std::invoke(proj, *k)))` evaluates to `true` for every iterator `k` in the subrange `[first, j)`.
-The `std::ranges::rotate` algorithm **(D)** then moves the element denoted by `i` to position `j` by means of a cyclic
+To locate the insertion position `j`, we distinguish two cases according to the capabilities of the iterator type:
+* `I` models `std::bidirectional_iterator`: the sorted subrange `[first, i)` is traversed in reverse order, starting
+from the element immediately preceding `i`. The `std::ranges::find_if_not` algorithm ***(C)*** stops as soon as it finds
+an element that the current element does not precede according to `comp` and `proj`. The `base()` member of the resulting
+reverse iterator then yields the position immediately after that element, which becomes the insertion position `j`.
+* `I` is only a forward iterator: the `std::ranges::upper_bound algorithm` **(D)** performs a binary search on the
+sorted subrange `[first, i)` to locate the insertion position `j` after any elements equivalent to the current one according
+to `comp` and `proj`. That is, `!bool(std::invoke(comp, std::invoke(proj, *i), std::invoke(proj, *k)))` evaluates to `true`
+for every iterator `k` in the subrange `[first, j)`.
+
+In either case, the `std::ranges::rotate` algorithm **(E)** then moves the element denoted by `i` to position `j` by means of a cyclic
 permutation of `[j, std::ranges::next(i))`.
 
 <div style="text-align: center; margin: 2em 0;">
