@@ -137,7 +137,7 @@ such as `std::array` and `std::vector`:
 </div>
 
 Next, we shall implement the body of `insertion_sort` as a composition of well-known standard
-algorithms.[^7]<sup>,</sup>[^8] This provides a direct and concise formulation that supports forward ranges:
+algorithms.[^7]<sup>,</sup>[^8]<sup>,</sup>[^9]<sup>,</sup>[^10]This provides a direct and concise formulation that supports forward ranges:
 
 <div class="dgv-cb">
 {% include algorithm-design-with-concepts/cb-4.html %}
@@ -239,11 +239,11 @@ the iterator type `I` (a `char*`) and the sentinel type `S` (named `Zstr_sentine
 
 Here, the null character belongs to the underlying array but acts as the end marker, and is therefore
 not part of the range being sorted. A more detailed explanation of the `Zstr_sentinel` type is available
-in the literature.[^9]
+in the literature.[^11]
 
 ### Example 4: Compile-time sorting
 
-We will conclude this article by putting C++’s compile-time computation capabilities to the test once again. The reader will no doubt have noticed that the `insertion_sort` overloads have been declared `constexpr`. This allows them to be evaluated at compile time when invoked in a context that requires a constant expression.[^10]
+We will conclude this article by putting C++’s compile-time computation capabilities to the test once again. The reader will no doubt have noticed that the `insertion_sort` overloads have been declared `constexpr`. This allows them to be evaluated at compile time when invoked in a context that requires a constant expression.[^12]
 
 As an example, let us define the following `Sorted_array<T, N, Comp, Proj>` class template, which publicly inherits from `std::array<T, N>`. Given an array rvalue, a comparator, and a projection, the class constructor will store and sort the data by calling `insertion_sort`:
 
@@ -258,7 +258,7 @@ Let us consider the following simple program:
 </div>
 
 The generated x86-64 assembly (compiled with GCC 16.2 using -O3 and -DNDEBUG) shows that the sorting of `entries` has been
-completed at compile time; its elements already appear in descending order, and no run-time sorting code is generated[^11]:
+completed at compile time; its elements already appear in descending order, and no run-time sorting code is generated[^13]:
 
 <div class="dgv-terminal-out">.LC0:
         .string "%d\n"
@@ -289,7 +289,7 @@ the executable contains only the already sorted data and the instructions requir
 </div>
 
 Interestingly, the Clang 23.1.0 compiler is able to unroll the `for` loop used for printing and produce
-a sequence of calls to `printf`.[^12] Such a transformation may improve execution speed in some circumstances,
+a sequence of calls to `printf`.[^14] Such a transformation may improve execution speed in some circumstances,
 at the cost of increasing the size of the generated code:
 
 <div class="dgv-terminal-out">main:
@@ -323,7 +323,7 @@ at the cost of increasing the size of the generated code:
 </div>
 
 ---
-Note: This post is an English translation of my earlier post originally published in Spanish on Blogger as [Programando con C++20 (Parte I): Concepts](https://dgvergel.blogspot.com/2020/06/programando-cpp20-parte-i.html).
+Note: This post is a translated and expanded version of an earlier article that I originally published in Spanish on Blogger: [Programando con C++20 (Parte I): Concepts](https://dgvergel.blogspot.com/2020/06/programando-cpp20-parte-i.html).
 
 ### Bibliography
 
@@ -333,9 +333,11 @@ Note: This post is an English translation of my earlier post originally publishe
 [^4]: cppreference.com - [Rages library](https://en.cppreference.com/w/cpp/ranges)
 [^5]: Cormen T. H., et al., *Introduction to Algorithms*. 3rd Edition, MIT Press (2009).
 [^6]: cppreference.com - [std::sortable](https://en.cppreference.com/w/cpp/iterator/sortable)
-[^7]: cppreference.com - [std::rotate](https://en.cppreference.com/w/cpp/algorithm/rotate)
-[^8]: Stack Overflow - [How to implement classic sorting algorithms in modern C++?](https://stackoverflow.com/questions/24650626/how-to-implement-classic-sorting-algorithms-in-modern-c)
-[^9]: foonathan::​blog() - [C++20’s Iterator Sentinels](https://foonathan.net/2020/03/iterator-sentinel/)
-[^10]: cppreference.com - [Constant expression](https://en.cppreference.com/w/c/language/constant_expression)
-[^11]: Compiler Explorer - [Test with GCC](https://godbolt.org/z/oq8qWf8Ef)
-[^12]: Eric Niebler - [Quicksort of an array of ints at compile-time using C++17 constexpr](https://godbolt.org/z/wtsYKF)
+[^7]: cppreference.com - [std::ranges::find_if_not](https://en.cppreference.com/cpp/algorithm/ranges/find)
+[^8]: cppreference.com - [std::ranges::upper_bound](https://en.cppreference.com/cpp/algorithm/ranges/upper_bound)
+[^9]: cppreference.com - [std::rotate](https://en.cppreference.com/w/cpp/algorithm/rotate)
+[^10]: Stack Overflow - [How to implement classic sorting algorithms in modern C++?](https://stackoverflow.com/questions/24650626/how-to-implement-classic-sorting-algorithms-in-modern-c)
+[^11]: foonathan::​blog() - [C++20’s Iterator Sentinels](https://foonathan.net/2020/03/iterator-sentinel/)
+[^12]: cppreference.com - [Constant expression](https://en.cppreference.com/w/c/language/constant_expression)
+[^13]: Compiler Explorer - [Test with GCC](https://godbolt.org/z/oq8qWf8Ef)
+[^14]: Eric Niebler - [Quicksort of an array of ints at compile-time using C++17 constexpr](https://godbolt.org/z/wtsYKF)
