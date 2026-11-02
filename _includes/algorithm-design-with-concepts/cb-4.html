@@ -16,7 +16,24 @@
 &nbsp; &nbsp;}
 
 &nbsp; &nbsp;<span style="color: #569cd6;">for</span> (I <span style="color: #569cd6;">const</span> i : views::iota(ranges::next(first), last)) {
-&nbsp; &nbsp; &nbsp; I <span style="color: #569cd6;">const</span> j = ranges::upper_bound(first, i, invoke(proj, *i), comp, proj);<span style="color: #6a9955;">  // (C)</span>
-&nbsp; &nbsp; &nbsp; ranges::rotate(j, i, ranges::next(i));<span style="color: #6a9955;">                                    // (D)</span>
+&nbsp; &nbsp; &nbsp; I <span style="color: #569cd6;">const</span> j = [=]{
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <span style="color: #569cd6;">if</span> <span style="color: #569cd6;">constexpr</span> (bidirectional_iterator<I>) {
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <span style="color: #569cd6;">auto</span> rev = ranges::subrange{first, i} | views::reverse;
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <span style="color: #569cd6;">return</span> ranges::find_if_not(<span style="color: #6a9955;"> // (C)</span>
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; rev,
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; [=](<span style="color: #569cd6;">auto const</span>& elem) {
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <span style="color: #569cd6;">return</span> invoke(
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; comp, 
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; invoke(proj, *i),
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; invoke(proj, elem)
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; );
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; }
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; ).base();
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; }
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; else {
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <span style="color: #569cd6;">return</span> ranges::upper_bound(first, i, invoke(proj, *i), comp, proj);<span style="color: #6a9955;"> // (D)</span>
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; }
+&nbsp; &nbsp; &nbsp; }();
+&nbsp; &nbsp; &nbsp; ranges::rotate(j, i, ranges::next(i));<span style="color: #6a9955;"> // (E)</span>
 &nbsp; &nbsp;}
 }
