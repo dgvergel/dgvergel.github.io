@@ -137,8 +137,7 @@ such as `std::array` and `std::vector`:
 </div>
 
 Next, we shall implement the body of `insertion_sort` as a composition of well-known standard
-algorithms.[^7]<sup>,</sup>[^8] This provides a direct and concise formulation that supports forward ranges (note
-that performance is not our primary concern here):
+algorithms.[^7]<sup>,</sup>[^8] This provides a direct and concise formulation that supports forward ranges:
 
 <div class="dgv-cb">
 {% include algorithm-design-with-concepts/cb-4.html %}
@@ -154,15 +153,17 @@ At the beginning of each `for` loop iteration, the subrange `[first, i)` is sort
 denoted by `i`, is then inserted into its proper position, after which `[first, std::ranges::next(i))` is sorted.
 To locate the insertion position `j`, we distinguish two cases according to the capabilities of the iterator type:
 * `I` models `std::bidirectional_iterator`: the sorted subrange `[first, i)` is traversed in reverse order, starting
-from the element immediately preceding `i`. The `std::ranges::find_if_not` algorithm ***(C)*** stops as soon as it finds
+from the element immediately preceding `i`. The `std::ranges::find_if_not` algorithm **(C)** stops as soon as it finds
 an element that the current element does not precede according to `comp` and `proj`. The `base()` member of the resulting
-reverse iterator then yields the position immediately after that element, which becomes the insertion position `j`.
+reverse iterator then yields the position immediately after that element.
 * `I` is only a forward iterator: the `std::ranges::upper_bound algorithm` **(D)** performs a binary search on the
-sorted subrange `[first, i)` to locate the insertion position `j` after any elements equivalent to the current one according
-to `comp` and `proj`. That is, `!bool(std::invoke(comp, std::invoke(proj, *i), std::invoke(proj, *k)))` evaluates to `true`
-for every iterator `k` in the subrange `[first, j)`.
+sorted subrange `[first, i)` to locate the insertion position.
 
-In either case, the `std::ranges::rotate` algorithm **(E)** then moves the element denoted by `i` to position `j` by means of a cyclic
+In either case, the resulting iterator `j` denotes a position after any previously processed elements equivalent to the
+current one according to `comp` and `proj`. More precisely, `!bool(std::invoke(comp, std::invoke(proj, *i), std::invoke(proj, *k)))`
+evaluates to `true` for every iterator `k` in the subrange `[first, j)`.
+
+The `std::ranges::rotate` algorithm **(E)** then moves the element denoted by `i` to position `j` by means of a cyclic
 permutation of `[j, std::ranges::next(i))`.
 
 <div style="text-align: center; margin: 2em 0;">
@@ -336,5 +337,5 @@ Note: This post is an English translation of my earlier post originally publishe
 [^8]: Stack Overflow - [How to implement classic sorting algorithms in modern C++?](https://stackoverflow.com/questions/24650626/how-to-implement-classic-sorting-algorithms-in-modern-c)
 [^9]: foonathan::​blog() - [C++20’s Iterator Sentinels](https://foonathan.net/2020/03/iterator-sentinel/)
 [^10]: cppreference.com - [Constant expression](https://en.cppreference.com/w/c/language/constant_expression)
-[^11]: Compiler Explorer - [Test with GCC](https://godbolt.org/z/j6PhKMW1f)
+[^11]: Compiler Explorer - [Test with GCC](https://godbolt.org/z/oq8qWf8Ef)
 [^12]: Eric Niebler - [Quicksort of an array of ints at compile-time using C++17 constexpr](https://godbolt.org/z/wtsYKF)
