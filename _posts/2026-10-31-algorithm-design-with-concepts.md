@@ -31,8 +31,6 @@ or by an iterator and a count denoting the beginning and the number of elements 
 A <b>projection</b> is a transformation applied by an algorithm to an element before its value is inspected.
 </div>
 
-For the sole purpose of making the code easier to read, we will use the `using namespace std;` directive throughout the code.
-
 ### Insertion sort
 
 Let `R` be a range to be sorted according to a given binary predicate `comp`, which
@@ -76,13 +74,13 @@ offering better asymptotic complexity and a highly optimized implementation.
 Let us consider a half-open range `R = [first, last)` to be sorted using insertion sort,
 where `first` is an iterator of type `I` and `last` is a sentinel of type `S` (which need not be the same
 type as `I`, as we shall see in a later example). Let `proj` denote a projection to be applied to the
-elements of the range. As we have already mentioned, a projection allows the sorting algorithm to apply
-transformations to range elements before comparing their values. It may, for example, be a function object
-or a pointer to a data member. This makes it possible, for instance, to sort objects according to the ordering
-of one of their data members.  Let `comp` denote the binary predicate evaluated on the projected values of the range
-elements. The range `R` is said to be ordered with respect to `comp` and `proj` if, for every iterator `i` referring to
+elements of the range.  It may, for example, be a function object or a pointer to a data member.
+As we have already mentioned, a projection allows the algorithm to apply transformations to range elements
+before comparing their values. This makes it possible, for instance, to sort objects according
+to the ordering of one of their data members.  Let `comp` denote the binary predicate evaluated on the projected values of
+the range elements. The range `R` is said to be ordered with respect to `comp` and `proj` if, for every iterator `i` referring to
 one of its elements, `std::invoke(comp, std::invoke(proj, *std::ranges::next(i, n)), std::invoke(proj, *i))` evaluates to
-`false` for every positive integer `n` such that `std::ranges::next(i, n)` still refers to a valid element of the range.
+`false` for every positive integer `n` such that `std::ranges::next(i, n)` still denotes a valid element of the range.
 
 <div class="dgv-note">The use of the standard function template <code>std::invoke</code> is justified in
 this generic programming context by the variety of callable entities that may be used to represent <code>comp</code>
@@ -90,7 +88,8 @@ and <code>proj</code>, including function objects, function pointers, and pointe
 </div>
 
 We shall introduce the following interface for the `insertion_sort` algorithm, making the constraints imposed on its
-argument types explicit:
+argument types explicit. In what follows, we will use the `using namespace std;` directive throughout the code to improve
+readability:
 
 <div class="dgv-cb">
 {% include algorithm-design-with-concepts/cb-1.html %}
@@ -100,16 +99,18 @@ As we can see, we have specified a number of constraints both within the templat
 (enclosed in angle brackets) and through the `requires` clause. In order of appearance:
 
 * The iterator type `I` must model the `std::forward_iterator` concept. In particular, it must be incrementable (`++`),
-dereferenceable when it refers to an element, and support multiple passes over the same range.
+dereferenceable when it denotes an element, and support multiple independent passes over the same range.
 * The type `S` must model `std::sentinel_for<S, I>`, allowing a value of type `S` to denote the end of a range whose
 iterator type is `I`. In particular, an iterator of type `I` must be weakly equality-comparable with a sentinel of type `S`.
 Whenever `bool(first != last)` evaluates to `true`, `first` must be dereferenceable, and incrementing it must leave
 `[first, last)` as a valid range.
 * The types `I`, `Comp`, and `Proj` must jointly satisfy the `std::sortable` concept[^6], which is
 defined as the conjunction of the concepts `std::permutable` and `std::indirect_strict_weak_order` (see the listing below).
-Among other requirements, `std::permutable` ensures that the iterator type supports the indirect movement, storage, and swapping of elements, while `std::indirect_strict_weak_order` requires the comparison predicate to induce a strict weak ordering on the projected elements.
-In practice, however, the compiler can only verify that `Comp` can be used as a binary predicate on the projected elements; the semantic
-requirements of a strict weak ordering, including irreflexivity and transitivity, must be satisfied by the programmer.
+Among other requirements, `std::permutable` ensures that the iterator type supports the indirect movement, storage,
+and swapping of elements, while `std::indirect_strict_weak_order` requires the comparison predicate to induce a strict weak
+ordering on the projected elements. For the latter, however, the compiler can only verify that `Comp` can be used as a binary
+predicate on the projected elements; the semantic requirements of a strict weak ordering, including irreflexivity and
+transitivity, must be satisfied by the programmer.
 
 Omitting namespace qualification for clarity, `std::sortable` is defined essentially as follows:
 
@@ -208,7 +209,8 @@ Alternatively, the array could be sorted using a projection that dereferences th
 
 As we have seen, projections allow the sorting algorithm to specify which value derived from each range element is
 to be used for comparison. As a further example, the following simple code sorts a vector of `Book` objects
-according to one of their public data members, `price`, using `std::ranges::greater` to sort the books in descending order:
+according to one of their public data members, `price`, using the `std::ranges::greater` function object to sort the
+books in descending order:
 
 <div class="dgv-cb">
 {% include algorithm-design-with-concepts/cb-8.html %}
@@ -227,7 +229,9 @@ the iterator type `I` (a `char*`) and the sentinel type `S` (named `Zstr_sentine
 {% include algorithm-design-with-concepts/cb-10.html %}
 </div>
 
-A more detailed explanation of the `Zstr_sentinel` type is available in the literature.[^9]
+Here, the null character belongs to the underlying array but acts as the end marker, and is therefore
+not part of the range being sorted. A more detailed explanation of the `Zstr_sentinel` type is available
+in the literature.[^9]
 
 ### Example 4: Compile-time sorting
 
@@ -246,7 +250,7 @@ Let us consider the following simple program:
 </div>
 
 The generated x86-64 assembly (compiled with GCC 16.2 using -O3 and -DNDEBUG) shows that the sorting of `entries` has been
-completed at compile time: its elements already appear in descending order, and no run-time sorting code is generated[^11]:
+completed at compile time; its elements already appear in descending order, and no run-time sorting code is generated[^11]:
 
 <div class="dgv-terminal-out">.LC0:
         .string "%d\n"
@@ -272,8 +276,9 @@ completed at compile time: its elements already appear in descending order, and 
         .long   -3
 </div>
 
-Remarkably, none of the machinery used to sort the array appears in the generated run-time code:
+<div class="dgv-note">Remarkably, none of the machinery used to sort the array appears in the generated run-time code:
 the executable contains only the already sorted data and the instructions required to print it.
+</div>
 
 Interestingly, the Clang 23.1.0 compiler is able to unroll the `for` loop used for printing and produce
 a sequence of calls to `printf`.[^12] Such a transformation may improve execution speed in some circumstances,
