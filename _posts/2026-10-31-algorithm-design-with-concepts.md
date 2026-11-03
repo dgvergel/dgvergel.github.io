@@ -152,7 +152,7 @@ branch **(B)** is used. This is typically the case, for example, with iterator p
 
 At the beginning of each `for` loop iteration, the subrange `[first, i)` is sorted. The current element,
 denoted by `i`, is then inserted into its proper position, after which `[first, std::ranges::next(i))` is sorted.
-To locate the insertion position `j`, we distinguish two cases according to the capabilities of the iterator type:
+To locate the insertion position `j`, we distinguish two strategies according to the capabilities of the iterator type:
 * `I` models `std::bidirectional_iterator`: the sorted subrange `[first, i)` is traversed in reverse order, starting
 from the element immediately preceding `i`. The `std::ranges::find_if_not` algorithm **(C)** stops as soon as it finds
 an element that the current element does not precede according to `comp` and `proj`. The `base()` member of the resulting
