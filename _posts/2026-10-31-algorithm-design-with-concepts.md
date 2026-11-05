@@ -25,7 +25,7 @@ overloads and template specializations. These constraints are checked at compile
 informative diagnostic messages when they are not satisfied. Beyond expressing syntactic requirements, concepts are intended
 to model meaningful semantic categories and properties that can be reused across generic code.
 <hr>
-A <b>range</b> designates a collection of elements, potentially unbounded, over which a computation is to be performed through
+A <b>range</b> designates a sequence of elements, potentially unbounded, over which a computation is to be performed through
 iteration. It is specified by an iterator and a sentinel denoting the beginning and end of the computation, respectively.
 The sentinel need not have the same type as the iterator.
 <hr>
