@@ -3,7 +3,7 @@ layout: post
 title: "Algorithm Design with Concepts, Ranges, and Projections"
 author: Daniel Gómez Vergel
 date: 2026-10-31
-last_modified_at: 2026-11-02
+last_modified_at: 2026-11-05
 categories: [C++, algorithms, concepts, projections, ranges]
 permalink: /2026/10/31/algorithm-design-with-concepts/
 excerpt: >
@@ -19,10 +19,11 @@ We will explore how concepts, ranges, and projections, introduced in C++20 and f
 standards[^1]<sup>,</sup>[^2]<sup>,</sup>[^3]<sup>,</sup>[^4], can be used to express the requirements of the algorithm
 and allow it to operate on a variety of sequence containers, such as `std::vector` and `std::list`.
 
-<div class="dgv-def">A <b>concept</b> is a named compile-time predicate that specifies a set of requirements on template arguments
-and can be used to constrain the interfaces of class and function templates. By checking these constraints at compile time,
-concepts generally provide clear and informative diagnostic messages. Beyond expressing syntactic requirements,
-concepts are intended to model meaningful semantic categories and properties that can be reused across generic code.
+<div class="dgv-def">A <b>concept</b> is a named compile-time predicate that defines a set of constraints on template arguments
+and can be used to restrict the interfaces of class and function templates, as well as to select the most appropriate function
+overloads and template specializations. These constraints are checked at compile time and generally provide clearer and more
+informative diagnostic messages when they are not satisfied. Beyond expressing syntactic requirements, concepts are intended
+to model meaningful semantic categories and properties that can be reused across generic code.
 <hr>
 A <b>range</b> designates a collection of elements, potentially unbounded, over which a computation is to be performed through
 iteration. It is specified by an iterator and a sentinel denoting the beginning and end of the computation, respectively.
