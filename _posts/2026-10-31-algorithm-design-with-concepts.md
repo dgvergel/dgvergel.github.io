@@ -16,8 +16,9 @@ excerpt: >
 
 In this post, we will use the well-known insertion sort algorithm as a case study in the design of generic algorithms.
 We will explore how concepts, ranges, and projections, introduced in C++20 and further developed in subsequent
-standards[^1]<sup>,</sup>[^2]<sup>,</sup>[^3]<sup>,</sup>[^4], can be used to express the requirements of the algorithm
-and allow it to operate on a variety of sequence containers, such as `std::vector` and `std::list`.
+standards[^1]<sup>,</sup>[^2]<sup>,</sup>[^3]<sup>,</sup>[^4], can be used to develop a flexible generic implementation of the
+algorithm, capable of operating on a variety of sequence containers such as `std::vector` and `std::list`. For readers unfamiliar
+with these features, we begin with brief working definitions, which will become clearer as we use them throughout the article:
 
 <div class="dgv-def">A <b>concept</b> is a named compile-time predicate that defines a set of constraints on template arguments
 and can be used to restrict the interfaces of class and function templates, as well as to select the most appropriate function
