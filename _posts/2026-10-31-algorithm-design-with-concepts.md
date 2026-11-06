@@ -45,7 +45,7 @@ satisfies the following properties:
 
 Consequently, `equiv` partitions the elements into equivalence classes, on which `comp` induces a strict total ordering.
 
-Let us consider a range `R` containing at least two elements, denoted in their order of occurrence by `r₀, r₁, ...`.
+Let us assume that the range `R` contains at least two elements, denoted in order of occurrence by `r₀, r₁, ...`.
 This notation does not imply random access.
 During its first iteration, insertion sort must order the first two elements of `R`,
 that is, if `comp(r₁, r₀)` evaluates to `true`, the two elements must be swapped;
@@ -97,7 +97,7 @@ readability:
 As we can see, we have specified a number of constraints both within the template parameter list
 (enclosed in angle brackets) and through the `requires` clause. In order of appearance:
 
-* The iterator type `I` must model the `std::forward_iterator` concept. In particular, it must be incrementable (`++`),
+* The iterator type `I` must model at least the `std::forward_iterator` concept. In particular, it must be incrementable (`++`),
 dereferenceable when it denotes an element, and support multiple independent passes over the same range.
 * The type `S` must model `std::sentinel_for<S, I>`, allowing a value of type `S` to denote the end of a range whose
 iterator type is `I`. In particular, an iterator of type `I` must be weakly equality-comparable with a sentinel of type `S`.
