@@ -83,7 +83,7 @@ before comparing their values. This makes it possible, for instance, to sort obj
 to the ordering of one of their data members.  Let `comp` denote the binary predicate evaluated on the projected values of
 the range elements. The range `R` is said to be ordered with respect to `comp` and `proj` if, for every iterator `i` referring to
 one of its elements, `std::invoke(comp, std::invoke(proj, *std::ranges::next(i, n)), std::invoke(proj, *i))` evaluates to
-`false` for every positive integer `n` such that `std::ranges::next(i, n)` still denotes a valid element of the range.
+`false` for every positive integer offset `n` such that `std::ranges::next(i, n)` still denotes a valid element of the range.
 
 <div class="dgv-note">The use of the standard function template <code>std::invoke</code> is justified in
 this generic programming context by the variety of callable entities that may be used to represent <code>comp</code>
@@ -351,5 +351,5 @@ Note: This post is a translated and expanded version of an earlier article that 
 [^10]: Stack Overflow - [How to implement classic sorting algorithms in modern C++?](https://stackoverflow.com/questions/24650626/how-to-implement-classic-sorting-algorithms-in-modern-c)
 [^11]: foonathan::​blog() - [C++20’s Iterator Sentinels](https://foonathan.net/2020/03/iterator-sentinel/)
 [^12]: cppreference.com - [Constant expression](https://en.cppreference.com/w/c/language/constant_expression)
-[^13]: Compiler Explorer - [Test with GCC](https://godbolt.org/z/cxr96T5rY)
+[^13]: Compiler Explorer - [Article's code (compiled with GCC)](https://godbolt.org/z/cxr96T5rY)
 [^14]: Eric Niebler - [Quicksort of an array of ints at compile-time using C++17 constexpr](https://godbolt.org/z/wtsYKF)
