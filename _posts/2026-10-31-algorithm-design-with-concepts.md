@@ -3,7 +3,7 @@ layout: post
 title: "Algorithm Design with Concepts, Ranges, and Projections"
 author: Daniel Gómez Vergel
 date: 2026-10-31
-last_modified_at: 2026-11-05
+last_modified_at: 2026-11-06
 categories: [C++, algorithms, concepts, projections, ranges]
 permalink: /2026/10/31/algorithm-design-with-concepts/
 excerpt: >
@@ -24,7 +24,9 @@ with these features, we begin with brief working definitions, which will become 
 and can be used to restrict the interfaces of class and function templates, as well as to select the most appropriate function
 overloads and template specializations. These constraints are checked at compile time and generally provide clearer and more
 informative diagnostic messages when they are not satisfied. Beyond expressing syntactic requirements, concepts are intended
-to model meaningful semantic categories and properties that can be reused across generic code.
+to model meaningful semantic categories and properties that can be reused across generic code. Although concepts can express both
+syntactic and semantic requirements, compilers generally check only the former. Semantic requirements must generally be ensured by
+the programmer.
 <hr>
 A <b>range</b> designates a sequence of elements, potentially unbounded, over which a computation is to be performed through
 iteration. It is specified by an iterator and a sentinel denoting the beginning and end of the computation, respectively.
@@ -349,5 +351,5 @@ Note: This post is a translated and expanded version of an earlier article that 
 [^10]: Stack Overflow - [How to implement classic sorting algorithms in modern C++?](https://stackoverflow.com/questions/24650626/how-to-implement-classic-sorting-algorithms-in-modern-c)
 [^11]: foonathan::​blog() - [C++20’s Iterator Sentinels](https://foonathan.net/2020/03/iterator-sentinel/)
 [^12]: cppreference.com - [Constant expression](https://en.cppreference.com/w/c/language/constant_expression)
-[^13]: Compiler Explorer - [Test with GCC](https://godbolt.org/z/oq8qWf8Ef)
+[^13]: Compiler Explorer - [Test with GCC](https://godbolt.org/z/cxr96T5rY)
 [^14]: Eric Niebler - [Quicksort of an array of ints at compile-time using C++17 constexpr](https://godbolt.org/z/wtsYKF)
