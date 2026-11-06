@@ -65,10 +65,11 @@ in sorting the sequence `R = {5, 3, 1, 2}` in ascending order:
        style="max-width: 100%; height: auto;">
 </div>
 
-<div class="dgv-note">Admittedly, the appeal of insertion sort lies primarily in its relative ease of
-implementation, which makes it a convenient case study for generic algorithm design. In general-purpose production code,
-however, a standard library algorithm such as <code>std::ranges::sort</code> will usually be a more appropriate choice,
-offering better asymptotic complexity and a highly optimized implementation.
+<div class="dgv-note">Insertion sort remains useful for small sequences and performs particularly
+well on nearly sorted data. Its relative ease of implementation also makes it a convenient case study
+for generic algorithm design. For general-purpose sorting, however, a standard library algorithm such as
+<code>std::ranges::sort</code> will usually be a more appropriate choice. Interestingly, implementations
+of standard sorting algorithms commonly use insertion sort internally to handle small subranges.
 </div>
 
 Let us consider a half-open range `R = [first, last)` to be sorted using insertion sort,
@@ -120,7 +121,7 @@ Omitting namespace qualification for clarity, `std::sortable` is defined essenti
 
 <div class="dgv-note">Note that we do not require objects of type <code>std::iter_value_t&lt;I&gt;</code> to be copyable.
 Copyability would be a stronger requirement than necessary and would prevent the algorithm from supporting
-move-only types. We wish, for example, to sort ownership-enforcing smart pointers such as <code>std::unique_ptr</code>
+move-only types. We may wish, for example, to sort exclusive-ownership smart pointers such as <code>std::unique_ptr</code>
 according to the values of the objects they own, a case that we will examine later.
 </div>
 
