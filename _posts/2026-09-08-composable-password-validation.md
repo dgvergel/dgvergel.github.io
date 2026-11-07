@@ -21,8 +21,8 @@ length falls within the allowed range `[Min_sz, Max_sz]` and that the password c
 characters. Additional rules can then be added to require the presence of digits, lowercase letters,
 uppercase letters, and/or special characters.
 
-A traditional object-oriented solution could rely on dynamic polymorphism and the Decorator pattern[^1]<sup>,</sup>[^2],
-allowing validation policies to be selected and composed at runtime. In this article, we will take a
+A traditional object-oriented solution could rely on dynamic polymorphism and the Decorator pattern,[^1]<sup>,</sup>[^2] allowing
+validation policies to be selected and composed at runtime. In this article, we will take a
 different approach: policy selection will be performed entirely at compile time, making the validator
 configuration part of the type itself. As a result, the implementation will avoid virtual dispatch
 and perform no dynamic allocations.
@@ -112,8 +112,8 @@ in three stages:
 3. Check that every policy in `Policies...` has been satisfied by at least one character in the password.
 
 The password is processed sequentially, with each character updating a validation state that
-records which policy requirements have already been satisfied. This state is stored in a `std::bitset<policy_count>`[^3],
-whose bits are in one-to-one correspondence with the policies in the
+records which policy requirements have already been satisfied. This state is stored in a
+`std::bitset<policy_count>`,[^3] whose bits are in one-to-one correspondence with the policies in the
 `Policies...` pack. Each bit indicates whether the corresponding requirement has been met. 
 As soon as all bits become set, validation succeeds and processing stops immediately; otherwise, the
 scan continues until the end of the password.
