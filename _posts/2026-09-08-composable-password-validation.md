@@ -13,7 +13,7 @@ excerpt: >
 
 {% include post-categories.html %}
 
-### Introduction
+## Introduction
 
 This article presents the design of a simple password validator that can be configured by composing
 independent validation policies. As a baseline requirement, our validator will verify that the password
@@ -56,7 +56,7 @@ making all its functionality available through a single `import password_validat
 The complete module may be reconstructed by simply concatenating the code fragments presented in the
 following sections. The project has been tested with GCC 16.2.
 
-### Character-level policies
+## Character-level policies
 
 The following listing introduces the set of character-level validation policies that can be composed
 to build custom password validators. Each policy is implemented as a stateless function object
@@ -82,7 +82,7 @@ to select rules directly within pipeline expressions:
 {% include composable-password-validation/cb-3.html %}
 </div>
 
-### Validation engine
+## Validation engine
 
 We can now implement a variadic password validator parameterized by both the allowed length bounds and
 the set of character policies selected by the programmer.
@@ -146,7 +146,7 @@ one of three kinds of expansions:
   <li>An <b>iterating expansion</b>, which expands over an expansion-iterable expression whose number of elements can be determined during constant evaluation.</li>
 </ol></div>
 
-### Pipeline composition
+## Pipeline composition
 
 The following overload of `operator|` allows validation policies to be added using a
 pipeline-style syntax. Given an existing validator configuration, the operator returns
@@ -163,7 +163,7 @@ validator configuration is encoded in its template arguments: no additional runt
 is required, and policy composition introduces no runtime overhead.
 </div>
 
-### Runtime validation
+## Runtime validation
 
 Finally, the following `main()` function demonstrates how the validator can be used with
 passwords entered at runtime:
@@ -174,7 +174,7 @@ passwords entered at runtime:
 
 ---
 
-### Bibliography
+## Bibliography
 
 [^1]: wikipedia.org – [Decorator pattern](https://en.wikipedia.org/wiki/Decorator_pattern)
 [^2]: Marius Bancila. 2018. *The Modern C++ Challenge*. Packt Publishing.
