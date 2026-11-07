@@ -12,7 +12,7 @@ excerpt: >
 
 {% include post-categories.html %}
 
-### Introduction
+## Introduction
 
 In this post, we will use the well-known insertion sort algorithm as a case study in the design of generic algorithms.
 We will explore how concepts, ranges, and projections, introduced in C++20 and further developed in subsequent
@@ -35,7 +35,7 @@ The sentinel need not have the same type as the iterator.
 A <b>projection</b> is a transformation applied by an algorithm to an element before its value is inspected.
 </div>
 
-### Insertion sort
+## Insertion sort
 
 Let `R` be a range to be sorted according to a given binary predicate `comp`, which
 must induce a strict weak ordering on the values being compared. That is, we assume that `comp`
@@ -207,7 +207,7 @@ In this version, we require the type `R` to satisfy the `std::ranges::forward_ra
 subsequently require the range iterator type `std::ranges::iterator_t<R>`, the comparator type `Comp`,
 and the projection type `Proj` to satisfy the `std::sortable` concept.
 
-### Example 1: Movable but non-copyable elements
+## Example 1: Movable but non-copyable elements
 
 The following code shows how the previous algorithm can be used to sort an array of movable but non-copyable elements,
 in this case `std::unique_ptr<int>` smart pointers. The comparator, defined as a lambda expression, takes two such pointers
@@ -232,7 +232,7 @@ Alternatively, the array could be sorted using a projection that dereferences th
 {% include algorithm-design-with-concepts/cb-7.html %}
 </div>
 
-### Example 2: Projections
+## Example 2: Projections
 
 As we have seen, projections allow the sorting algorithm to specify which value derived from each range element is
 to be used for comparison. As a further example, the following simple code sorts a vector of `Book` objects
@@ -243,7 +243,7 @@ books in descending order:
 {% include algorithm-design-with-concepts/cb-8.html %}
 </div>
 
-### Example 3: Sentinels
+## Example 3: Sentinels
 
 The following example sorts a C-style null-terminated string and illustrates a situation in which
 the iterator type `I` (a `char*`) and the sentinel type `S` (named `Zstr_sentinel`) are different:
@@ -260,7 +260,7 @@ Here, the null character belongs to the underlying array but acts as the end mar
 not part of the range being sorted. A more detailed explanation of the `Zstr_sentinel` type is available
 in the literature.[^11]
 
-### Example 4: Compile-time sorting
+## Example 4: Compile-time sorting
 
 We will conclude this article by putting C++’s compile-time computation capabilities to the test once again. The reader will no doubt have noticed that the `insertion_sort` overloads have been declared `constexpr`. This allows them to be evaluated at compile time when invoked in a context that requires a constant expression.[^12]
 
@@ -345,7 +345,7 @@ at the cost of increasing the size of the generated code:
 ---
 Note: This post is a translated and expanded version of an earlier article that I originally published in Spanish on Blogger: [Programando con C++20 (Parte I): Concepts](https://dgvergel.blogspot.com/2020/06/programando-cpp20-parte-i.html).
 
-### Bibliography
+## Bibliography
 
 [^1]: cppreference.com - [Constraints and concepts](https://en.cppreference.com/w/cpp/language/constraints)
 [^2]: cppreference.com - [Concepts library](https://en.cppreference.com/w/cpp/concepts)
