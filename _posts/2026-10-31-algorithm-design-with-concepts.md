@@ -3,7 +3,7 @@ layout: post
 title: "Algorithm Design with Concepts, Ranges, and Projections"
 author: Daniel Gómez Vergel
 date: 2026-10-31
-last_modified_at: 2026-11-06
+last_modified_at: 2026-11-07
 categories: [C++, algorithms, concepts, projections, ranges]
 permalink: /2026/10/31/algorithm-design-with-concepts/
 excerpt: >
@@ -115,8 +115,7 @@ incrementing it must leave `[first, last)` as a valid range. As noted before, `S
 defined as the conjunction of the concepts `std::permutable` and `std::indirect_strict_weak_order` (see the listing below).
 Among other requirements, `std::permutable` ensures that the iterator type supports the indirect movement, storage,
 and swapping of elements needed to rearrange them. Meanwhile, `std::indirect_strict_weak_order` requires the comparison predicate
-to induce a strict weak ordering on the projected elements; here, `std::projected<I, Proj>` provides an indirectly readable type
-whose reference type is the result of applying `Proj` to `std::iter_reference_t<I>`, the reference type of `I`.
+to induce a strict weak ordering on the projected elements.
 
 <div class="dgv-note">
 The compiler can check that <code>Comp</code> can be used as a predicate and that the required expressions are well-formed, but it
@@ -130,7 +129,11 @@ Omitting namespace qualification for clarity, `std::sortable` is defined essenti
 {% include algorithm-design-with-concepts/cb-2.html %}
 </div>
 
-<div class="dgv-note">Note that we do not require objects of type <code>std::iter_value_t&lt;I&gt;</code> to be copyable.
+<div class="dgv-note"> Here, <code>std::projected&lt;I, Proj&gt;</code> provides an indirectly readable type
+whose reference type is the result of applying <code>Proj</code> to <code>std::iter_value_t&lt;I&gt;</code>,
+the reference type of <code>I</code>.
+<hr>
+Note that we do not require objects of type <code>std::iter_value_t&lt;I&gt;</code> to be copyable.
 Copyability would be a stronger requirement than necessary and would prevent the algorithm from supporting
 move-only types. We may wish, for example, to sort exclusive-ownership smart pointers such as <code>std::unique_ptr</code>
 according to the values of the objects they own, a case that we will examine later.
