@@ -16,9 +16,9 @@ excerpt: >
 
 ### Introduction
 
-This article presents a complete concurrent programming example in C++, using it as a case study
-to explore dynamic task generation, work-completion detection, and the safe aggregation of partial
-results.
+This article presents a complete concurrent programming example in C++, using it as a case study to
+explore dynamic task generation and work-completion detection, while also showing how partial results
+can be safely aggregated.
 
 Given a directory path, our goal is to produce a statistical summary of the contents of its
 directory tree. For each file extension found (`.txt`, `.zip`, and so on), we will determine both
@@ -47,7 +47,7 @@ size: 210.1 MiB (220.308.703 bytes)
 together with the module system introduced in C++20. The latter allows us to organize the code efficiently into well-defined
 components. If necessary, adapting the solution to the traditional structure based on header (<code>.hpp</code>) and
 implementation (<code>.cpp</code>) files would be straightforward.
-<br><br>
+<hr>
 The project can already be compiled with GCC 16.2, which provides support for C++ contracts and modules. However, some module
 features are still unavailable, most notably private module fragments (<code>module :private;</code>).
 </div>
