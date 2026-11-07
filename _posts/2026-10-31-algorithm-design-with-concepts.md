@@ -16,16 +16,16 @@ excerpt: >
 
 In this post, we will use the well-known insertion sort algorithm as a case study in the design of generic algorithms.
 We will explore how concepts, ranges, and projections, introduced in C++20 and further developed in subsequent
-standards[^1]<sup>,</sup>[^2]<sup>,</sup>[^3]<sup>,</sup>[^4], can be used to develop a flexible generic implementation of the
-algorithm, capable of operating on a variety of sequence containers such as `std::vector` and `std::list`. For readers unfamiliar
-with these features, we begin with brief working definitions, which will become clearer as we use them throughout the article:
+standards,[^1]<sup>,</sup>[^2]<sup>,</sup>[^3]<sup>,</sup>[^4] can be used to develop a flexible generic implementation of the
+algorithm, capable of operating on a variety of sequence containers such as `std::vector` and `std::list`. For reference, we begin
+with brief working definitions:
 
 <div class="dgv-def">A <b>concept</b> is a named compile-time predicate that defines a set of constraints on template arguments
 and can be used to restrict the interfaces of class and function templates, as well as to select the most appropriate function
 overloads and template specializations. These constraints are checked at compile time and generally provide clearer and more
 informative diagnostic messages when they are not satisfied. Beyond expressing syntactic requirements, concepts are intended
 to model meaningful semantic categories and properties that can be reused across generic code. Although concepts can express both
-syntactic and semantic requirements, compilers generally check only the former. Semantic requirements must generally be ensured by
+syntactic and semantic requirements, compilers generally check only the former; semantic requirements must generally be ensured by
 the programmer.
 <hr>
 A <b>range</b> designates a sequence of elements, potentially unbounded, over which a computation is to be performed through
@@ -101,7 +101,7 @@ readability:
 As we can see, we have specified a number of constraints both within the template parameter list
 (enclosed in angle brackets) and through the `requires` clause. In order of appearance:
 
-* The iterator type `I` must model at least the `std::forward_iterator` concept. In particular, it must be copyable and
+* The iterator type `I` must model at least the `std::forward_iterator` concept. In particular, it must be copyable,
 incrementable (`++`), dereferenceable when it denotes an element, and support multiple independent passes over the same range.
 Note that <code>std::forward_iterator</code> does not require the iterator to support modification of the elements it refers to;
 that requirement is imposed separately by <code>std::permutable</code> (see below).
@@ -109,7 +109,7 @@ that requirement is imposed separately by <code>std::permutable</code> (see belo
 iterator type is `I`. In particular, `S` must be semiregular, and objects of types `I` and `S` must be weakly equality-comparable.
 One of its semantic requirements is that, whenever `bool(first != last)` evaluates to `true`, `first` must be dereferenceable, and
 incrementing it must leave `[first, last)` as a valid range. As noted before, `S` need not be the same type as `I`.
-* The types `I`, `Comp`, and `Proj` must jointly model the `std::sortable` concept[^6], which is
+* The types `I`, `Comp`, and `Proj` must jointly model the `std::sortable` concept,[^6] which is
 defined as the conjunction of the concepts `std::permutable` and `std::indirect_strict_weak_order` (see the listing below).
 Among other requirements, `std::permutable` ensures that the iterator type supports the indirect movement, storage,
 and swapping of elements needed to rearrange them. Meanwhile, `std::indirect_strict_weak_order` requires the comparison predicate
@@ -210,8 +210,8 @@ and dereferences them to establish the natural ordering of the integers they poi
 {% include algorithm-design-with-concepts/cb-6.html %}
 </div>
 
-The memory layout of the array in the example would follow a scheme like the one below, before and after sorting, with ownership
-of the managed integers being transferred as the smart pointers are moved:
+The memory layout of the array in the example would follow a scheme like the one below, before (left) and after (right) sorting,
+with ownership of the managed integers being transferred as the smart pointers are moved:
 
 <div style="text-align: center; margin: 2em 0;">
   <img src="{{ '/assets/images/algorithm-design-with-concepts/fig-3.webp' | relative_url }}"
@@ -257,7 +257,8 @@ in the literature.[^11]
 
 We will conclude this article by putting C++’s compile-time computation capabilities to the test once again. The reader will no doubt have noticed that the `insertion_sort` overloads have been declared `constexpr`. This allows them to be evaluated at compile time when invoked in a context that requires a constant expression.[^12]
 
-As an example, let us define the following `Sorted_array<T, N, Comp, Proj>` class template, which publicly inherits from `std::array<T, N>`. Given an array rvalue, a comparator, and a projection, the class constructor will store and sort the data by calling `insertion_sort`:
+As an example, let us define the following `Sorted_array<T, N, Comp, Proj>` class template, which publicly inherits from `std::array<T, N>`.
+Given an array rvalue, a comparator, and a projection, the class constructor will store and sort the data by calling `insertion_sort`:
 
 <div class="dgv-cb">
 {% include algorithm-design-with-concepts/cb-11.html %}
@@ -269,7 +270,7 @@ Let us consider the following simple program:
 {% include algorithm-design-with-concepts/cb-12.html %}
 </div>
 
-The generated x86-64 assembly (compiled with GCC 16.2 using -O3 and -DNDEBUG) shows that the sorting of `entries` has been
+The generated x86-64 assembly (compiled with GCC 16.2 using -O3 and -DNDEBUG) shows that the sorting of the array `entries` has been
 completed at compile time; its elements already appear in descending order, and no run-time sorting code is generated:[^13]
 
 <div class="dgv-terminal-out">.LC0:
