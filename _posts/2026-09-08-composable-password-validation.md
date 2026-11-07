@@ -133,8 +133,8 @@ with a policy has been set, that policy is excluded from subsequent evaluations.
 Internally, `update()` relies on a C++26 `template for` expansion[^4]<sup>,</sup>[^5] to expand the loop body
 once for each index of the policy pack, with `Idx` being a compile-time constant in each instantiation.
 For each index `Idx`, the pack indexing expression `Policies...[Idx]` retrieves the `Idx`-th policy type
-from the parameter pack. At runtime, if that policy evaluates to `true` for the current character and its bit is
-not already set, the corresponding bit in the `std::bitset` is set.
+from the parameter pack. At runtime, if the bit corresponding to that policy is not already set and the
+policy evaluates to `true` for the current character, the bit is set in the `std::bitset`.
 
 <div class="dgv-note">The new C++26 <code>template for</code> construct, formally known as an <i>expansion
 statement</i>, allows a compound statement to be instantiated repeatedly at compile time for each element of
