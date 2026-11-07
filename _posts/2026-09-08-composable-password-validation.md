@@ -3,7 +3,7 @@ layout: post
 title: "Compile-Time Policy Composition for Password Validation"
 author: Daniel Gómez Vergel
 date: 2026-09-08
-last_modified_at: 2026-09-26
+last_modified_at: 2026-11-07
 categories: [C++26, concepts, policy-based-design, bitset, template-for]
 permalink: /2026/09/08/composable-password-validation/
 excerpt: >
@@ -37,8 +37,8 @@ such as <code>template for</code> expansions.
 The following example illustrates how validation policies can be composed using the pipeline syntax.
 Starting from a validator that enforces only length constraints and the absence of whitespace
 characters (`check_0`), additional policies can be added incrementally. Validator `check_1`
-additionally requires at least one digit, whereas `check_2` also requires the presence of both
-lowercase and uppercase letters:
+builds on `check_0` by additionally requiring at least one digit, whereas `check_2` builds on
+`check_1` by further requiring the presence of both lowercase and uppercase letters:
 
 <div class="dgv-cb">
 {% include composable-password-validation/cb-1.html %}
@@ -60,9 +60,9 @@ following sections. The project has been tested with GCC 16.2.
 
 The following listing introduces the set of character-level validation policies that can be composed
 to build custom password validators. Each policy is implemented as a stateless function object
-providing an `operator()(char)` predicate that determines whether a given ASCII character satisfies a particular
-property. When such a policy is incorporated into a validator, the validator requires that at least
-one character in the password satisfy the predicate.
+providing a non-throwing `operator()(char)` predicate that determines whether a given ASCII character
+satisfies a particular property. When such a policy is incorporated into a validator, the validator
+requires that at least one character in the password satisfy the predicate.
 
 The available policies are:
 
@@ -101,7 +101,7 @@ possibly empty) specifying the requirements that a password must satisfy. A `sta
 that the lower bound does not exceed the upper bound.
 
 The minimum and maximum password sizes can be accessed through the public static data members `min_size` and
-`max_size`, respectively. The public `policy_count` constant provides the value of
+`max_size`, respectively. The public `policy_count` constant, meanwhile, provides the value of
 `sizeof...(Policies)`, that is, the number of validation policies configured at compile time.
 
 The validator's call operator, `operator()(std::string_view)`, performs the actual password validation
