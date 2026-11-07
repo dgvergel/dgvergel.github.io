@@ -97,6 +97,18 @@ $content-width: 1050px;
     font-family: Consolas, monospace !important;
     font-size: 0.9em !important;
   }
+  
+  // líneas horizontales dentro de las notas:
+  hr {
+    border: 0 !important;
+    border-top: 1.2px solid #3CD158 !important;
+    margin: 0.8em 0 !important;
+  }
+
+  // texto en negrita:
+  strong, b {
+    color: #2EA043 !important;
+  }
 }
 
 // estilo para definiciones:
@@ -132,7 +144,7 @@ $content-width: 1050px;
     font-size: 0.9em !important;
   }
 
-  // líneas horizontales dentro de las notas:
+  // líneas horizontales dentro de las definiciones:
   hr {
     border: 0 !important;
     border-top: 1.2px solid #3973B9 !important;
