@@ -136,14 +136,14 @@ For each index `Idx`, the pack indexing expression `Policies...[Idx]` retrieves 
 from the parameter pack. At runtime, if that policy evaluates to `true` for the current character and its bit is
 not already set, the corresponding bit in the `std::bitset` is set.
 
-<div class="dgv-note">The new C++26 <code>template for</code> construct, formally known as an expansion
-statement, allows a compound statement to be instantiated repeatedly at compile time for each element of
+<div class="dgv-note">The new C++26 <code>template for</code> construct, formally known as an <i>expansion
+statement</i>, allows a compound statement to be instantiated repeatedly at compile time for each element of
 one of three kinds of expansions:
 <br>
 <ol>
-  <li>An enumerating expansion, which expands over a braced expression list.</li>
-  <li>A destructuring expansion, which expands over the elements produced by a structured binding decomposition.</li>
-  <li>An iterating expansion, which expands over an expansion-iterable expression whose number of elements can be determined during constant evaluation.</li>
+  <li>An <b>enumerating expansion</b>, which expands over a braced expression list.</li>
+  <li>A <b>destructuring expansion</b>, which expands over the elements produced by a structured binding decomposition.</li>
+  <li>An <b>iterating expansion</b>, which expands over an expansion-iterable expression whose number of elements can be determined during constant evaluation.</li>
 </ol></div>
 
 ### Pipeline composition
