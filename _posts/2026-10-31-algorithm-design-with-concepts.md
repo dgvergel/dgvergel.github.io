@@ -174,6 +174,7 @@ To locate the insertion position `j`, we distinguish two strategies according to
 from the element immediately preceding `i`. The `std::ranges::find_if_not` algorithm **(C)** stops as soon as it finds
 an element that the current element does not precede according to `comp` and `proj`. The `base()` member of the resulting
 reverse iterator then yields the position immediately after that element.
+
 * `I` is only a forward iterator: the `std::ranges::upper_bound` algorithm **(D)** performs a binary search on the
 sorted subrange `[first, i)` to locate the insertion position.
 
