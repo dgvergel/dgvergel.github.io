@@ -12,6 +12,10 @@ $content-width: 1050px;
 
 @import "minima";
 
+.post-content h2 {
+  font-size: 1.25rem;
+}
+
 // apuntar al título principal h1 de las páginas con plantilla "page":
 .page-content .post-title {
   text-align: left !important;        
