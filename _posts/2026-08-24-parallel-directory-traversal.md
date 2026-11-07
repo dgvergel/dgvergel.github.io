@@ -14,7 +14,7 @@ excerpt: >
 
 {% include post-categories.html %}
 
-### Introduction
+## Introduction
 
 This article presents a complete concurrent programming example in C++, using it as a case study to
 explore dynamic task generation and work-completion detection, while also showing how partial results
@@ -52,7 +52,7 @@ The project can already be compiled with GCC 16.2, which provides support for C+
 features are still unavailable, most notably private module fragments (<code>module :private;</code>).
 </div>
 
-### Module 1: dynamic_task_queue
+## Module 1: dynamic_task_queue
 
 We begin by implementing a blocking concurrent work queue, `dynamic_task_queue<T>`, specifically
 designed for scenarios in which tasks can dynamically generate additional tasks during their execution.
@@ -105,7 +105,7 @@ is enforced by design through RAII:
 {% include parallel-directory-traversal/cb-1.html %}
 </div>
 
-### Module 2: statistics.directory
+## Module 2: statistics.directory
 
 This module implements the parallel analysis of a directory tree. Given a root directory (`root`),
 it produces an object of type `directory_statistics` containing:
@@ -159,7 +159,7 @@ subdirectories visited.
 {% include parallel-directory-traversal/cb-2.html %}
 </div>
 
-### Auxiliary modules
+## Auxiliary modules
 
 Before turning to the main program, we will define three simple auxiliary modules. Two of them provide thin
 wrappers around selected C library facilities, while the third offers formatting utilities for program output.
@@ -190,7 +190,7 @@ with thousands separators:
 {% include parallel-directory-traversal/cb-5.html %}
 </div>
 
-### Benchmarks
+## Benchmarks
 
 The following `main()` function benchmarks the various modules developed throughout
 this article. It performs the statistical analysis of a directory tree specified as a command-line
@@ -250,7 +250,7 @@ a `root` directory, we would write:
 
 Note: This post is an English translation of my earlier post originally published in Spanish on Blogger as [Programación Concurrente IX](https://dgvergel.blogspot.com/2026/08/programacion-concurrente-ix.html).
 
-### Bibliography
+## Bibliography
 
 [^1]: cppreference.com – [std::mutex](https://en.cppreference.com/cpp/thread/mutex)
 [^2]: cppreference.com – [std::condition_variable](https://en.cppreference.com/cpp/thread/condition_variable)
