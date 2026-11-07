@@ -105,15 +105,18 @@ As we can see, we have specified a number of constraints both within the templat
 incrementable (`++`), dereferenceable when it denotes an element, and support multiple independent passes over the same range.
 Note that <code>std::forward_iterator</code> does not require the iterator to support modification of the elements it refers to;
 that requirement is imposed separately by <code>std::permutable</code> (see below).
+
 * The type `S` must model `std::sentinel_for<S, I>`, allowing a value of type `S` to denote the end of a range whose
 iterator type is `I`. In particular, `S` must be semiregular, and objects of types `I` and `S` must be weakly equality-comparable.
 One of its semantic requirements is that, whenever `bool(first != last)` evaluates to `true`, `first` must be dereferenceable, and
 incrementing it must leave `[first, last)` as a valid range. As noted before, `S` need not be the same type as `I`.
+
 * The types `I`, `Comp`, and `Proj` must jointly model the `std::sortable` concept,[^6] which is
 defined as the conjunction of the concepts `std::permutable` and `std::indirect_strict_weak_order` (see the listing below).
 Among other requirements, `std::permutable` ensures that the iterator type supports the indirect movement, storage,
 and swapping of elements needed to rearrange them. Meanwhile, `std::indirect_strict_weak_order` requires the comparison predicate
-to induce a strict weak ordering on the projected elements.
+to induce a strict weak ordering on the projected elements; here, `std::projected<I, Proj>` provides an indirectly readable type
+whose reference type is the result of applying `Proj` to `std::iter_reference_t<I>`, the reference type of `I`.
 
 <div class="dgv-note">
 The compiler can check that <code>Comp</code> can be used as a predicate and that the required expressions are well-formed, but it
