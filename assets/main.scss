@@ -12,6 +12,11 @@ $content-width: 1050px;
 
 @import "minima";
 
+// resumen de post:
+.post-list > li > p {
+  color: #828282 !important;
+}
+
 // apuntar al título principal h1 de las páginas con plantilla "page":
 .page-content .post-title {
   text-align: left !important;        
