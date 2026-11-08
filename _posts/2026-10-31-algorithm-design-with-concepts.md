@@ -266,10 +266,13 @@ in the literature.[^11]
 
 ### Example 4: Compile-time sorting
 
-We will conclude this article by putting C++’s compile-time computation capabilities to the test once again. The reader will no doubt have noticed that the `insertion_sort` overloads have been declared `constexpr`. This allows them to be evaluated at compile time when invoked in a context that requires a constant expression.[^12]
+We will conclude this article by putting C++’s compile-time computation capabilities to the test once again.
+The reader will no doubt have noticed that the `insertion_sort` overloads have been declared `constexpr`.
+This allows them to be evaluated at compile time whenever the invocation can be evaluated as a constant expression.[^12]
 
-As an example, let us define the following `Sorted_array<T, N, Comp, Proj>` class template, which publicly inherits from `std::array<T, N>`.
-Given an array rvalue, a comparator, and a projection, the class constructor will store and sort the data by calling `insertion_sort`:
+As an example, let us define the following `Sorted_array<T, N, Comp, Proj>` class template, which publicly
+inherits from `std::array<T, N>`. Given an array rvalue, a comparator, and a projection, the class constructor
+will store and sort the data by calling `insertion_sort`:
 
 <div class="dgv-cb">
 {% include algorithm-design-with-concepts/cb-11.html %}
@@ -362,6 +365,6 @@ Note: This post is a translated and expanded version of an earlier article that 
 [^9]: cppreference.com - [std::ranges::rotate](https://en.cppreference.com/cpp/algorithm/ranges/rotate)
 [^10]: Stack Overflow - [How to implement classic sorting algorithms in modern C++?](https://stackoverflow.com/questions/24650626/how-to-implement-classic-sorting-algorithms-in-modern-c)
 [^11]: foonathan::​blog() - [C++20’s Iterator Sentinels](https://foonathan.net/2020/03/iterator-sentinel/)
-[^12]: cppreference.com - [Constant expression](https://en.cppreference.com/w/c/language/constant_expression)
+[^12]: cppreference.com - [Constant expression](https://cppreference.com/cpp/language/constant_expression)
 [^13]: Compiler Explorer - [Article's code (compiled with GCC)](https://godbolt.org/z/cxr96T5rY)
 [^14]: Eric Niebler - [Quicksort of an array of ints at compile-time using C++17 constexpr](https://godbolt.org/z/wtsYKF)
