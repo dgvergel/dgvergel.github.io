@@ -226,7 +226,8 @@ with ownership of the managed integers being transferred as the smart pointers a
        style="max-width: 100%; height: auto;">
 </div>
 
-Alternatively, the array could be sorted using a projection that dereferences each pointer:
+Alternatively, the array may be sorted using the default comparator `std::ranges::less` and a projection that
+dereferences each pointer:
 
 <div class="dgv-cb">
 {% include algorithm-design-with-concepts/cb-7.html %}
