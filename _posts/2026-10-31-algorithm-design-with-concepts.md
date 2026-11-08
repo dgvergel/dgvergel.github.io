@@ -236,8 +236,8 @@ Alternatively, the array could be sorted using a projection that dereferences ea
 
 As we have seen, projections allow the sorting algorithm to specify which value derived from each range element is
 to be used for comparison. As a further example, the following simple code sorts a vector of `Book` objects
-according to their public data member `price`, using the `std::ranges::greater` function object as the comparison
-criterion and the pointer to data member `&Book::price` as the projection, thereby sorting the books in descending
+according to their public data member `price`, using the `std::ranges::greater` function object as the comparator
+and the pointer to data member `&Book::price` as the projection, thereby sorting the books in descending
 order of price:
 
 <div class="dgv-cb">
