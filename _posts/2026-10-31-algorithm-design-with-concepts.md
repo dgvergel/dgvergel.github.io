@@ -268,7 +268,7 @@ in the literature.[^11]
 
 We will conclude this article by putting C++’s compile-time computation capabilities to the test once again.
 The reader will no doubt have noticed that the `insertion_sort` overloads have been declared `constexpr`.
-This allows them to be evaluated at compile time whenever the invocation can be evaluated as a constant expression.[^12]
+This allows them to be evaluated at compile time whenever the invocation is a constant expression.[^12]
 
 As an example, let us define the following `Sorted_array<T, N, Comp, Proj>` class template, which publicly
 inherits from `std::array<T, N>`. Given an array rvalue, a comparator, and a projection, the class constructor
