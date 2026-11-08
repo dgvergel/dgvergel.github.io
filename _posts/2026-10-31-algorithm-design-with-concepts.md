@@ -22,11 +22,10 @@ with brief working definitions:
 
 <div class="dgv-def">A <b>concept</b> is a named compile-time predicate that defines a set of constraints on template arguments
 and can be used to restrict the interfaces of class and function templates, as well as to select the most appropriate function
-overloads and template specializations. These constraints are checked at compile time and generally provide clearer and more
-informative diagnostic messages when they are not satisfied. Beyond expressing syntactic requirements, concepts are intended
+overloads and template specializations. These constraints are checked at compile time and can help compilers provide informative
+diagnostic messages when they are not satisfied. Beyond expressing syntactic requirements, concepts are intended
 to model meaningful semantic categories and properties that can be reused across generic code. Although concepts can express both
-syntactic and semantic requirements, compilers generally check only the former; semantic requirements must generally be ensured by
-the programmer.
+syntactic and semantic requirements, compilers can generally verify only the former, whereas the latter must be ensured by the programmer.
 <hr>
 A <b>range</b> designates a sequence of elements, potentially unbounded, over which a computation is to be performed through
 iteration. It is specified by an iterator and a sentinel denoting the beginning and end of the computation, respectively.
