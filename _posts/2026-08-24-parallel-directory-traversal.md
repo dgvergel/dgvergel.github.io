@@ -65,7 +65,7 @@ processed. This counter is incremented whenever a task is acquired and decrement
 As a result, the queue can detect global completion automatically, which occurs when there are neither
 pending tasks nor tasks in progress. The global termination condition is therefore: `tasks_.empty() and active_ == 0`.
 
-Both the queue and the counter are protected by a `std::mutex`[^1], while a `std::condition_variable`[^2] is
+Both the queue and the counter are protected by a `std::mutex`,[^1] while a `std::condition_variable`[^2] is
 used to block worker threads whenever no work is available and to wake them up when new tasks are
 added or when global completion is detected.
 
@@ -125,7 +125,7 @@ It initializes a `dynamic_task_queue<filesystem::path>` with the root directory,
 represents a directory pending analysis within the directory tree. The function then launches a configurable
 number of worker threads, `num_workers`, each of which produces a `directory_statistics` object containing the
 partial statistics gathered during its execution. Specifically, `num_workers - 1` workers are launched
-asynchronously using `std::async`[^3], while the main thread acts as an additional worker processing tasks
+asynchronously using `std::async`,[^3] while the main thread acts as an additional worker processing tasks
 from the shared queue.
 
 Each worker executes the `process_directories()` function, which repeatedly acquires directories from the queue
@@ -142,7 +142,7 @@ As workers discover new subdirectories, they are dynamically added to the queue 
 files are processed directly and never become tasks themselves.
 </div>
 
-The implementation of `process_directories()` is based on `std::filesystem::directory_iterator`[^4], which
+The implementation of `process_directories()` is based on `std::filesystem::directory_iterator`,[^4] which
 iterates over the entries contained within a directory but does not visit its
 subdirectories. The iteration order is unspecified by the standard, except that each directory entry
 is visited exactly once.
@@ -205,7 +205,7 @@ achieved when increasing the number of workers:
 </div>
 
 <div class="dgv-note" markdown="1">The number of worker threads <code>num_workers</code> defaults to
-<code>hardware_concurrency()</code>[^5], which
+<code>hardware_concurrency()</code>,[^5] which
 provides an estimate of the concurrency level available on the system, typically matching the number
 of hardware threads. However, this value should be interpreted as an indicative upper bound and not
 necessarily as the optimal number of workers. In practice, performance may saturate at a lower
