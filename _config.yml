@@ -6,8 +6,7 @@ author:
 
 remote_theme: jekyll/minima@v2.5.2
 
-minima:
-  show_excerpts: true
+show_excerpts: true
 
 plugins:
   - jekyll-remote-theme
