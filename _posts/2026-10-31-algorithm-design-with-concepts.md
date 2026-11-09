@@ -7,7 +7,8 @@ last_modified_at: 2026-11-08
 categories: [C++, algorithms, concepts, projections, ranges]
 permalink: /2026/10/31/algorithm-design-with-concepts/
 excerpt: >
-  In this post, we consider the problem of implementing the well-known insertion sort algorithm using generic programming techniques. We examine its implementation in light of the introduction of concepts, ranges, and projections into the C++20 language standard and later versions.
+  This post uses the well-known insertion sort algorithm as a case study to explore
+  the design of generic algorithms using concepts, ranges, and projections.
 ---
 
 {% include post-categories.html %}
