@@ -7,9 +7,8 @@ last_modified_at: 2026-09-19
 categories: [C++26, concurrency, task-generation]
 permalink: /2026/08/24/parallel-directory-traversal/
 excerpt: >
-  This article presents a parallel directory traversal
-  algorithm implemented in C++26 using modules and concurrent
-  programming techniques.
+  This article presents a parallel directory traversal algorithm implemented in C++26,
+  using it as a case study to explore dynamic task generation and work-completion detection.
 ---
 
 {% include post-categories.html %}
