@@ -7,8 +7,9 @@ last_modified_at: 2026-11-07
 categories: [C++26, concepts, policy-based-design, bitset, template-for]
 permalink: /2026/09/08/composable-password-validation/
 excerpt: >
-  A composable password validation framework in C++26 built around policy-based design and pipeline
-  composition.
+  This article presents the design of a simple password validator that can be configured by 
+  composing independent validation policies. The policies are selected at compile time, 
+  making the validator's configuration part of the type itself.
 ---
 
 {% include post-categories.html %}
