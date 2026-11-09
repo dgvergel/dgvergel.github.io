@@ -3,12 +3,12 @@ layout: post
 title: "Algorithm Design with Concepts, Ranges, and Projections"
 author: Daniel Gómez Vergel
 date: 2026-10-31
-last_modified_at: 2026-11-08
+last_modified_at: 2026-11-09
 categories: [C++, algorithms, concepts, projections, ranges]
 permalink: /2026/10/31/algorithm-design-with-concepts/
 excerpt: >
-  This post uses the well-known insertion sort algorithm as a case study to explore
-  the design of generic algorithms using concepts, ranges, and projections.
+  This post explores the design of generic algorithms with concepts, ranges,
+  and projections through the well-known insertion sort algorithm.
 ---
 
 {% include post-categories.html %}
@@ -76,7 +76,7 @@ of standard sorting algorithms commonly use insertion sort internally to handle 
 
 Let us consider a half-open range `R = [first, last)` to be sorted using insertion sort,
 where `first` is an iterator of type `I` and `last` is a sentinel of type `S` (which need not be the same
-type as `I`, as we shall see in a later example). Let `proj` denote a projection to be applied to the
+type as `I`, as we will see in a later example). Let `proj` denote a projection to be applied to the
 elements of the range.  It may, for example, be a function object or a pointer to a data member.
 As we have already mentioned, a projection allows the algorithm to apply transformations to range elements
 before comparing their values. This makes it possible, for instance, to sort objects according
@@ -90,7 +90,7 @@ this generic programming context by the variety of callable entities that may be
 and <code>proj</code>, including function objects, function pointers, and pointers to members.
 </div>
 
-We shall introduce the following interface for the `insertion_sort` algorithm, making the constraints imposed on its
+We will introduce the following interface for the `insertion_sort` algorithm, making the constraints imposed on its
 argument types explicit. In what follows, we will use the `using namespace std;` directive throughout the code to improve
 readability:
 
@@ -153,7 +153,7 @@ such as `std::array` and `std::vector`:
 {% include algorithm-design-with-concepts/cb-3.html %}
 </div>
 
-Next, we shall implement the body of `insertion_sort` as a composition of well-known standard
+Next, we will implement the body of `insertion_sort` as a composition of well-known standard
 algorithms.[^7]<sup>,</sup>[^8]<sup>,</sup>[^9]<sup>,</sup>[^10] This provides a direct and concise formulation
 that supports forward ranges:
 
@@ -196,7 +196,7 @@ body conforms exactly to the constraints imposed on its arguments. Also note tha
 objects are passed by value, consistently with the interfaces of the standard Ranges algorithms.
 </div>
 
-We shall also provide an overload of the algorithm that operates directly on a range, rather than on
+We will also provide an overload of the algorithm that operates directly on a range, rather than on
 the iterator-sentinel pair used by the first version:
 
 <div class="dgv-cb">
