@@ -168,7 +168,7 @@ random-access iterators), in which case their distance can be obtained in consta
 branch **(B)** is used. This is typically the case, for example, with iterator pairs from `std::list` or `std::forward_list`.
 
 At the beginning of each `for` loop iteration, the subrange `[first, i)` is sorted. The current element,
-denoted by `i`, is then inserted into its proper position, after which `[first, std::ranges::next(i))` is sorted.
+pointed to by the iterator `i`, is then inserted into its proper position, after which `[first, std::ranges::next(i))` is sorted.
 To locate the insertion position `j`, we distinguish two strategies according to the capabilities of the iterator type:
 * `I` models `std::bidirectional_iterator`: the sorted subrange `[first, i)` is traversed in reverse order, starting
 from the element immediately preceding `i`. The `std::ranges::find_if_not` algorithm **(C)** stops as soon as it finds
@@ -182,7 +182,7 @@ In either case, the resulting iterator `j` denotes a position after any previous
 current one according to `comp` and `proj`. More precisely, `!bool(std::invoke(comp, std::invoke(proj, *i), std::invoke(proj, *k)))`
 evaluates to `true` for every iterator `k` in the subrange `[first, j)`.
 
-The `std::ranges::rotate` algorithm **(E)** then moves the element denoted by `i` to position `j` by means of a cyclic
+The `std::ranges::rotate` algorithm **(E)** then moves the element pointed to by `i` to position `j` by means of a cyclic
 permutation of `[j, std::ranges::next(i))`.
 
 <div style="text-align: center; margin: 2em 0;">
