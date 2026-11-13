@@ -22,8 +22,8 @@ algorithm, capable of operating on a variety of sequence containers such as `std
 with brief working definitions:
 
 <div class="dgv-def">A <b>concept</b> is a named compile-time predicate that defines a set of constraints on template arguments
-and can be used to restrict the interfaces of class and function templates, as well as to select the most appropriate function
-overloads and template specializations. Concepts can help compilers provide informative diagnostic messages when their associated
+and can be used to restrict the interfaces of class and function templates, as well as to guide the selection of function overloads
+and template specializations. Concepts can help compilers provide informative diagnostic messages when their associated
 constraints are not satisfied. Beyond expressing syntactic requirements, concepts are intended to model meaningful semantic categories
 and properties that can be reused across generic code. Although concepts can express both syntactic and semantic requirements,
 compilers can generally verify only the former, whereas the latter must be ensured by the programmer.
