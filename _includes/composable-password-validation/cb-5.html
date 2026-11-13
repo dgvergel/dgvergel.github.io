@@ -11,9 +11,9 @@
 <span style="color: #569cd6;">export</span>
 <span style="color: #569cd6;">template</span>&lt;
    std::size_t Min_sz,
-   std::size_t Max_sz = Min_sz,
+   std::size_t Max_sz = std::numeric_limits&lt;std::size_t&lt;::max(),
    <span style="color: #569cd6;">Character_policy</span>... Policies
-&gt;
+&lt;
 <span style="color: #569cd6;">class</span> Password_validation {
    <span style="color: #569cd6;">static_assert</span>(
       Min_sz &lt;= Max_sz,
@@ -23,8 +23,6 @@
    <span style="color: #569cd6;">static</span> <span style="color: #569cd6;">constexpr</span> std::size_t min_size = Min_sz;
    <span style="color: #569cd6;">static</span> <span style="color: #569cd6;">constexpr</span> std::size_t max_size = Max_sz;
    <span style="color: #569cd6;">static</span> <span style="color: #569cd6;">constexpr</span> std::size_t policy_count = <span style="color: #569cd6;">sizeof...</span>(Policies);
-
-   <span style="color: #569cd6;">constexpr</span> Password_validation() = <span style="color: #569cd6;">default</span>;
 
    <span style="color: #c586c0;">[[nodiscard]]</span>
    <span style="color: #569cd6;">constexpr</span> <span style="color: #569cd6;">auto</span> operator()(std::string_view pwd) <span style="color: #569cd6;">const</span> <span style="color: #569cd6;">noexcept</span> -&gt; <span style="color: #569cd6;">bool</span>
@@ -48,7 +46,7 @@
                <span style="color: #569cd6;">return</span> <span style="color: #569cd6;">true</span>;
             }
          }
-         <span style="color: #569cd6;">return</span> state.all();
+         <span style="color: #569cd6;">return false</span>;
       }
    }
 
