@@ -21,7 +21,7 @@
             <span style="color: #569cd6;">auto</span> rev = ranges::subrange{first, i} | views::reverse;
             <span style="color: #569cd6;">return</span> ranges::find_if_not(<span style="color: #6a9955;">  // (C)</span>
                rev,
-               [&](<span style="color: #569cd6;">auto const</span>&amp; elem) {
+               [&](<span style="color: #569cd6;">auto</span>&amp;&amp; elem) {
                   <span style="color: #569cd6;">return</span> invoke(comp, invoke(proj, *i), invoke(proj, elem));
                }
             ).base();
