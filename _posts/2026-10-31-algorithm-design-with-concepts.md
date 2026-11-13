@@ -363,7 +363,7 @@ Note: This post is a translated and expanded version of an earlier article that 
 [^7]: cppreference.com - [std::ranges::find_if_not](https://en.cppreference.com/cpp/algorithm/ranges/find)
 [^8]: cppreference.com - [std::ranges::upper_bound](https://en.cppreference.com/cpp/algorithm/ranges/upper_bound)
 [^9]: cppreference.com - [std::ranges::rotate](https://en.cppreference.com/cpp/algorithm/ranges/rotate)
-[^10]: Stack Overflow - [How to implement classic sorting algorithms in modern C++?](https://stackoverflow.com/questions/24650626/how-to-implement-classic-sorting-algorithms-in-modern-c)
+[^10]: Stack Overflow - [How to implement classic sorting algorithms in modern C++?](https://stackoverflow.com/questions/24650626/how-to-implement-classic-sorting-algorithms-in-modern-c). See TemplateRex’s answer.
 [^11]: foonathan::​blog() - [C++20’s Iterator Sentinels](https://foonathan.net/2020/03/iterator-sentinel/)
 [^12]: cppreference.com - [Constant expression](https://cppreference.com/cpp/language/constant_expression)
 [^13]: Compiler Explorer - [Article's code (compiled with GCC)](https://godbolt.org/z/z9ro7sj9s)
