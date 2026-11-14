@@ -83,7 +83,7 @@ before comparing their values. This makes it possible, for instance, to sort obj
 to the ordering of one of their data members.  Let `comp` denote the binary predicate evaluated on the projected values of
 the range elements. The range `R` is said to be ordered with respect to `comp` and `proj` if, for every iterator `i` referring to
 one of its elements, `std::invoke(comp, std::invoke(proj, *std::ranges::next(i, n)), std::invoke(proj, *i))` evaluates to
-`false` for every positive integer offset `n` such that `std::ranges::next(i, n)` still denotes a valid element of the range.
+`false` for every positive integer offset `n` such that `std::ranges::next(i, n)` still refers to an element of the range.
 
 <div class="dgv-note">The use of the standard function template <code>std::invoke</code> is justified in
 this generic programming context by the variety of callable entities that may be used to represent <code>comp</code>
@@ -91,8 +91,8 @@ and <code>proj</code>, including function objects, function pointers, and pointe
 </div>
 
 We will introduce the following interface for the `insertion_sort` algorithm, making the constraints imposed on its
-argument types explicit. In what follows, we will use the `using namespace std;` directive throughout the code to improve
-readability:
+argument types explicit. In what follows, we will use the `using namespace std;` directive throughout the code solely
+to improve readability:
 
 <div class="dgv-cb">
 {% include algorithm-design-with-concepts/cb-1.html %}
@@ -101,26 +101,29 @@ readability:
 As we can see, we have specified a number of constraints both within the template parameter list
 (enclosed in angle brackets) and through the `requires` clause. In order of appearance:
 
-* The iterator type `I` must model at least the `std::forward_iterator` concept. In particular, it must be copyable,
-incrementable (`++`), dereferenceable when it denotes an element, and support multiple independent passes over the same range.
-Note that <code>std::forward_iterator</code> does not require the iterator to support modification of the elements it refers to;
+* The iterator type `I` must model at least the `std::forward_iterator` concept. In particular, it must be regular
+(that is, copyable, default constructible, and equality comparable), incrementable (`++`), dereferenceable when it refers to
+an element, and support multiple independent passes over the same range (the multi-pass guarantee). Note that
+<code>std::forward_iterator</code> does not require the iterator to support modification of the elements it refers to;
 that requirement is imposed separately by <code>std::permutable</code> (see below).
 
-* The type `S` must model `std::sentinel_for<S, I>`, allowing a value of type `S` to denote the end of a range whose
-iterator type is `I`. In particular, `S` must be semiregular, and objects of types `I` and `S` must be weakly equality-comparable.
-One of its semantic requirements is that, whenever `bool(first != last)` evaluates to `true`, `first` must be dereferenceable, and
-incrementing it must leave `[first, last)` as a valid range. As noted before, `S` need not be the same type as `I`.
+* The type `S` must model `std::sentinel_for<S, I>`, allowing a value of type `S` to mark the end of a range whose
+iterator type is `I`. In particular, `S` must be `std::semiregular`, and objects of types `I` and `S` must be weakly equality-comparable,
+so that expressions such as `first == last` and `first != last` are well-formed.  One of its semantic requirements is that, whenever
+`bool(first != last)` evaluates to `true`, `first` must be dereferenceable and `[++first, last)` must denote a valid range.
+As noted before, `S` need not be the same type as `I`.
 
 * The types `I`, `Comp`, and `Proj` must jointly model the `std::sortable` concept,[^6] which is
 defined as the conjunction of the concepts `std::permutable` and `std::indirect_strict_weak_order` (see the listing below).
-Among other requirements, `std::permutable` ensures that the iterator type supports the indirect movement, storage,
+Besides `std::forward_iterator`, `std::permutable` ensures that the iterator type supports the indirect movement, storage,
 and swapping of elements needed to rearrange them. Meanwhile, `std::indirect_strict_weak_order` requires the comparison predicate
-to induce a strict weak ordering on the projected elements.
+to induce a strict weak ordering on the projected elements. 
 
 <div class="dgv-note">
-The compiler can check that <code>Comp</code> can be used as a predicate and that the required expressions are well-formed, but it
-cannot verify the semantic requirements of a strict weak ordering (including irreflexivity, transitivity, and transitivity of
-the induced equivalence relation), which must therefore be ensured by the programmer.
+The compiler can check that <code>Comp</code> satisfies its syntactic requirements, namely, that it can be used as a predicate and
+that the required expressions are well-formed. However, it cannot verify the semantic requirements of a strict weak ordering
+(including irreflexivity, transitivity, and transitivity of the induced equivalence relation), which must therefore be ensured
+by the programmer.
 </div>
 
 Omitting namespace qualification for clarity, `std::sortable` is defined essentially as follows:
@@ -178,8 +181,8 @@ reverse iterator then yields the position immediately after that element.
 * `I` is only a forward iterator: the `std::ranges::upper_bound` algorithm **(D)** performs a binary search on the
 sorted subrange `[first, i)` to locate the insertion position.
 
-In either case, the resulting iterator `j` denotes a position after any previously processed elements equivalent to the
-current one according to `comp` and `proj`. More precisely, `!bool(std::invoke(comp, std::invoke(proj, *i), std::invoke(proj, *k)))`
+In either case, the resulting iterator `j` points to a position after all previously processed elements that are equivalent to the
+current element according to `comp` and `proj`. More precisely, `!bool(std::invoke(comp, std::invoke(proj, *i), std::invoke(proj, *k)))`
 evaluates to `true` for every iterator `k` in the subrange `[first, j)`.
 
 The `std::ranges::rotate` algorithm **(E)** then moves the element pointed to by `i` to position `j` by means of a cyclic
