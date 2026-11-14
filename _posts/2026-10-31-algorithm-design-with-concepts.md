@@ -3,7 +3,7 @@ layout: post
 title: "Algorithm Design with Concepts, Ranges, and Projections"
 author: Daniel Gómez Vergel
 date: 2026-10-31
-last_modified_at: 2026-11-09
+last_modified_at: 2026-11-14
 categories: [C++, algorithms, concepts, projections, ranges]
 permalink: /2026/10/31/algorithm-design-with-concepts/
 excerpt: >
@@ -37,25 +37,24 @@ A <b>projection</b> is a transformation applied by an algorithm to an element be
 
 ## Insertion sort
 
-Let `R` be a range to be sorted according to a given binary predicate `comp`, which
-must induce a strict weak ordering on the values being compared. That is, we assume that `comp`
-satisfies the following properties:
+Let `R = [first, last)` be a half-open range to be sorted, where `first` is an iterator of type `I` and
+`last` is a sentinel of type `S` (which need not be the same type as `I`, as we will see in a later example).
+Let `proj` denote a projection to be applied to the elements of the range. It may, for example, be a function
+object or a pointer to a data member. As we have already mentioned, a projection allows the algorithm to apply
+transformations to range elements before comparing their values. This makes it possible, for instance, to sort
+objects according to the ordering of one of their data members.
+
+Let `comp` denote a binary predicate applied to the projected values that induces a strict weak ordering on them.
+That is, we assume that `comp` satisfies the following properties:
 
 * Irreflexivity: `comp(a,a)` is false for every `a`.
 * Transitivity: `comp(a,b)` and `comp(b,c)` imply `comp(a,c)`.
 * If we define `equiv(a,b)` as `!comp(a,b) and !comp(b,a)`, then `equiv` must also be transitive:
 `equiv(a,b)` and `equiv(b,c)` imply `equiv(a,c)`.
 
-Consequently, `equiv` partitions the elements into equivalence classes, on which `comp` induces a strict total ordering.
+Consequently, `equiv` partitions the projected elements into equivalence classes, on which `comp` induces a strict total ordering.
 
-Let us consider a half-open range `R = [first, last)` to be sorted,
-where `first` is an iterator of type `I` and `last` is a sentinel of type `S` (which need not be the same
-type as `I`, as we will see in a later example). Let `proj` denote a projection to be applied to the
-elements of the range.  It may, for example, be a function object or a pointer to a data member.
-As we have already mentioned, a projection allows the algorithm to apply transformations to range elements
-before comparing their values. This makes it possible, for instance, to sort objects according
-to the ordering of one of their data members.  Let `comp` denote the binary predicate evaluated on the projected values of
-the range elements. The range `R` is said to be ordered with respect to `comp` and `proj` if, for every iterator `i` referring to
+The range `R` is said to be ordered with respect to `comp` and `proj` if, for every iterator `i` referring to
 one of its elements, `std::invoke(comp, std::invoke(proj, *std::ranges::next(i, n)), std::invoke(proj, *i))` evaluates to
 `false` for every positive integer offset `n` such that `std::ranges::next(i, n)` still refers to an element of the range.
 
