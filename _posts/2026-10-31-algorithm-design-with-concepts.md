@@ -42,17 +42,18 @@ objects according to the ordering of one of their data members.
 Let `R = [first, last)` be a half-open range to be sorted, where `first` is an iterator of type `I` and
 `last` is a sentinel of type `S`. Let `proj` denote the projection to be applied to the elements of `R`, and
 `comp` a binary predicate applied to the projected values that induces a strict weak ordering on them.
-That is, we assume that `comp` satisfies the following properties:
+That is, for any projected values `a`, `b`, and `c` obtained from elements of `R`, we assume that `comp`
+satisfies the following properties:
 
-* Irreflexivity: `comp(a,a)` is false for every `a`.
-* Transitivity: `comp(a,b)` and `comp(b,c)` imply `comp(a,c)`.
-* If we define `equiv(a,b)` as `!comp(a,b) and !comp(b,a)`, then `equiv` must also be transitive:
-`equiv(a,b)` and `equiv(b,c)` imply `equiv(a,c)`.
+* Irreflexivity: `comp(a, a)` is false for every `a`.
+* Transitivity: `comp(a, b)` and `comp(b, c)` imply `comp(a, c)`.
+* If we define `equiv(a, b)` as `!comp(a, b) and !comp(b, a)`, then `equiv` must also be transitive:
+`equiv(a, b)` and `equiv(b, c)` imply `equiv(a, c)`.
 
-Consequently, `equiv` partitions the projected elements into equivalence classes, on which `comp` induces a 
+Consequently, `equiv` partitions the projected values into equivalence classes, on which `comp` induces a 
 strict total ordering.
 
-The range `R` is said to be ordered with respect to `comp` and `proj` if, for every iterator `i` referring to
+The range `R` is said to be sorted with respect to `comp` and `proj` if, for every iterator `i` referring to
 one of its elements, `std::invoke(comp, std::invoke(proj, *std::ranges::next(i, n)), std::invoke(proj, *i))` evaluates to
 `false` for every positive integer offset `n` such that `std::ranges::next(i, n)` still refers to an element of the range.
 
@@ -62,7 +63,7 @@ and <code>proj</code>, including function objects, function pointers, and pointe
 </div>
 
 Let us assume that the range `R` contains at least two elements, denoted in order of occurrence by `r₀, r₁, ...`.
-This notation does not imply random access. During its first iteration, insertion sort orders the first two elements of `R`;
+This notation does not imply random access. During its first iteration, **insertion sort** orders the first two elements of `R`;
 that is, if `std::invoke(comp, std::invoke(proj, r₁), std::invoke(proj, r₀))` evaluates to `true`, the two elements are swapped;
 otherwise, they remain in their original positions. Next, we insert the third element, `r₂` (if it exists),
 into the correct position within the already sorted subrange formed by `r₀` and `r₁`. At this point, the first
@@ -86,8 +87,8 @@ for generic algorithm design. For general-purpose sorting, however, a standard l
 of standard sorting algorithms commonly use insertion sort internally to handle small subranges.
 </div>
 
-We will introduce the following interface for the `insertion_sort` algorithm, making the constraints imposed on its
-argument types explicit. In what follows, we will use the `using namespace std;` directive throughout the code solely
+We will introduce the following interface for the `insertion_sort` algorithm, making the constraints on its
+template parameters explicit. In what follows, we will use the `using namespace std;` directive throughout the code solely
 to improve readability:
 
 <div class="dgv-cb">
@@ -95,7 +96,7 @@ to improve readability:
 </div>
 
 As we can see, we have specified a number of constraints both within the template parameter list
-(enclosed in angle brackets) and through the `requires` clause. In order of appearance:
+(enclosed in angle brackets) and in the `requires` clause. In order of appearance:
 
 * The iterator type `I` must model at least the `std::forward_iterator` concept. In particular, it must be regular
 (that is, copyable, default constructible, and equality comparable), incrementable (`++`), dereferenceable when it refers to
@@ -111,9 +112,11 @@ As noted before, `S` need not be the same type as `I`.
 
 * The types `I`, `Comp`, and `Proj` must jointly model the `std::sortable` concept,[^6] which is
 defined as the conjunction of the concepts `std::permutable` and `std::indirect_strict_weak_order` (see the listing below).
-Besides `std::forward_iterator`, `std::permutable` ensures that the iterator type supports the indirect movement, storage,
-and swapping of elements needed to rearrange them. Meanwhile, `std::indirect_strict_weak_order` requires the comparison predicate
-to induce a strict weak ordering on the projected elements. 
+In addition to requiring `I` to model `std::forward_iterator`, `std::permutable<I>` ensures that elements can
+be indirectly moved and stored (`std::indirectly_movable_storable<I, I>`) and indirectly swapped
+(`std::indirectly_swappable<I, I>`), as required to rearrange them. Meanwhile,
+`std::indirect_strict_weak_order` requires the comparison predicate to induce a strict weak ordering
+on the projected values. 
 
 <div class="dgv-note">
 The compiler can check that <code>Comp</code> satisfies the expected syntactic requirements, namely, that it can be used as a predicate
