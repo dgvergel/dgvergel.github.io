@@ -32,19 +32,16 @@ A <b>range</b> designates a sequence of elements, potentially unbounded, over wh
 iteration. It is specified by an iterator and a sentinel denoting the beginning and end of the computation, respectively.
 The sentinel need not have the same type as the iterator.
 <hr>
-A <b>projection</b> is a transformation applied by an algorithm to an element before its value is inspected.
+A <b>projection</b> is a transformation applied by an algorithm to an element before its value is inspected. It may, for
+example, be a function object or a pointer to a data member. A projections makes it possible, for instance, to sort
+objects according to the ordering of one of their data members.
 </div>
 
 ## Insertion sort
 
 Let `R = [first, last)` be a half-open range to be sorted, where `first` is an iterator of type `I` and
-`last` is a sentinel of type `S` (which need not be the same type as `I`, as we will see in a later example).
-Let `proj` denote a projection to be applied to the elements of the range. It may, for example, be a function
-object or a pointer to a data member. As we have already mentioned, a projection allows the algorithm to apply
-transformations to range elements before comparing their values. This makes it possible, for instance, to sort
-objects according to the ordering of one of their data members.
-
-Let `comp` denote a binary predicate applied to the projected values that induces a strict weak ordering on them.
+`last` is a sentinel of type `S`. Let `proj` denote the projection to be applied to the elements of `R`, and
+`comp` a binary predicate applied to the projected values that induces a strict weak ordering on them.
 That is, we assume that `comp` satisfies the following properties:
 
 * Irreflexivity: `comp(a,a)` is false for every `a`.
@@ -52,7 +49,8 @@ That is, we assume that `comp` satisfies the following properties:
 * If we define `equiv(a,b)` as `!comp(a,b) and !comp(b,a)`, then `equiv` must also be transitive:
 `equiv(a,b)` and `equiv(b,c)` imply `equiv(a,c)`.
 
-Consequently, `equiv` partitions the projected elements into equivalence classes, on which `comp` induces a strict total ordering.
+Consequently, `equiv` partitions the projected elements into equivalence classes, on which `comp` induces a 
+trict total ordering.
 
 The range `R` is said to be ordered with respect to `comp` and `proj` if, for every iterator `i` referring to
 one of its elements, `std::invoke(comp, std::invoke(proj, *std::ranges::next(i, n)), std::invoke(proj, *i))` evaluates to
@@ -65,7 +63,7 @@ and <code>proj</code>, including function objects, function pointers, and pointe
 
 Let us assume that the range `R` contains at least two elements, denoted in order of occurrence by `r₀, r₁, ...`.
 This notation does not imply random access. During its first iteration, insertion sort orders the first two elements of `R`;
-that is, if `comp(proj(r₁), proj(r₀))` evaluates to `true`, the two elements are swapped;
+that is, if `std::invoke(comp, std::invoke(proj, r₁), std::invoke(proj, r₀))` evaluates to `true`, the two elements are swapped;
 otherwise, they remain in their original positions. Next, we insert the third element, `r₂` (if it exists),
 into the correct position within the already sorted subrange formed by `r₀` and `r₁`. At this point, the first
 three elements of `R` are correctly ordered. We then insert the fourth element, `r₃` (if it exists), into its
