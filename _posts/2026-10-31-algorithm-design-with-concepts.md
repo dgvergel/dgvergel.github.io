@@ -3,7 +3,7 @@ layout: post
 title: "Algorithm Design with Concepts, Ranges, and Projections"
 author: Daniel Gómez Vergel
 date: 2026-10-31
-last_modified_at: 2026-11-14
+last_modified_at: 2026-11-15
 categories: [C++, algorithms, concepts, projections, ranges]
 permalink: /2026/10/31/algorithm-design-with-concepts/
 excerpt: >
@@ -43,7 +43,7 @@ Let `R = [first, last)` be a half-open range to be sorted, where `first` is an i
 `last` is a sentinel of type `S`. Let `proj` denote the projection to be applied to the elements of `R`, and
 `comp` a binary predicate applied to the projected values that induces a strict weak ordering on them.
 That is, for any projected values `a`, `b`, and `c` obtained from elements of `R`, we assume that `comp`
-satisfies the following properties:
+satisfies the following properties (for conciseness, we will write `comp(a, b)` below for `std::invoke(comp, a, b)`):
 
 * Irreflexivity: `comp(a, a)` is false for every `a`.
 * Transitivity: `comp(a, b)` and `comp(b, c)` imply `comp(a, c)`.
@@ -80,8 +80,8 @@ in sorting the sequence `R = {5, 3, 1, 2}` in ascending order:
        style="max-width: 100%; height: auto;">
 </div>
 
-<div class="dgv-note">Insertion sort remains useful for small sequences and performs particularly
-well on nearly sorted data. Its relative ease of implementation also makes it a convenient case study
+<div class="dgv-note">Insertion sort is well suited to small sequences and performs particularly well on nearly
+sorted data. Its relative ease of implementation also makes it a convenient case study
 for generic algorithm design. For general-purpose sorting, however, a standard library algorithm such as
 <code>std::ranges::sort</code> will usually be a more appropriate choice. Interestingly, implementations
 of standard sorting algorithms commonly use insertion sort internally to handle small subranges.
@@ -89,7 +89,8 @@ of standard sorting algorithms commonly use insertion sort internally to handle 
 
 We will introduce the following interface for the `insertion_sort` algorithm, making the constraints on its
 template parameters explicit. In what follows, we will use the `using namespace std;` directive throughout the code solely
-to improve readability:
+to improve readability. Horizontal comment lines will also be used occasionally to visually separate template parameters
+and constraints from the function signature:
 
 <div class="dgv-cb">
 {% include algorithm-design-with-concepts/cb-1.html %}
