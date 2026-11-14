@@ -50,7 +50,7 @@ That is, we assume that `comp` satisfies the following properties:
 `equiv(a,b)` and `equiv(b,c)` imply `equiv(a,c)`.
 
 Consequently, `equiv` partitions the projected elements into equivalence classes, on which `comp` induces a 
-trict total ordering.
+strict total ordering.
 
 The range `R` is said to be ordered with respect to `comp` and `proj` if, for every iterator `i` referring to
 one of its elements, `std::invoke(comp, std::invoke(proj, *std::ranges::next(i, n)), std::invoke(proj, *i))` evaluates to
@@ -116,13 +116,13 @@ and swapping of elements needed to rearrange them. Meanwhile, `std::indirect_str
 to induce a strict weak ordering on the projected elements. 
 
 <div class="dgv-note">
-The compiler can check that <code>Comp</code> satisfies its syntactic requirements, namely, that it can be used as a predicate and
-that the required expressions are well-formed. However, it cannot verify the semantic requirements of a strict weak ordering
+The compiler can check that <code>Comp</code> satisfies the expected syntactic requirements, namely, that it can be used as a predicate
+and that the required expressions are well-formed. However, it cannot verify the semantic requirements of a strict weak ordering
 (including irreflexivity, transitivity, and transitivity of the induced equivalence relation), which must therefore be ensured
 by the programmer.
 </div>
 
-Omitting namespace qualification for clarity, `std::sortable` is defined essentially as follows:
+Omitting namespace qualification for clarity, `std::sortable` is defined as follows:
 
 <div class="dgv-cb">
 {% include algorithm-design-with-concepts/cb-2.html %}
@@ -167,8 +167,9 @@ random-access iterators), in which case their distance can be obtained in consta
 branch **(B)** is used. This is typically the case, for example, with iterator pairs from `std::list` or `std::forward_list`.
 
 At the beginning of each `for` loop iteration, the subrange `[first, i)` is sorted. The current element,
-pointed to by the iterator `i`, is then inserted into its proper position, after which `[first, std::ranges::next(i))` is sorted.
-To locate the insertion position `j`, we distinguish two strategies according to the capabilities of the iterator type:
+pointed to by the iterator `i`, is then inserted into its proper position relative to that subrange, after which
+`[first, std::ranges::next(i))` is sorted. To locate the insertion position `j`, we distinguish two strategies
+according to the capabilities of the iterator type:
 * `I` models `std::bidirectional_iterator`: the sorted subrange `[first, i)` is traversed in reverse order, starting
 from the element immediately preceding `i`. The `std::ranges::find_if_not` algorithm **(C)** stops as soon as it finds
 an element that the current element does not precede according to `comp` and `proj`. The `base()` member of the resulting
