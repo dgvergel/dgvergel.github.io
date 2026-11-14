@@ -2,7 +2,7 @@
 &nbsp; &nbsp;<span style="color: #569cd6;">forward_iterator</span> I,<span style="color: #6a9955;">           // iterator type</span>
 &nbsp; &nbsp;sentinel_for&lt;I&gt; S,<span style="color: #6a9955;">            // sentinel type</span>
 &nbsp; &nbsp;<span style="color: #569cd6;">typename</span> Comp = ranges::less, <span style="color: #6a9955;">// comparator type</span>
-&nbsp; &nbsp;<span style="color: #569cd6;">typename</span> Proj = identity <span style="color: #6a9955;">      // projection type</span>
+&nbsp; &nbsp;<span style="color: #569cd6;">typename</span> Proj = identity <span style="color: #6a9955;">     // projection type</span>
 &gt;
 <span style="color: #569cd6;">requires</span> sortable&lt;I, Comp, Proj&gt;
 <span style="color: #6a9955;">// -----------------------------</span>
