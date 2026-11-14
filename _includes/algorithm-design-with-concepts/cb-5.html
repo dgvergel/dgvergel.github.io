@@ -5,7 +5,7 @@
 &gt;
 <span style="color: #569cd6;">requires</span> sortable&lt;ranges::iterator_t&lt;R&gt;, Comp, Proj&gt;
 <span style="color: #6a9955;">// -------------------------------------------------</span>
-<span style="color: #569cd6;">constexpr</span> <span style="color: #569cd6;">void</span> insertion_sort(R<span style="color: #569cd6;">&amp;&amp;</span> r, Comp comp = Comp{}, Proj proj = Proj{})
+<span style="color: #569cd6;">constexpr</span> <span style="color: #569cd6;">void</span> insertion_sort(R<span style="color: #569cd6;">&amp;&amp;</span> r, Comp comp = {}, Proj proj = {})
 {
 &nbsp; &nbsp;insertion_sort(ranges::begin(r), ranges::end(r), move(comp), move(proj));
 }
