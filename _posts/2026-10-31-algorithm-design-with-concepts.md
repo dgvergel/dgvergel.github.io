@@ -120,9 +120,9 @@ on the projected values.
 
 <div class="dgv-note">
 The compiler can check that <code>Comp</code> satisfies the expected syntactic requirements, namely, that it can be used as a predicate
-and that the required expressions are well-formed. However, it cannot verify the semantic requirements of a strict weak ordering
-(including irreflexivity, transitivity, and transitivity of the induced equivalence relation), which must therefore be ensured
-by the programmer.
+on the projected values and that the required expressions are well-formed. However, it cannot verify the semantic requirements of a
+strict weak ordering (including irreflexivity, transitivity, and transitivity of the induced equivalence relation), which must therefore
+be ensured by the programmer.
 </div>
 
 Omitting namespace qualification for clarity, `std::sortable` is defined as follows:
@@ -145,11 +145,11 @@ The default sorting policy adopted by the `insertion_sort` algorithm is provided
 while the default projection is the function object type `std::identity`, whose `operator()` returns
 its argument unchanged.
 
-When generating a specific instance of the function template, the compiler will verify that the supplied
-template arguments satisfy the stated constraints, issuing a meaningful diagnostic message otherwise.
-Our version of the algorithm can operate on a wide variety of iterators, including the forward iterators of
-`std::forward_list`, the bidirectional iterators of `std::list`, and the contiguous iterators of containers
-such as `std::array` and `std::vector`:
+When the function template is instantiated, the compiler will verify that the supplied template arguments
+satisfy the stated constraints, issuing a diagnostic message otherwise. Our version of the algorithm can
+operate on a wide variety of iterators, including the forward iterators of `std::forward_list`,
+the bidirectional iterators of `std::list`, and the contiguous iterators of containers such as
+`std::array` and `std::vector`:
 
 <div class="dgv-cb">
 {% include algorithm-design-with-concepts/cb-3.html %}
