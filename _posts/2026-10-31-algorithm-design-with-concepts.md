@@ -48,14 +48,29 @@ satisfies the following properties:
 
 Consequently, `equiv` partitions the elements into equivalence classes, on which `comp` induces a strict total ordering.
 
+Let us consider a half-open range `R = [first, last)` to be sorted,
+where `first` is an iterator of type `I` and `last` is a sentinel of type `S` (which need not be the same
+type as `I`, as we will see in a later example). Let `proj` denote a projection to be applied to the
+elements of the range.  It may, for example, be a function object or a pointer to a data member.
+As we have already mentioned, a projection allows the algorithm to apply transformations to range elements
+before comparing their values. This makes it possible, for instance, to sort objects according
+to the ordering of one of their data members.  Let `comp` denote the binary predicate evaluated on the projected values of
+the range elements. The range `R` is said to be ordered with respect to `comp` and `proj` if, for every iterator `i` referring to
+one of its elements, `std::invoke(comp, std::invoke(proj, *std::ranges::next(i, n)), std::invoke(proj, *i))` evaluates to
+`false` for every positive integer offset `n` such that `std::ranges::next(i, n)` still refers to an element of the range.
+
+<div class="dgv-note">The use of the standard function template <code>std::invoke</code> is justified in
+this generic programming context by the variety of callable entities that may be used to represent <code>comp</code>
+and <code>proj</code>, including function objects, function pointers, and pointers to members.
+</div>
+
 Let us assume that the range `R` contains at least two elements, denoted in order of occurrence by `r₀, r₁, ...`.
-This notation does not imply random access.
-During its first iteration, insertion sort must order the first two elements of `R`,
-that is, if `comp(r₁, r₀)` evaluates to `true`, the two elements must be swapped;
+This notation does not imply random access. During its first iteration, insertion sort orders the first two elements of `R`;
+that is, if `comp(proj(r₁), proj(r₀))` evaluates to `true`, the two elements are swapped;
 otherwise, they remain in their original positions. Next, we insert the third element, `r₂` (if it exists),
-into the correct position within the already sorted subrange `{r₀, r₁}`. At this point, the first
+into the correct position within the already sorted subrange formed by `r₀` and `r₁`. At this point, the first
 three elements of `R` are correctly ordered. We then insert the fourth element, `r₃` (if it exists), into its
-proper position with respect to the already sorted subrange `{r₀, r₁, r₂}`, and so on
+proper position within the already sorted subrange formed by `r₀`, `r₁`, and `r₂`, and so on
 until the entire range `R` has been sorted.[^5]
 
 The following figure shows, from left to right and from top to bottom, the successive iterations involved
@@ -72,22 +87,6 @@ well on nearly sorted data. Its relative ease of implementation also makes it a 
 for generic algorithm design. For general-purpose sorting, however, a standard library algorithm such as
 <code>std::ranges::sort</code> will usually be a more appropriate choice. Interestingly, implementations
 of standard sorting algorithms commonly use insertion sort internally to handle small subranges.
-</div>
-
-Let us consider a half-open range `R = [first, last)` to be sorted using insertion sort,
-where `first` is an iterator of type `I` and `last` is a sentinel of type `S` (which need not be the same
-type as `I`, as we will see in a later example). Let `proj` denote a projection to be applied to the
-elements of the range.  It may, for example, be a function object or a pointer to a data member.
-As we have already mentioned, a projection allows the algorithm to apply transformations to range elements
-before comparing their values. This makes it possible, for instance, to sort objects according
-to the ordering of one of their data members.  Let `comp` denote the binary predicate evaluated on the projected values of
-the range elements. The range `R` is said to be ordered with respect to `comp` and `proj` if, for every iterator `i` referring to
-one of its elements, `std::invoke(comp, std::invoke(proj, *std::ranges::next(i, n)), std::invoke(proj, *i))` evaluates to
-`false` for every positive integer offset `n` such that `std::ranges::next(i, n)` still refers to an element of the range.
-
-<div class="dgv-note">The use of the standard function template <code>std::invoke</code> is justified in
-this generic programming context by the variety of callable entities that may be used to represent <code>comp</code>
-and <code>proj</code>, including function objects, function pointers, and pointers to members.
 </div>
 
 We will introduce the following interface for the `insertion_sort` algorithm, making the constraints imposed on its
