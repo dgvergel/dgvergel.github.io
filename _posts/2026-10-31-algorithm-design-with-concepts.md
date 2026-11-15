@@ -53,9 +53,9 @@ satisfies the following properties (for conciseness, we will write `comp(a, b)` 
 Consequently, `equiv` partitions the projected values into equivalence classes, on which `comp` induces a 
 strict total ordering.
 
-The range `R` is said to be sorted with respect to `comp` and `proj` if, for every iterator `i` referring to
-one of its elements, `std::invoke(comp, std::invoke(proj, *std::ranges::next(i, n)), std::invoke(proj, *i))` evaluates to
-`false` for every positive integer offset `n` such that `std::ranges::next(i, n)` still refers to an element of the range.
+The range `R` is said to be sorted with respect to `comp` and `proj` if, for every pair of consecutive
+elements in `R`, with iterator `i` referring to the earlier element and iterator `j` to the immediately following
+one, the expression `std::invoke(comp, std::invoke(proj, *j), std::invoke(proj, *i))` evaluates to `false`.
 
 <div class="dgv-note">The use of the standard function template <code>std::invoke</code> is justified in
 this generic programming context by the variety of callable entities that may be used to represent <code>comp</code>
