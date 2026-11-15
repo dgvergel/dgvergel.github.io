@@ -41,13 +41,13 @@ objects according to the ordering of one of their data members.
 
 Let `R = [first, last)` be a half-open range to be sorted, where `first` is an iterator of type `I` and
 `last` is a sentinel of type `S`. Let `proj` denote the projection to be applied to the elements of `R`, and
-`comp` a binary predicate applied to the projected values that induces a strict weak ordering on them.
+`comp` a binary predicate on the projected values that induces a strict weak ordering on them.
 That is, for any projected values `a`, `b`, and `c` obtained from elements of `R`, we assume that `comp`
 satisfies the following properties (for conciseness, we will write `comp(a, b)` below for `std::invoke(comp, a, b)`):
 
 * Irreflexivity: `comp(a, a)` is false for every `a`.
 * Transitivity: `comp(a, b)` and `comp(b, c)` imply `comp(a, c)`.
-* If we define `equiv(a, b)` as `!comp(a, b) and !comp(b, a)`, then `equiv` must also be transitive:
+* Transitivity of equivalence: If we define `equiv(a, b)` as `!comp(a, b) and !comp(b, a)`, then
 `equiv(a, b)` and `equiv(b, c)` imply `equiv(a, c)`.
 
 Consequently, `equiv` partitions the projected values into equivalence classes, on which `comp` induces a 
