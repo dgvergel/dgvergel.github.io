@@ -174,12 +174,12 @@ At the beginning of each `for` loop iteration, the subrange `[first, i)` is sort
 pointed to by the iterator `i`, is then inserted into its proper position relative to that subrange, after which
 `[first, std::ranges::next(i))` is sorted. To locate the insertion position `j`, we distinguish two strategies
 according to the capabilities of the iterator type:
-* `I` models `std::bidirectional_iterator`: the sorted subrange `[first, i)` is traversed in reverse order, starting
+* `I` models `std::bidirectional_iterator`: The sorted subrange `[first, i)` is traversed in reverse order, starting
 from the element immediately preceding `i`. The `std::ranges::find_if_not` algorithm **(C)** stops as soon as it finds
 an element that the current element does not precede according to `comp` and `proj`. The `base()` member of the resulting
 reverse iterator then yields the position immediately after that element.
 
-* `I` is only a forward iterator: the `std::ranges::upper_bound` algorithm **(D)** performs a binary search on the
+* `I` is only a forward iterator: The `std::ranges::upper_bound` algorithm **(D)** performs a binary search on the
 sorted subrange `[first, i)` to locate the insertion position.
 
 In either case, the resulting iterator `j` points to a position after all previously processed elements that are equivalent to the
