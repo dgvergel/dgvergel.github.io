@@ -187,10 +187,10 @@ $content-width: 1050px;
 
 // hojas de datos:
 .dgv-sheet {
-  display: inline-block !important;
+  display: table !important;
   max-width: calc(100% - 10px) !important;
   box-sizing: border-box !important;
-  margin: 1rem 0 10px 0 !important;
+  margin: 1rem auto 2rem auto !important;
   padding: 1.1rem 1.25rem !important;
   background: #fff !important;
   border: 2px solid #111 !important;
