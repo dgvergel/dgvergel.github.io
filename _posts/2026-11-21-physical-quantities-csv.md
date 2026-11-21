@@ -15,11 +15,9 @@ excerpt: >
 
 ## Introduction
 
-<img
-  src="{{ '/assets/images/physical-quantities-csv/fig-1.webp' | relative_url }}"
+<img src="{{ '/assets/images/physical-quantities-csv/fig-1.webp' | relative_url }}"
   alt="Parabolic projectile motion"
-  style="float: right; width: 280px; height: auto; margin: 0 0 1rem 2rem;"
->
+  style="float: right; width: 280px; height: auto; margin: 0 0 1rem 2rem;">
 Experimental data in science and engineering are often stored in CSV files as sequences
 of numerical values, with each column representing a physical quantity whose unit is either
 implicit or indicated in a header. Turning these raw values into strongly typed physical
@@ -29,18 +27,18 @@ particularly its reflection facilities, and mp-units.[^1]
 
 For example, consider a CSV file containing measurements from a projectile-launch experiment
 involving parabolic motion (see the figure), with each row storing the launch angle
-`ϕ` in degrees, the measured initial speed `v` in miles per hour, and the
+<code>&#x03D5;</code> in degrees, the measured initial speed `v` in miles per hour, and the
 horizontal range to the impact point `r` in centimeters:
 
 <div style="clear: both;"></div>
-<div class="dgv-sheet">ϕ (deg), v (mi/h), r (cm)
-0,  5.68, 61.5
-5,  5.66, 64.5
+<div class="dgv-sheet"><pre>ϕ (deg), v (mi/h), r (cm)
+0, 5.68, 61.5
+5, 5.66, 64.5
 10, 5.64, 72.0
 15, 5.61, 77.3
 20, 5.59, 82.0
 25, 5.42, 85.5
-30, 5.50, 88.1
+30, 5.50, 88.1</pre>
 </div>
 
 The deserialization of this CSV file into a container of physical quantities will follow the
@@ -71,7 +69,7 @@ Running this program produces the following output:
 </div>
 
 <div class="dgv-note" markdown="1">Based on the ISO 80000 standard (International System of
-Quantities, ISQ), mp-units is a modern C++ library that provides compile-time dimensional analysis,
+Quantities, ISQ), <b>mp-units</b> is a modern C++ library that provides compile-time dimensional analysis,
 unit conversions, and strong type safety for physical quantities. Beyond dimensional correctness,
 it validates operations between quantities according to their physical meaning and mathematical
 relationships. mp-units provides six distinct layers of safety: dimension safety, unit safety,
