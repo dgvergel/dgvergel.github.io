@@ -24,7 +24,7 @@
 
 <span style="color: #569cd6;">struct</span> shot_data {
 &nbsp; &nbsp;angle_type phi;
-&nbsp; &nbsp;speed_type v_exp;
+&nbsp; &nbsp;speed_type v;
 &nbsp; &nbsp;range_type r;
 };
 
@@ -38,10 +38,10 @@
 &nbsp; &nbsp; &nbsp; <span style="color: #569cd6;">return</span> <span style="color: #569cd6;">EXIT_FAILURE</span>;
 &nbsp; &nbsp;}
 
-&nbsp; &nbsp;<span style="color: #569cd6;">for</span> (<span style="color: #569cd6;">auto&amp;&amp;</span> [angle, velocity, range] : *data) {
+&nbsp; &nbsp;<span style="color: #569cd6;">for</span> (<span style="color: #569cd6;">auto&amp;&amp;</span> [angle, speed, range] : *data) {
 &nbsp; &nbsp; &nbsp; std::println(
 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<span style="color: #ce9178;">"{::N[.1f]}, {::N[.1f]}, {::N[.1f]}"</span>,
-&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;angle, velocity, range
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;angle, speed, range
 &nbsp; &nbsp; &nbsp; );
 &nbsp; &nbsp;}
 
