@@ -1,0 +1,49 @@
+<span style="color: #569cd6;">#include </span><span style="color: #ce9178;">&lt;cstdlib&gt;</span>
+<span style="color: #569cd6;">#include </span><span style="color: #ce9178;">&lt;print&gt;</span>
+<span style="color: #569cd6;">#include </span><span style="color: #ce9178;">"quantity_csv.hpp"</span>
+
+<span style="color: #569cd6;">#include </span><span style="color: #ce9178;">&lt;mp-units/systems/isq_angle.h&gt;</span>
+<span style="color: #569cd6;">#include </span><span style="color: #ce9178;">&lt;mp-units/systems/si.h&gt;</span>
+<span style="color: #569cd6;">#include </span><span style="color: #ce9178;">&lt;mp-units/systems/yard_pound.h&gt;</span>
+
+<span style="color: #569cd6;">namespace</span> mpu = mp_units;
+
+<span style="color: #569cd6;">using</span> <span style="color: #569cd6;">namespace</span> mpu::si::unit_symbols;
+<span style="color: #569cd6;">using</span> <span style="color: #569cd6;">namespace</span> mpu::yard_pound::unit_symbols;
+
+<span style="color: #569cd6;">using</span> angle_type =
+&nbsp; &nbsp;mpu::quantity&lt;
+&nbsp; &nbsp; &nbsp; mpu::isq_angle::angular_measure[
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;mpu::angular::unit_symbols::deg]&gt;;
+
+<span style="color: #569cd6;">using</span> speed_type =
+&nbsp; &nbsp;mpu::quantity&lt;mpu::isq::speed[mi/h]&gt;;
+
+<span style="color: #569cd6;">using</span> range_type =
+&nbsp; &nbsp;mpu::quantity&lt;mpu::isq::distance[cm]&gt;;
+
+<span style="color: #569cd6;">struct</span> shot_data {
+&nbsp; &nbsp;angle_type phi;
+&nbsp; &nbsp;speed_type v_exp;
+&nbsp; &nbsp;range_type r;
+};
+
+<span style="color: #569cd6;">auto</span> main() -&gt; <span style="color: #569cd6;">int</span>
+{
+&nbsp; &nbsp;<span style="color: #569cd6;">auto</span> <span style="color: #569cd6;">const</span> data =
+&nbsp; &nbsp; &nbsp; qcsv::load_quantities&lt;shot_data&gt;(<span style="color: #ce9178;">"parabolic_throwing_data.csv"</span>);
+
+&nbsp; &nbsp;<span style="color: #569cd6;">if</span> (not data) {
+&nbsp; &nbsp; &nbsp; std::println(<span style="color: #569cd6;">stderr</span>, <span style="color: #ce9178;">"CSV error: {}"</span>, data.error());
+&nbsp; &nbsp; &nbsp; <span style="color: #569cd6;">return</span> <span style="color: #569cd6;">EXIT_FAILURE</span>;
+&nbsp; &nbsp;}
+
+&nbsp; &nbsp;<span style="color: #569cd6;">for</span> (<span style="color: #569cd6;">auto&amp;&amp;</span> [angle, velocity, range] : *data) {
+&nbsp; &nbsp; &nbsp; std::println(
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<span style="color: #ce9178;">"{::N[.1f]}, {::N[.1f]}, {::N[.1f]}"</span>,
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;angle, velocity, range
+&nbsp; &nbsp; &nbsp; );
+&nbsp; &nbsp;}
+
+&nbsp; &nbsp;<span style="color: #569cd6;">return</span> <span style="color: #569cd6;">EXIT_SUCCESS</span>;
+}
