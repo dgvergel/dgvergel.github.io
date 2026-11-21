@@ -184,3 +184,26 @@ $content-width: 1050px;
   margin-left: 12px !important;
   margin-top: 15px !important;
 }
+
+// hojas de datos:
+.dgv-sheet {
+  display: inline-block !important;
+  max-width: calc(100% - 10px) !important;
+  box-sizing: border-box !important;
+  margin: 1rem 0 10px 0 !important;
+  padding: 1.1rem 1.25rem !important;
+  background: #fff !important;
+  border: 2px solid #111 !important;
+  box-shadow: 10px 10px 0 #000 !important;
+}
+
+.dgv-sheet pre {
+  margin: 0 !important;
+  padding: 0 !important;
+  overflow-x: auto !important;
+  color: #111 !important;
+  background: transparent !important;
+  border: 0 !important;
+  font-family: monospace !important;
+  line-height: 1.4 !important;
+}
