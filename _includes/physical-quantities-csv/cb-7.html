@@ -1,0 +1,22 @@
+<span style="color: #569cd6;">template</span>&lt;<span style="color: #569cd6;">typename</span> T&gt;
+<span style="color: #569cd6;">constexpr</span> <span style="color: #569cd6;">auto</span> data_members = std::define_static_array(
+&nbsp; &nbsp;std::meta::nonstatic_data_members_of(
+&nbsp; &nbsp; &nbsp; ^^T, std::meta::access_context::unprivileged()
+&nbsp; &nbsp;)
+);
+
+<span style="color: #569cd6;">template</span>&lt;<span style="color: #569cd6;">typename</span> T&gt;
+<span style="color: #569cd6;">consteval</span> <span style="color: #569cd6;">auto</span> has_no_bases() -&gt; <span style="color: #569cd6;">bool</span>
+{
+&nbsp; &nbsp;<span style="color: #569cd6;">return</span> std::meta::bases_of(
+&nbsp; &nbsp; &nbsp; ^^T, std::meta::access_context::unchecked()
+&nbsp; &nbsp;).empty();
+}
+
+<span style="color: #569cd6;">template</span>&lt;<span style="color: #569cd6;">typename</span> T&gt;
+<span style="color: #569cd6;">concept</span> plain_aggregate =
+&nbsp; &nbsp;std::is_class_v&lt;T&gt;
+&nbsp; &nbsp;<span style="color: #569cd6;">and</span> std::is_aggregate_v&lt;T&gt;
+&nbsp; &nbsp;<span style="color: #569cd6;">and</span> std::default_initializable&lt;T&gt;
+&nbsp; &nbsp;<span style="color: #569cd6;">and</span> has_no_bases&lt;T&gt;()
+&nbsp; &nbsp;<span style="color: #569cd6;">and</span> not data_members&lt;T&gt;.empty();

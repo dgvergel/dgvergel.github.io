@@ -1,0 +1,41 @@
+<span style="color: #569cd6;">template</span>&lt;<span style="color: #569cd6;">plain_aggregate</span> T&gt;
+<span style="color: #c586c0;">[[nodiscard]]</span>
+<span style="color: #569cd6;">auto</span> parse_row(
+&nbsp; &nbsp;std::string_view csv_line,
+&nbsp; &nbsp;<span style="color: #569cd6;">char</span> delimiter = <span style="color: #ce9178;">','</span>
+)
+&nbsp; &nbsp;-&gt; std::expected&lt;T, parse_error&gt;
+{
+&nbsp; &nbsp;detail::assert_valid_members&lt;T&gt;();
+
+&nbsp; &nbsp;<span style="color: #569cd6;">using</span> <span style="color: #569cd6;">enum</span> parse_error_code;
+
+&nbsp; &nbsp;<span style="color: #569cd6;">auto</span> fields = csv_line | std::views::split(delimiter);
+&nbsp; &nbsp;<span style="color: #569cd6;">auto</span> field &nbsp;= fields.begin();
+
+&nbsp; &nbsp;<span style="color: #569cd6;">auto</span> res = T{};
+&nbsp; &nbsp;<span style="color: #569cd6;">auto</span> column = <span style="color: #b5cea8;">1uz</span>;
+
+&nbsp; &nbsp;<span style="color: #569cd6;">template for</span> (<span style="color: #569cd6;">constexpr</span> <span style="color: #569cd6;">auto</span> dm : data_members&lt;T&gt;) {
+&nbsp; &nbsp; &nbsp; <span style="color: #569cd6;">if</span> (field == fields.end()) {
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<span style="color: #569cd6;">return</span> std::unexpected{parse_error{missing_value, column}};
+&nbsp; &nbsp; &nbsp; }
+&nbsp; &nbsp; &nbsp; <span style="color: #569cd6;">auto&amp;</span> q = res.[:dm:];
+&nbsp; &nbsp; &nbsp; <span style="color: #569cd6;">if</span> (
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<span style="color: #569cd6;">auto</span> r = detail::parse_value(
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; std::string_view{*field}, q.numerical_value_ref_in(q.unit)
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;);
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;not r
+&nbsp; &nbsp; &nbsp; ) {
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<span style="color: #569cd6;">return</span> std::unexpected{parse_error{r.error(), column}};
+&nbsp; &nbsp; &nbsp; }
+&nbsp; &nbsp; &nbsp; ++field;
+&nbsp; &nbsp; &nbsp; ++column;
+&nbsp; &nbsp;}
+
+&nbsp; &nbsp;<span style="color: #569cd6;">if</span> (field != fields.end()) {
+&nbsp; &nbsp; &nbsp; <span style="color: #569cd6;">return</span> std::unexpected{parse_error{extra_value, column}};
+&nbsp; &nbsp;}
+
+&nbsp; &nbsp;<span style="color: #569cd6;">return</span> res;
+}

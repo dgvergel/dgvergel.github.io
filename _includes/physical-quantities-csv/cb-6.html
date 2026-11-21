@@ -1,0 +1,31 @@
+<span style="color: #569cd6;">inline</span> <span style="color: #569cd6;">constexpr</span> <span style="color: #569cd6;">auto</span> ascii_whitespace = std::string_view{<span style="color: #ce9178;">" \t\n\r\f\v"</span>};
+
+<span style="color: #569cd6;">template</span>&lt;<span style="color: #569cd6;">parsable_value</span> T&gt;
+<span style="color: #c586c0;">[[nodiscard]]</span>
+<span style="color: #569cd6;">auto</span> parse_value(std::string_view token, T<span style="color: #569cd6;">&amp;</span> value)
+&nbsp; &nbsp;-&gt; std::expected&lt;<span style="color: #569cd6;">void</span>, parse_error_code&gt;
+{
+&nbsp; &nbsp;<span style="color: #569cd6;">using</span> <span style="color: #569cd6;">enum</span> parse_error_code;
+
+&nbsp; &nbsp;<span style="color: #569cd6;">auto</span> <span style="color: #569cd6;">const</span> fnw = token.find_first_not_of(ascii_whitespace);
+&nbsp; &nbsp;<span style="color: #569cd6;">if</span> (fnw == std::string_view::npos) {
+&nbsp; &nbsp; &nbsp; <span style="color: #569cd6;">return</span> std::unexpected{<span style="color: #b5cea8;">missing_value</span>};
+&nbsp; &nbsp;}
+&nbsp; &nbsp;token = token.substr(fnw, token.find_last_not_of(ascii_whitespace) - fnw + <span style="color: #b5cea8;">1</span>);
+
+&nbsp; &nbsp;<span style="color: #569cd6;">if</span> <span style="color: #569cd6;">constexpr</span> (charconv_parsable&lt;T&gt;) {
+&nbsp; &nbsp; &nbsp; <span style="color: #569cd6;">auto</span> <span style="color: #569cd6;">const</span> last = token.data() + token.size();
+&nbsp; &nbsp; &nbsp; <span style="color: #569cd6;">auto</span> <span style="color: #569cd6;">const</span> [p, ec] = std::from_chars(token.data(), last, value);
+&nbsp; &nbsp; &nbsp; <span style="color: #569cd6;">if</span> (ec != std::errc{} <span style="color: #569cd6;">or</span> p != last) {
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<span style="color: #569cd6;">return</span> std::unexpected{<span style="color: #b5cea8;">format_error</span>};
+&nbsp; &nbsp; &nbsp; }
+&nbsp; &nbsp;}
+&nbsp; &nbsp;<span style="color: #569cd6;">else</span> {
+&nbsp; &nbsp; &nbsp; <span style="color: #569cd6;">auto</span> input = std::ispanstream{token};
+&nbsp; &nbsp; &nbsp; input.imbue(std::locale::classic());
+&nbsp; &nbsp; &nbsp; <span style="color: #569cd6;">if</span> (not (input &gt;&gt; value) <span style="color: #569cd6;">or</span> input.peek() != std::char_traits&lt;<span style="color: #569cd6;">char</span>&gt;::eof()) {
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<span style="color: #569cd6;">return</span> std::unexpected{<span style="color: #b5cea8;">format_error</span>};
+&nbsp; &nbsp; &nbsp; }
+&nbsp; &nbsp;}
+&nbsp; &nbsp;<span style="color: #569cd6;">return</span> {};
+}

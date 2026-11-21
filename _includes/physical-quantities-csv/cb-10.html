@@ -1,0 +1,40 @@
+<span style="color: #c586c0;">[[nodiscard]]</span>
+<span style="color: #569cd6;">constexpr</span> <span style="color: #569cd6;">auto</span> describe(parse_error_code c) noexcept -&gt; std::string_view
+{
+&nbsp; &nbsp;<span style="color: #569cd6;">switch</span> (c) {
+&nbsp; &nbsp; &nbsp; <span style="color: #569cd6;">case</span> parse_error_code::<span style="color: #b5cea8;">format_error</span>: <span style="color: #569cd6;">return</span> <span style="color: #ce9178;">"invalid numeric format"</span>;
+&nbsp; &nbsp; &nbsp; <span style="color: #569cd6;">case</span> parse_error_code::<span style="color: #b5cea8;">missing_value</span>: <span style="color: #569cd6;">return</span> <span style="color: #ce9178;">"missing value"</span>;
+&nbsp; &nbsp; &nbsp; <span style="color: #569cd6;">case</span> parse_error_code::<span style="color: #b5cea8;">extra_value</span>: <span style="color: #569cd6;">return</span> <span style="color: #ce9178;">"more columns than expected"</span>;
+&nbsp; &nbsp;}
+&nbsp; &nbsp;std::unreachable();
+}
+
+<span style="color: #c586c0;">[[nodiscard]]</span>
+<span style="color: #569cd6;">inline</span> <span style="color: #569cd6;">auto</span> describe(open_file_error) -&gt; std::string
+{
+&nbsp; &nbsp;<span style="color: #569cd6;">return</span> <span style="color: #ce9178;">"unable to open file (missing or not permitted)"</span>;
+}
+
+<span style="color: #c586c0;">[[nodiscard]]</span>
+<span style="color: #569cd6;">inline</span> <span style="color: #569cd6;">auto</span> describe(read_error <span style="color: #569cd6;">const&amp;</span> e) -&gt; std::string
+{
+&nbsp; &nbsp;<span style="color: #569cd6;">return</span> std::format(<span style="color: #ce9178;">"I/O error while reading line {}"</span>, e.line);
+}
+
+<span style="color: #c586c0;">[[nodiscard]]</span>
+<span style="color: #569cd6;">inline</span> <span style="color: #569cd6;">auto</span> describe(row_error <span style="color: #569cd6;">const&amp;</span> e) -&gt; std::string
+{
+&nbsp; &nbsp;<span style="color: #569cd6;">return</span> std::format(<span style="color: #ce9178;">"line {}, column {}: {}"</span>, e.line, e.cause.column, describe(e.cause.code));
+}
+
+<span style="color: #569cd6;">struct</span> error_formatter : std::formatter&lt;std::string&gt; {
+&nbsp; &nbsp;<span style="color: #569cd6;">auto</span> format(<span style="color: #569cd6;">auto</span> <span style="color: #569cd6;">const&amp;</span> err, std::format_context<span style="color: #569cd6;">&amp;</span> ctx) <span style="color: #569cd6;">const</span>
+&nbsp; &nbsp;{
+&nbsp; &nbsp; &nbsp; <span style="color: #569cd6;">return</span> std::formatter&lt;std::string&gt;::format(
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;err.visit([](<span style="color: #569cd6;">auto</span> <span style="color: #569cd6;">const&amp;</span> e) { <span style="color: #569cd6;">return</span> detail::describe(e); }),
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;ctx
+&nbsp; &nbsp; &nbsp; );
+&nbsp; &nbsp;}
+};
+
+}<span style="color: #6a9955;"> // namespace detail</span>

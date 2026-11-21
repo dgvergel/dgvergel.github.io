@@ -1,0 +1,33 @@
+<span style="color: #569cd6;">template</span>&lt;<span style="color: #569cd6;">typename</span> M&gt;
+<span style="color: #569cd6;">concept</span> parsable_quantity =
+&nbsp; &nbsp;mp_units::Quantity&lt;M&gt;
+&nbsp; &nbsp;<span style="color: #569cd6;">and not</span> std::is_const_v&lt;M&gt;
+&nbsp; &nbsp;<span style="color: #569cd6;">and</span> detail::parsable_value&lt;<span style="color: #569cd6;">typename</span> M::rep&gt;;
+
+<span style="color: #c586c0;">[[nodiscard]]</span>
+<span style="color: #569cd6;">template</span>&lt;<span style="color: #569cd6;">plain_aggregate</span> T&gt;
+<span style="color: #569cd6;">consteval</span> <span style="color: #569cd6;">auto</span> first_invalid_member() -&gt; std::meta::info
+{
+&nbsp; &nbsp;<span style="color: #569cd6;">template for</span> (<span style="color: #569cd6;">constexpr</span> <span style="color: #569cd6;">auto</span> dm : data_members&lt;T&gt;) {
+&nbsp; &nbsp; &nbsp; <span style="color: #569cd6;">if</span> <span style="color: #569cd6;">constexpr</span> (not parsable_quantity&lt;typename[: std::meta::type_of(dm) :]&gt;) {
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<span style="color: #569cd6;">return</span> dm;
+&nbsp; &nbsp; &nbsp; }
+&nbsp; &nbsp;}
+&nbsp; &nbsp;<span style="color: #569cd6;">return</span> std::meta::info{};
+}
+
+<span style="color: #569cd6;">template</span>&lt;<span style="color: #569cd6;">plain_aggregate</span> T&gt;
+<span style="color: #569cd6;">consteval</span> <span style="color: #569cd6;">auto</span> assert_valid_members() -&gt; <span style="color: #569cd6;">void</span>
+{
+&nbsp; &nbsp;<span style="color: #569cd6;">constexpr</span> <span style="color: #569cd6;">auto</span> bad = first_invalid_member&lt;T&gt;();
+&nbsp; &nbsp;<span style="color: #569cd6;">static_assert</span>(
+&nbsp; &nbsp; &nbsp; bad == std::meta::info{},
+&nbsp; &nbsp; &nbsp; std::string_view{std::define_static_string(
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;std::string{<span style="color: #ce9178;">"qcsv: data member '"</span>}
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;+ std::meta::identifier_of(bad)
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;+ <span style="color: #ce9178;">"' of type "</span> + std::meta::display_string_of(std::meta::type_of(bad))
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;+ <span style="color: #ce9178;">" in "</span> + std::meta::display_string_of(^^T)
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;+ <span style="color: #ce9178;">" is not a parsable mp_units::quantity"</span>
+&nbsp; &nbsp; &nbsp; )}
+&nbsp; &nbsp;);
+}

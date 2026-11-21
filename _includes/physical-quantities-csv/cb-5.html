@@ -1,0 +1,17 @@
+<span style="color: #569cd6;">namespace</span> detail {
+
+<span style="color: #569cd6;">template</span>&lt;<span style="color: #569cd6;">typename</span> T&gt;
+<span style="color: #569cd6;">concept</span> charconv_parsable =
+&nbsp; &nbsp; <span style="color: #569cd6;">requires</span> (<span style="color: #569cd6;">char</span> <span style="color: #569cd6;">const</span>* p, T&amp; value) {
+&nbsp; &nbsp; &nbsp; { std::from_chars(p, p, value) } -&gt; std::same_as&lt;std::from_chars_result&gt;;
+&nbsp; &nbsp;};
+
+<span style="color: #569cd6;">template</span>&lt;<span style="color: #569cd6;">typename</span> T&gt;
+<span style="color: #569cd6;">concept</span> stream_extractable =
+&nbsp; &nbsp;<span style="color: #569cd6;">requires</span>(std::istream&amp; is, T&amp; value) {
+&nbsp; &nbsp; &nbsp; { is &gt;&gt; value } -&gt; std::same_as&lt;std::istream&amp;&gt;;
+&nbsp; &nbsp;};
+
+<span style="color: #569cd6;">template</span>&lt;<span style="color: #569cd6;">typename</span> T&gt;
+<span style="color: #569cd6;">concept</span> parsable_value =
+&nbsp; &nbsp;charconv_parsable&lt;T&gt; <span style="color: #569cd6;">or</span> stream_extractable&lt;T&gt;;
