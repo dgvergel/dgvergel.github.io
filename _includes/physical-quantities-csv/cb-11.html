@@ -23,7 +23,7 @@
 &nbsp; &nbsp;<span style="color: #569cd6;">while</span> (std::getline(is, buffer)) {
 &nbsp; &nbsp; &nbsp; <span style="color: #569cd6;">auto</span> parsed = detail::parse_row&lt;T&gt;(buffer, opts.delimiter);
 &nbsp; &nbsp; &nbsp; <span style="color: #569cd6;">if</span> (<span style="color: #569cd6;">not</span> parsed) {
-&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<span style="color: #569cd6;">return</span> std::unexpected{load_error{row_error{line, parsed.error()}}};
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<span style="color: #569cd6;">return</span> std::unexpected{load_error{row_error{parsed.error(), line}}};
 &nbsp; &nbsp; &nbsp; }
 &nbsp; &nbsp; &nbsp; res.push_back(std::move(*parsed));
 &nbsp; &nbsp; &nbsp; ++line;
@@ -38,7 +38,7 @@
 <span style="color: #569cd6;">template</span>&lt;<span style="color: #569cd6;">detail::plain_aggregate</span> T&gt;
 <span style="color: #c586c0;">[[nodiscard]]</span>
 <span style="color: #569cd6;">auto</span> load_quantities(
-&nbsp; &nbsp;std::filesystem::path <span style="color: #569cd6;">const&amp;</span> path,
+&nbsp; &nbsp;std::filesystem::path <span style="color: #569cd6;">const</span>&amp; path,
 &nbsp; &nbsp;csv_options opts = {}
 )
 &nbsp; &nbsp;-&gt; std::expected&lt;std::vector&lt;T&gt;, file_load_error&gt;
@@ -50,7 +50,7 @@
 
 &nbsp; &nbsp;<span style="color: #569cd6;">return</span> load_quantities&lt;T&gt;(file, opts)
 &nbsp; &nbsp; &nbsp; .transform_error([](load_error <span style="color: #569cd6;">const&amp;</span> e) {
-&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<span style="color: #569cd6;">return</span> e.visit([](<span style="color: #569cd6;">auto</span> <span style="color: #569cd6;">const&amp;</span> alt) { <span style="color: #569cd6;">return</span> file_load_error{alt}; });
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<span style="color: #569cd6;">return</span> e.visit([](<span style="color: #569cd6;">auto</span> <span style="color: #569cd6;">const</span>&amp; alt) { <span style="color: #569cd6;">return</span> file_load_error{alt}; });
 &nbsp; &nbsp; &nbsp; });
 }
 
