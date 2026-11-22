@@ -16,11 +16,11 @@
 &nbsp; &nbsp;<span style="color: #569cd6;">auto</span> res = T{};
 &nbsp; &nbsp;<span style="color: #569cd6;">auto</span> column = <span style="color: #b5cea8;">1uz</span>;
 
-&nbsp; &nbsp;<span style="color: #569cd6;">template for</span> (<span style="color: #569cd6;">constexpr</span> <span style="color: #569cd6;">auto</span> dm : data_members&lt;T&gt;) {
+&nbsp; &nbsp;<span style="color: #569cd6;">template for</span> (<span style="color: #569cd6;">constexpr</span> std::meta::info dm : data_members&lt;T&gt;) {
 &nbsp; &nbsp; &nbsp; <span style="color: #569cd6;">if</span> (field == fields.end()) {
 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<span style="color: #569cd6;">return</span> std::unexpected{parse_error{missing_value, column}};
 &nbsp; &nbsp; &nbsp; }
-&nbsp; &nbsp; &nbsp; <span style="color: #569cd6;">auto&amp;</span> q = res.[:dm:];
+&nbsp; &nbsp; &nbsp; <span style="color: #569cd6;">auto&amp;</span> q = res.[: dm :];
 &nbsp; &nbsp; &nbsp; <span style="color: #569cd6;">if</span> (
 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<span style="color: #569cd6;">auto</span> r = detail::parse_value(
 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; std::string_view{*field}, q.numerical_value_ref_in(q.unit)
