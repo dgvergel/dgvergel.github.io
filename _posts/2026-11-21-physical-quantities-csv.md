@@ -48,10 +48,10 @@ simple scheme below:
 {% include physical-quantities-csv/cb-1.html %}
 </div>
 
-Here, the `shot_data` aggregate provides the strongly typed description of a CSV row: each data
-member associates a CSV field with a physical quantity and its unit. More specifically, every
-member is a specialization of `mp_units::quantity<R, Rep>`, where `R` identifies the quantity and its unit,
-while `Rep` specifies the type used to store its numerical value and defaults to `double`.
+Here, `shot_data` describes a CSV row as an aggregate: each data member associates a CSV column with
+a physical quantity and its unit. More specifically, every member is a specialization of `mp_units::quantity<R, Rep>`,
+where `R` identifies the quantity and its unit, while `Rep` specifies the type used to store its numerical value
+and defaults to `double`.
 
 A single call to `qcsv::load_quantities<shot_data>`, provided by `quantity_csv.hpp`, returns a `std::expected`[^2]
 containing either the complete dataset as a `std::vector<shot_data>` or a loading or parsing error.
@@ -90,7 +90,7 @@ the `mp-units` core header:
 </div>
 
 Next, we define the error types that the library functions may report. When parsing a CSV row, we
-distinguish three possible errors: (i) a value cannot be parsed because of an invalid format (`format_error`),
+distinguish three possible errors: (i) a value cannot be parsed because of an invalid format (enumerator `format_error`),
 (ii) an expected value is missing (`missing_value`), or (iii) the row contains more values than expected
 (`extra_value`). A `parse_error` stores an error code identifying the failure and the CSV column at which it
 occurred. When processing an entire CSV input, a `row_error` additionally records the line number at which
@@ -143,8 +143,8 @@ error:
 The next step is to constrain the aggregate type used to represent a CSV row and, more
 importantly, to verify at compile time that each of its non-static data members is
 a parsable mp-units quantity whose numerical value can be populated from a CSV field.
-For simplicity, the `plain_aggregate` concept restricts row types to default-initializable
-aggregate classes with no base classes and at least one non-static data member:
+For simplicity, the `plain_aggregate` concept admits only aggregate classes that are
+default-initializable, have no base classes, and declare at least one non-static data member:
 
 <div class="dgv-cb">
 {% include physical-quantities-csv/cb-7.html %}
@@ -174,8 +174,8 @@ satisfy `parsable_quantity`, or an empty `std::meta::info`[^8] if all members ar
 
 Rather than expressing the validity of the entire aggregate as a boolean constraint,
 `assert_valid_members` uses the result of `first_invalid_member` to produce a targeted compile-time
-diagnostic. Its `static_assert` reports the identifier and type of the offending member, together
-with the type of the enclosing aggregate:
+diagnostic. If a member does not satisfy `parsable_quantity`, the `static_assert` message reports
+the member's identifier and type, along with the enclosing aggregate type:
 
 <div class="dgv-cb">
 {% include physical-quantities-csv/cb-8.html %}
@@ -193,8 +193,7 @@ compile time that the aggregate's members are suitable physical quantities for p
 splits the input row using the requested delimiter.
 A default-initialized instance of `T` is populated, in declaration order, using a C++26
 `template for` expansion statement. For each reflected data member, `template for` expands its body
-at compile time, generating the code that parses the corresponding CSV field into the quantity's
-numerical representation at runtime:
+at compile time, generating the runtime code that parses the corresponding CSV field into that member:
 
 <div class="dgv-cb">
 {% include physical-quantities-csv/cb-9.html %}
@@ -238,10 +237,9 @@ including any available location information, and discards all previously parsed
 {% include physical-quantities-csv/cb-11.html %}
 </div>
 
-Finally, we make the `load_error` and `file_load_error` variants formattable by specializing
+Finally, we make the `load_error` and `file_load_error` variant types formattable by specializing
 `std::formatter`.[^10] Both specializations inherit the common formatting logic from `error_formatter`,
-allowing these error types to be passed directly to `std::format`, `std::println`, and other
-facilities based on `std::formatter`:
+so these error types can be passed directly to `std::format`, `std::println`, and other formatting facilities:
 
 <div class="dgv-cb">
 {% include physical-quantities-csv/cb-12.html %}
