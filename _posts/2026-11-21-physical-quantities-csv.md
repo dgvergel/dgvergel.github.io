@@ -17,7 +17,7 @@ excerpt: >
 
 <img src="{{ '/assets/images/physical-quantities-csv/fig-1.webp' | relative_url }}"
   alt="Parabolic projectile motion"
-  style="float: right; width: 280px; height: auto; margin: 0 0 1rem 2rem;">
+  style="float: right; width: 290px; height: auto; margin: 0 0 1rem 2rem;">
 Experimental data in science and engineering are often stored in CSV files as sequences
 of numerical values, with each column representing a physical quantity whose unit is either
 implicit or indicated in a header. Turning these raw values into strongly typed physical
@@ -27,7 +27,7 @@ particularly its reflection facilities, and mp-units.[^1]
 
 For example, consider a CSV file containing measurements from a projectile-launch experiment
 involving parabolic motion (see the figure), with each row storing the launch angle
-<code>&#x03D5;</code> in degrees, the measured initial speed `v` in miles per hour, and the
+`ϕ` in degrees, the measured initial speed `v` in miles per hour, and the
 horizontal range to the impact point `r` in centimeters:
 
 <div style="clear: both;"></div>
@@ -50,7 +50,7 @@ simple scheme below:
 
 Here, the `shot_data` aggregate provides the strongly typed description of a CSV row: each data
 member associates a CSV column with a physical quantity and its unit. More specifically, every
-member is an instance of `mp_units::quantity<R, Rep>`, where R identifies the quantity and its unit,
+member is an instance of `mp_units::quantity<R, Rep>`, where `R` identifies the quantity and its unit,
 while `Rep` specifies the type used to store its numerical value and defaults to `double`.
 
 A single call to `qcsv::load_quantities<shot_data>`, provided by `quantity_csv.hpp`, returns either
@@ -59,13 +59,13 @@ the complete dataset as a `std::vector<shot_data>` or a loading or parsing error
 
 Running this program produces the following output:
 
-<div class="dgv-terminal-out">0.0°, 5.7 mi/h, 61.5 cm
+<div class="dgv-sheet"><pre>0.0°, 5.7 mi/h, 61.5 cm
 5.0°, 5.7 mi/h, 64.5 cm
 10.0°, 5.6 mi/h, 72.0 cm
 15.0°, 5.6 mi/h, 77.3 cm
 20.0°, 5.6 mi/h, 82.0 cm
 25.0°, 5.4 mi/h, 85.5 cm
-30.0°, 5.5 mi/h, 88.1 cm
+30.0°, 5.5 mi/h, 88.1 cm</pre>
 </div>
 
 <div class="dgv-note" markdown="1">Based on the ISO 80000 standard (International System of
@@ -78,7 +78,8 @@ Furthermore, mp-units is being proposed for standardization in C++29 through pro
 </div>
 
 The rest of the article develops the header-only library in `quantity_csv.hpp`. Concatenating the
-code blocks in order produces the complete header. The project has been tested with GCC 16.2.
+code blocks in order produces the complete header. The code, compiled with GCC 16.2, is available
+at this [Compiler Explorer link](https://godbolt.org/z/YjoWs5KxG).
 
 ## Implementation
 
@@ -108,7 +109,8 @@ this condition is represented separately by `open_file_error`:
 Loading a CSV dataset may fail in different ways depending on the input source:
 
 * `load_error`: Loading from an existing input stream may fail either while reading from the
-stream (`read_error`) or while parsing a row (`parse_error`).
+stream (`read_error`) or while parsing a row (`row_error`).
+
 * `file_load_error`: Loading directly from a file additionally accounts for failure to open
 the file (`open_file_error`).
 
@@ -181,10 +183,10 @@ with the type of the enclosing aggregate:
 {% include physical-quantities-csv/cb-8.html %}
 </div>
 
-<div class="dgv-note">Consider the introductory example: if the type of <code>shot_data::v</code>
-is changed from <code>speed_type</code> to <code>double</code>, compilation fails with a diagnostic
-that reports the identifier and type of the offending data member: *static assertion failed: qcsv
-data member 'v' of type double in shot_data is not a parsable mp_units::quantity*.
+<div class="dgv-note">Consider the introductory example: if the type of <code>shot_data::v</code> were
+changed from speed_type to double, compilation would fail with a diagnostic that reports the identifier
+and type of the offending data member: <code>static assertion failed: qcsv data member 'v' of type double
+in shot_data is not a parsable mp_units::quantity</code>.
 </div>
 
 With the compile-time requirements in place, we can now use the `parse_row` function to parse
@@ -219,9 +221,9 @@ contextual information use `std::format` to include the relevant line and column
 {% include physical-quantities-csv/cb-10.html %}
 </div>
 
-<div class="dgv-note">For instance, an empty second field on line 10 of the CSV, <code>10, , 72.0</code>
-produces the message *"CSV error: line 4, column 2: missing value"*, whereas a malformed second
-filed, <code>10, 5.64a, 72.0</code>, produces *"CSV error: line 4, column 2: invalid numeric format"*.
+<div class="dgv-note">For instance, an empty second field on line 4 of the CSV, <code>10, , 72.0</code>
+produces the message <code>"CSV error: line 4, column 2: missing value"</code>, whereas a malformed
+second field, <code>10, 5.64a, 72.0</code>, produces <code>"CSV error: line 4, column 2: invalid numeric format"</code>.
 </div>
 
 Finally, we provide two overloads of `load_quantities` for loading a complete CSV dataset: one
@@ -239,7 +241,7 @@ including any available location information, and discards all previously parsed
 </div>
 
 Finally, we make the `load_error` and `file_load_error` variants formattable by specializing
-`std::formatter`[^10]. Both specializations inherit the common formatting logic from `error_formatter`,
+`std::formatter`.[^10] Both specializations inherit the common formatting logic from `error_formatter`,
 allowing these error types to be passed directly to `std::format`, `std::println`, and other
 facilities based on `std::formatter`:
 
@@ -257,7 +259,7 @@ presented in an earlier post on my Spanish-language C++ blog on Blogger:
 [^1]: mp-units - [Home](https://mpusz.github.io/mp-units/latest/)
 [^2]: cppreference.com - [std::expected](https://en.cppreference.com/cpp/utility/expected)
 [^3]: mp-units - [Safety features](https://mpusz.github.io/mp-units/latest/getting_started/safety_features/?h=safety)
-[^4]: www.open-std.org - [Quantities and units library](https://www.open-std.org/jtc1/sc22/wg21/docs/papers/2026/p3045r10.html)
+[^4]: www.open-std.org - [P3045 - Quantities and units library](https://www.open-std.org/jtc1/sc22/wg21/docs/papers/2026/p3045r10.html)
 [^5]: cppreference.com - [std::from_chars](https://en.cppreference.com/cpp/utility/from_chars)
 [^6]: cppreference.com - [std::basic_ispanstream](https://en.cppreference.com/cpp/io/basic_ispanstream)
 [^7]: cppreference.com - [template for expansion](https://cppreference.com/cpp/language/template_for)
