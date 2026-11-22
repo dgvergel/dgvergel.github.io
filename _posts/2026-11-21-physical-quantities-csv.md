@@ -3,7 +3,7 @@ layout: post
 title: "Parsing Physical Quantities from CSV with C++26 Reflection and mp-units"
 author: Daniel Gómez Vergel
 date: 2026-11-21
-last_modified_at: 2026-11-22
+last_modified_at: 2026-11-23
 categories: [C++26, csv, mp-units, physical-quantities, reflection]
 permalink: /2026/11/21/physical-quantities-csv/
 excerpt: >
@@ -175,7 +175,8 @@ satisfy `parsable_quantity`, or an empty `std::meta::info`[^8] if all members ar
 Rather than expressing the validity of the entire aggregate as a boolean constraint,
 `assert_valid_members` uses the result of `first_invalid_member` to produce a targeted compile-time
 diagnostic. If a member does not satisfy `parsable_quantity`, the `static_assert` message reports
-the member's identifier and type, along with the enclosing aggregate type:
+the member's identifier and type, along with the enclosing aggregate type. If all members satisfy the
+constraint, the `static_assert` has no effect and its message is an unevaluated operand:
 
 <div class="dgv-cb">
 {% include physical-quantities-csv/cb-8.html %}
@@ -199,8 +200,8 @@ at compile time, generating the runtime code that parses the corresponding CSV f
 {% include physical-quantities-csv/cb-9.html %}
 </div>
 
-Here, the call to `numerical_value_ref_in(q.unit)` ensures that the numerical value read from the
-CSV field is interpreted in the unit carried by the data member.[^9]
+Here, the call to `numerical_value_ref_in(q.unit)` provides a reference to the numerical value held by
+quantity `q`, so it can be populated directly from the CSV field.[^9]
 
 <div class="dgv-note">Reflection plays a key role in this design. It allows <code>parse_row</code>
 to take the aggregate type itself as a template argument and inspect its non-static data members,
