@@ -4,8 +4,8 @@
 &nbsp; &nbsp;<span style="color: #569cd6;">and not</span> std::is_const_v&lt;M&gt;
 &nbsp; &nbsp;<span style="color: #569cd6;">and</span> detail::parsable_value&lt;<span style="color: #569cd6;">typename</span> M::rep&gt;;
 
-<span style="color: #c586c0;">[[nodiscard]]</span>
 <span style="color: #569cd6;">template</span>&lt;<span style="color: #569cd6;">plain_aggregate</span> T&gt;
+<span style="color: #c586c0;">[[nodiscard]]</span>
 <span style="color: #569cd6;">consteval</span> <span style="color: #569cd6;">auto</span> first_invalid_member() -&gt; std::meta::info
 {
 &nbsp; &nbsp;<span style="color: #569cd6;">template for</span> (<span style="color: #569cd6;">constexpr</span> std::meta::info dm : data_members&lt;T&gt;) {
