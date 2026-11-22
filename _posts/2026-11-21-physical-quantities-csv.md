@@ -49,13 +49,12 @@ simple scheme below:
 </div>
 
 Here, the `shot_data` aggregate provides the strongly typed description of a CSV row: each data
-member associates a CSV column with a physical quantity and its unit. More specifically, every
-member is an instance of `mp_units::quantity<R, Rep>`, where `R` identifies the quantity and its unit,
+member associates a CSV field with a physical quantity and its unit. More specifically, every
+member is a specialization of `mp_units::quantity<R, Rep>`, where `R` identifies the quantity and its unit,
 while `Rep` specifies the type used to store its numerical value and defaults to `double`.
 
-A single call to `qcsv::load_quantities<shot_data>`, provided by `quantity_csv.hpp`, returns either
-the complete dataset as a `std::vector<shot_data>` or a loading or parsing error, represented through
-`std::expected`.[^2]
+A single call to `qcsv::load_quantities<shot_data>`, provided by `quantity_csv.hpp`, returns a `std::expected`[^2]
+containing either the complete dataset as a `std::vector<shot_data>` or a loading or parsing error.
 
 Running this program produces the following output:
 
@@ -90,12 +89,12 @@ the `mp-units` core header:
 {% include physical-quantities-csv/cb-2.html %}
 </div>
 
-Next, we define the error types that the library functions may report through `std::expected`
-objects. When parsing a CSV row, we distinguish three possible errors: (i) a value cannot be
-parsed because of an invalid format (`format_error`), (ii) an expected value is missing (`missing_value`),
-or (iii) the row contains more values than expected (`extra_value`). A `parse_error` stores an error code
-identifying the failure and the CSV column at which it occurred. When processing an entire CSV input, a
-`row_error` additionally records the line number at which the parsing error occurred.
+Next, we define the error types that the library functions may report. When parsing a CSV row, we
+distinguish three possible errors: (i) a value cannot be parsed because of an invalid format (`format_error`),
+(ii) an expected value is missing (`missing_value`), or (iii) the row contains more values than expected
+(`extra_value`). A `parse_error` stores an error code identifying the failure and the CSV column at which it
+occurred. When processing an entire CSV input, a `row_error` additionally records the line number at which
+the parsing error occurred.
 
 Beyond errors associated with parsing individual rows, loading a CSV input may also fail while
 reading from the input stream. A `read_error` records the line at which the read operation failed.
@@ -106,7 +105,7 @@ this condition is represented separately by `open_file_error`:
 {% include physical-quantities-csv/cb-3.html %}
 </div>
 
-Loading a CSV dataset may fail in different ways depending on the input source:
+Loading a CSV dataset may fail essentially in two different ways depending on the input source:
 
 * `load_error`: Loading from an existing input stream may fail either while reading from the
 stream (`read_error`) or while parsing a row (`row_error`).
@@ -151,7 +150,7 @@ aggregate classes with no base classes and at least one non-static data member:
 {% include physical-quantities-csv/cb-7.html %}
 </div>
 
-<div class="dgv-note">Note how C++26 reflection is used to inspect the aggregate at compile time,
+<div class="dgv-note">Note how C++26 <b>reflection</b> is used to inspect the aggregate at compile time,
 discovering its non-static data members and verifying that it has no base classes.
 <hr>
 The C++26 reflection system can be understood as an interaction between two domains: the program
@@ -159,7 +158,7 @@ domain, comprising types, members, expressions, and other language constructs; a
 comprising <code>std::meta::info</code> reflection values. The <code>^^</code> reflection operator projects
 program elements into the meta-domain, producing prvalues of type <code>std::meta::info</code> that represent them.
 These reflection values can then be queried, for example to obtain information about types, identifiers, members,
-or template arguments. Splicers, written <code>[: refl :]</code>, provide the complementary operation: they
+or template arguments. Splicers, written <code>[: <em>refl</em> :]</code>, provide the complementary operation: they
 reintroduce (reify) entities represented by reflections into the program in the grammatical contexts where
 those entities are permitted.
 </div>
@@ -184,7 +183,7 @@ with the type of the enclosing aggregate:
 
 <div class="dgv-note">Consider the introductory example: if the type of <code>shot_data::v</code> were
 changed from <code>speed_type</code> to <code>double</code>, compilation would fail with a diagnostic that
-reports the identifier and type of the offending data member: <code>"static assertion failed: qcsv data member
+reports the identifier and type of the offending data member: <code>"static assertion failed: qcsv: data member
 'v' of type double in shot_data is not a parsable mp_units::quantity"</code>.
 </div>
 
@@ -225,11 +224,11 @@ produces the message <code>"CSV error: line 4, column 2: missing value"</code>, 
 second field, <code>10, 5.64a, 72.0</code>, produces <code>"CSV error: line 4, column 2: invalid numeric format"</code>.
 </div>
 
-Finally, we provide two overloads of `load_quantities` for loading a complete CSV dataset: one
-operates on an existing `std::istream` input stream, while the other takes a `std::filesystem::path` and
-opens the corresponding file. If the input is configured to contain a header, the first line is consumed
-and skipped. Each subsequent line is parsed with `parse_row` and, on success, the resulting
-aggregate is appended to the output vector.
+With these pieces in place, we provide two overloads of `load_quantities` that load a complete CSV dataset into
+a vector of aggregates: one operates on an existing `std::istream` input stream, while the other takes a
+`std::filesystem::path` and opens the corresponding file. If the input is configured to contain a header,
+the first line is consumed and skipped. Each subsequent line is parsed with `parse_row` and, on success,
+the resulting aggregate is appended to the output vector.
 
 The operation has all-or-nothing semantics: `load_quantities` returns the complete dataset only
 if every data row is parsed successfully. Otherwise, it returns the first error encountered,
