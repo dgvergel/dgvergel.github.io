@@ -105,13 +105,13 @@ this condition is represented separately by `open_file_error`:
 {% include physical-quantities-csv/cb-3.html %}
 </div>
 
-Loading a CSV dataset may fail essentially in two different ways depending on the input source:
+The failures that may occur when loading a CSV dataset depend on the input source:
 
-* `load_error`: Loading from an existing input stream may fail either while reading from the
-stream (`read_error`) or while parsing a row (`row_error`).
+* Loading from an input stream may fail either while reading from the stream (`read_error`) or while
+parsing a row (`row_error`). These two failures are represented by the `std::variant` type `load_error`.
 
-* `file_load_error`: Loading directly from a file additionally accounts for failure to open
-the file (`open_file_error`).
+* Loading from a file may additionally fail because the file cannot be opened (`open_file_error`).
+All three failures are represented by the `std::variant` type `file_load_error`.
 
 <div class="dgv-cb">
 {% include physical-quantities-csv/cb-4.html %}
