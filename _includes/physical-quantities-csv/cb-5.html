@@ -2,7 +2,7 @@
 
 <span style="color: #569cd6;">template</span>&lt;<span style="color: #569cd6;">typename</span> T&gt;
 <span style="color: #569cd6;">concept</span> charconv_parsable =
-&nbsp; &nbsp; <span style="color: #569cd6;">requires</span> (<span style="color: #569cd6;">char</span> <span style="color: #569cd6;">const</span>* first, <span style="color: #569cd6;">char</span> <span style="color: #569cd6;">const</span>* last, T&amp; value) {
+&nbsp; &nbsp;<span style="color: #569cd6;">requires</span> (<span style="color: #569cd6;">char</span> <span style="color: #569cd6;">const</span>* first, <span style="color: #569cd6;">char</span> <span style="color: #569cd6;">const</span>* last, T&amp; value) {
 &nbsp; &nbsp; &nbsp; { std::from_chars(first, last, value) } -&gt; std::same_as&lt;std::from_chars_result&gt;;
 &nbsp; &nbsp;};
 
@@ -13,5 +13,4 @@
 &nbsp; &nbsp;};
 
 <span style="color: #569cd6;">template</span>&lt;<span style="color: #569cd6;">typename</span> T&gt;
-<span style="color: #569cd6;">concept</span> parsable_value =
-&nbsp; &nbsp;charconv_parsable&lt;T&gt; <span style="color: #569cd6;">or</span> stream_extractable&lt;T&gt;;
+<span style="color: #569cd6;">concept</span> parsable_value = charconv_parsable&lt;T&gt; <span style="color: #569cd6;">or</span> stream_extractable&lt;T&gt;;
