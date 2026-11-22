@@ -6,6 +6,7 @@
 );
 
 <span style="color: #569cd6;">template</span>&lt;<span style="color: #569cd6;">typename</span> T&gt;
+<span style="color: #c586c0;">[[nodiscard]]</span>
 <span style="color: #569cd6;">consteval</span> <span style="color: #569cd6;">auto</span> has_no_bases() -&gt; <span style="color: #569cd6;">bool</span>
 {
 &nbsp; &nbsp;<span style="color: #569cd6;">return</span> std::meta::bases_of(
