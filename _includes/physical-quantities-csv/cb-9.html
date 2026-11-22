@@ -25,7 +25,7 @@
 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<span style="color: #569cd6;">auto</span> r = detail::parse_value(
 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; std::string_view{*field}, q.numerical_value_ref_in(q.unit)
 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;);
-&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;not r
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<span style="color: #569cd6;">not</span> r
 &nbsp; &nbsp; &nbsp; ) {
 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<span style="color: #569cd6;">return</span> std::unexpected{parse_error{r.error(), column}};
 &nbsp; &nbsp; &nbsp; }
