@@ -145,7 +145,7 @@ The next step is to constrain the aggregate type used to represent a CSV row and
 importantly, to verify at compile time that each of its non-static data members is
 a parsable mp-units quantity whose numerical value can be populated from a CSV field.
 For simplicity, the `plain_aggregate` concept restricts row types to default-initializable
-aggregate classes with no base classes and at least one non-static data member.
+aggregate classes with no base classes and at least one non-static data member:
 
 <div class="dgv-cb">
 {% include physical-quantities-csv/cb-7.html %}
@@ -157,7 +157,7 @@ discovering its non-static data members and verifying that it has no base classe
 The C++26 reflection system can be understood as an interaction between two domains: the program
 domain, comprising types, members, expressions, and other language constructs; and the meta-domain,
 comprising <code>std::meta::info</code> reflection values. The <code>^^</code> reflection operator projects
-program elements into the meta-domain, producing prvalues of type `std::meta::info` that represent them.
+program elements into the meta-domain, producing prvalues of type <code>std::meta::info</code> that represent them.
 These reflection values can then be queried, for example to obtain information about types, identifiers, members,
 or template arguments. Splicers, written <code>[: refl :]</code>, provide the complementary operation: they
 reintroduce (reify) entities represented by reflections into the program in the grammatical contexts where
@@ -183,9 +183,9 @@ with the type of the enclosing aggregate:
 </div>
 
 <div class="dgv-note">Consider the introductory example: if the type of <code>shot_data::v</code> were
-changed from `speed_type` to `double`, compilation would fail with a diagnostic that reports the identifier
-and type of the offending data member: <code>"static assertion failed: qcsv data member 'v' of type double
-in shot_data is not a parsable mp_units::quantity"</code>.
+changed from <code>speed_type</code> to <code>double</code>, compilation would fail with a diagnostic that
+reports the identifier and type of the offending data member: <code>"static assertion failed: qcsv data member
+'v' of type double in shot_data is not a parsable mp_units::quantity"</code>.
 </div>
 
 With the compile-time requirements in place, we can now use the `parse_row` function to parse
