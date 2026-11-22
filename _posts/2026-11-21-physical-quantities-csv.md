@@ -3,7 +3,7 @@ layout: post
 title: "Parsing Physical Quantities from CSV with C++26 Reflection and mp-units"
 author: Daniel Gómez Vergel
 date: 2026-11-21
-last_modified_at: 2026-11-21
+last_modified_at: 2026-11-22
 categories: [C++26, csv, mp-units, physical-quantities, reflection]
 permalink: /2026/11/21/physical-quantities-csv/
 excerpt: >
@@ -25,10 +25,10 @@ quantities involves both parsing the serialized data and constructing the corres
 objects using a physical quantities library. In this article, we will accomplish this with C++26,
 particularly its reflection facilities, and mp-units.[^1]
 
-For example, consider a CSV file containing measurements from a projectile-launch experiment
-involving parabolic motion (see the figure), with each row storing the launch angle
-`ϕ` in degrees, the measured initial speed `v` in miles per hour, and the
-horizontal range to the impact point `r` in centimeters:
+For example, consider a CSV file named `parabolic_throwing_data.csv` containing measurements
+from a projectile-launch experiment involving parabolic motion (see the figure),
+with each row storing the launch angle `ϕ` in degrees, the measured initial speed `v` in
+miles per hour, and the horizontal range to the impact point `r` in centimeters:
 
 <div style="clear: both;"></div>
 <div class="dgv-sheet"><pre>ϕ (deg), v (mi/h), r (cm)
@@ -78,7 +78,7 @@ Furthermore, mp-units is being proposed for standardization in C++29 through pro
 </div>
 
 The rest of the article develops the header-only library in `quantity_csv.hpp`. Concatenating the
-code blocks in order produces the complete header. The code, compiled with GCC 16.2, is available
+code blocks in order produces the complete header. The code, compiled with GCC 16.2, is also available
 at this [Compiler Explorer link](https://godbolt.org/z/YjoWs5KxG).
 
 ## Implementation
@@ -92,10 +92,10 @@ the `mp-units` core header:
 
 Next, we define the error types that the library functions may report through `std::expected`
 objects. When parsing a CSV row, we distinguish three possible errors: (i) a value cannot be
-parsed because of an invalid format, (ii) an expected value is missing, or (iii) the row contains
-more values than expected. A `parse_error` stores an error code identifying the failure and the
-CSV column at which it occurred. When processing an entire CSV input, a `row_error` additionally
-records the line number at which the parsing error occurred.
+parsed because of an invalid format (`format_error`), (ii) an expected value is missing (`missing_value`),
+or (iii) the row contains more values than expected (`extra_value`). A `parse_error` stores an error code
+identifying the failure and the CSV column at which it occurred. When processing an entire CSV input, a
+`row_error` additionally records the line number at which the parsing error occurred.
 
 Beyond errors associated with parsing individual rows, loading a CSV input may also fail while
 reading from the input stream. A `read_error` records the line at which the read operation failed.
@@ -147,26 +147,25 @@ a parsable mp-units quantity whose numerical value can be populated from a CSV f
 For simplicity, the `plain_aggregate` concept restricts row types to default-initializable
 aggregate classes with no base classes and at least one non-static data member.
 
-<div class="dgv-note">Note how C++26 reflection is used to inspect the aggregate at compile time,
-discovering the identifiers and types of its non-static data members and verifying that it has
-no base classes.
-<hr>
-The C++26 reflection system can be understood as an interaction between two domains: the program
-domain, comprising types, members, expressions, and other language constructs; and the meta-domain,
-comprising <code>std::meta::info</code> values. The <code>^^</code> reflection operator projects
-program elements into the meta-domain, where their properties can be inspected and the resulting
-reflections can be manipulated, for example by querying types, identifiers, members, or template
-arguments. Splicers, written <code>[: refl :]</code>, provide the complementary operation: they
-reintroduce (reify) entities represented by reflections into the program in the grammatical
-contexts where those entities are permitted.
-</div>
-
 <div class="dgv-cb">
 {% include physical-quantities-csv/cb-7.html %}
 </div>
 
+<div class="dgv-note">Note how C++26 reflection is used to inspect the aggregate at compile time,
+discovering its non-static data members and verifying that it has no base classes.
+<hr>
+The C++26 reflection system can be understood as an interaction between two domains: the program
+domain, comprising types, members, expressions, and other language constructs; and the meta-domain,
+comprising <code>std::meta::info</code> reflection values. The <code>^^</code> reflection operator projects
+program elements into the meta-domain, producing prvalues of type `std::meta::info` that represent them.
+These reflection values can then be queried, for example to obtain information about types, identifiers, members,
+or template arguments. Splicers, written <code>[: refl :]</code>, provide the complementary operation: they
+reintroduce (reify) entities represented by reflections into the program in the grammatical contexts where
+those entities are permitted.
+</div>
+
 Having established the aggregate's structural requirements, we now validate its individual data
-members. The `parsable_quantity` concept requires each member to satisfy `mp_units::Quantity`, to
+members. The `parsable_quantity` concept requires a member to satisfy `mp_units::Quantity`, to
 be non-const so that its numerical value can be modified, and to have a representation type `rep`
 satisfying `parsable_value`.
 
@@ -184,9 +183,9 @@ with the type of the enclosing aggregate:
 </div>
 
 <div class="dgv-note">Consider the introductory example: if the type of <code>shot_data::v</code> were
-changed from speed_type to double, compilation would fail with a diagnostic that reports the identifier
-and type of the offending data member: <code>static assertion failed: qcsv data member 'v' of type double
-in shot_data is not a parsable mp_units::quantity</code>.
+changed from `speed_type` to `double`, compilation would fail with a diagnostic that reports the identifier
+and type of the offending data member: <code>"static assertion failed: qcsv data member 'v' of type double
+in shot_data is not a parsable mp_units::quantity"</code>.
 </div>
 
 With the compile-time requirements in place, we can now use the `parse_row` function to parse
@@ -196,7 +195,7 @@ splits the input row using the requested delimiter.
 A default-initialized instance of `T` is populated, in declaration order, using a C++26
 `template for` expansion statement. For each reflected data member, `template for` expands its body
 at compile time, generating the code that parses the corresponding CSV field into the quantity's
-numerical representation at runtime.
+numerical representation at runtime:
 
 <div class="dgv-cb">
 {% include physical-quantities-csv/cb-9.html %}
@@ -221,14 +220,14 @@ contextual information use `std::format` to include the relevant line and column
 {% include physical-quantities-csv/cb-10.html %}
 </div>
 
-<div class="dgv-note">For instance, an empty second field on line 4 of the CSV, <code>10, , 72.0</code>
+<div class="dgv-note">For instance, an empty second field on line 4 of the CSV shown in the introduction, <code>10, , 72.0</code>,
 produces the message <code>"CSV error: line 4, column 2: missing value"</code>, whereas a malformed
 second field, <code>10, 5.64a, 72.0</code>, produces <code>"CSV error: line 4, column 2: invalid numeric format"</code>.
 </div>
 
 Finally, we provide two overloads of `load_quantities` for loading a complete CSV dataset: one
-operates on an existing input stream, while the other takes a `std::filesystem::path` and opens
-the corresponding file. If the input is configured to contain a header, the first line is consumed
+operates on an existing `std::istream` input stream, while the other takes a `std::filesystem::path` and
+opens the corresponding file. If the input is configured to contain a header, the first line is consumed
 and skipped. Each subsequent line is parsed with `parse_row` and, on success, the resulting
 aggregate is appended to the output vector.
 
