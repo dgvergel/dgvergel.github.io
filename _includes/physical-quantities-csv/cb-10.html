@@ -1,10 +1,11 @@
 <span style="color: #c586c0;">[[nodiscard]]</span>
 <span style="color: #569cd6;">constexpr</span> <span style="color: #569cd6;">auto</span> describe(parse_error_code c) noexcept -&gt; std::string_view
 {
+&nbsp; &nbsp;<span style="color: #569cd6;">using enum</span> parse_error_code;
 &nbsp; &nbsp;<span style="color: #569cd6;">switch</span> (c) {
-&nbsp; &nbsp; &nbsp; <span style="color: #569cd6;">case</span> parse_error_code::<span style="color: #b5cea8;">format_error</span>: <span style="color: #569cd6;">return</span> <span style="color: #ce9178;">"invalid numeric format"</span>;
-&nbsp; &nbsp; &nbsp; <span style="color: #569cd6;">case</span> parse_error_code::<span style="color: #b5cea8;">missing_value</span>: <span style="color: #569cd6;">return</span> <span style="color: #ce9178;">"missing value"</span>;
-&nbsp; &nbsp; &nbsp; <span style="color: #569cd6;">case</span> parse_error_code::<span style="color: #b5cea8;">extra_value</span>: <span style="color: #569cd6;">return</span> <span style="color: #ce9178;">"more columns than expected"</span>;
+&nbsp; &nbsp; &nbsp; <span style="color: #569cd6;">case</span> <span style="color: #b5cea8;">format_error</span>: <span style="color: #569cd6;">return</span> <span style="color: #ce9178;">"invalid numeric format"</span>;
+&nbsp; &nbsp; &nbsp; <span style="color: #569cd6;">case</span> <span style="color: #b5cea8;">missing_value</span>: <span style="color: #569cd6;">return</span> <span style="color: #ce9178;">"missing value"</span>;
+&nbsp; &nbsp; &nbsp; <span style="color: #569cd6;">case</span> <span style="color: #b5cea8;">extra_value</span>: <span style="color: #569cd6;">return</span> <span style="color: #ce9178;">"more columns than expected"</span>;
 &nbsp; &nbsp;}
 &nbsp; &nbsp;std::unreachable();
 }
