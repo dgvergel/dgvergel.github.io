@@ -104,10 +104,11 @@ this condition is represented separately by `open_file_error`:
 {% include physical-quantities-csv/cb-3.html %}
 </div>
 
-The failures that may occur when loading a CSV dataset depend on the input source:
+The failures that may occur when loading a CSV dataset depend on the input source. We therefore define
+two variant types to represent the possible failures in each case:
 
 * Loading from an input stream may fail either while reading from the stream (`read_error`) or while
-parsing a row (`row_error`). These two failures are represented by the `std::variant` type `load_error`.
+parsing a row (`row_error`). These alternatives are represented by the `std::variant` type `load_error`.
 
 * Loading from a file may additionally fail because the file cannot be opened (`open_file_error`).
 All three failures are represented by the `std::variant` type `file_load_error`.
@@ -117,7 +118,7 @@ All three failures are represented by the `std::variant` type `file_load_error`.
 </div>
 
 As mentioned earlier, a physical quantity is typically expressed in terms of a numerical value and
-a unit of measurement. We therefore begin by introducing the concepts that constrain the underlying
+a unit of measurement. We therefore begin by introducing the concept that constrain the underlying
 numerical representation of a quantity. A value is considered parsable if its type models `parsable_value`,
 that is, if it can be converted directly from a character sequence using `std::from_chars`,[^5] or
 alternatively extracted from an input stream using `operator>>`:
@@ -262,4 +263,5 @@ presented in an earlier post on my Spanish-language C++ blog on Blogger:
 [^8]: cppreference.com - [std::meta::info](https://cppreference.com/cpp/meta/info)
 [^9]: mp-units - [Why can't I convert a double& to a quantity&?](https://mpusz.github.io/mp-units/latest/getting_started/faq/?h=numerical_value_ref_in#why-cant-i-convert-a-double-to-a-quantity)
 [^10]: cppreference.com - [std::formatter](https://en.cppreference.com/cpp/utility/format/formatter)
+
 
