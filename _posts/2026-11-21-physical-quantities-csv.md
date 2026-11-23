@@ -18,12 +18,11 @@ excerpt: >
 <img src="{{ '/assets/images/physical-quantities-csv/fig-1.webp' | relative_url }}"
   alt="Parabolic projectile motion"
   style="float: right; width: 290px; height: auto; margin: 0 0 1rem 2rem;">
-Experimental data in science and engineering are often stored in CSV files as sequences
-of numerical values, with each column representing a physical quantity whose unit is either
-implicit or indicated in a header. Turning these raw values into strongly typed physical
-quantities involves both parsing the serialized data and constructing the corresponding
-objects using a physical quantities library. In this article, we will accomplish this with C++26,
-particularly its reflection facilities, and mp-units.[^1]
+Experimental data in science and engineering are commonly stored in CSV files, where each column
+represents a physical quantity whose unit is either implicit or specified in a header.
+Converting these raw values into strongly typed physical quantities requires parsing the serialized
+data and constructing the corresponding objects using a physical quantities library. In this article,
+we will accomplish this with C++26, particularly its reflection facilities, and mp-units.[^1]
 
 For example, consider a CSV file named `parabolic_throwing_data.csv` containing measurements
 from a projectile-launch experiment involving parabolic motion (see the figure),
@@ -48,7 +47,7 @@ simple scheme below:
 {% include physical-quantities-csv/cb-1.html %}
 </div>
 
-Here, `shot_data` describes a CSV row as an aggregate: each data member associates a CSV column with
+Here, `shot_data` represents a CSV row as an aggregate, with each data member associating a CSV column with
 a physical quantity and its unit. More specifically, every member is a specialization of `mp_units::quantity<R, Rep>`,
 where `R` identifies the quantity and its unit, while `Rep` specifies the type used to store its numerical value
 and defaults to `double`.
@@ -92,8 +91,8 @@ the `mp-units` core header:
 Next, we define the error types that the library functions may report. When parsing a CSV row, we
 distinguish three possible errors: (i) a value cannot be parsed because of an invalid format (enumerator `format_error`),
 (ii) an expected value is missing (`missing_value`), or (iii) the row contains more values than expected
-(`extra_value`). A `parse_error` stores an error code identifying the failure and the CSV column at which it
-occurred. When processing an entire CSV input, a `row_error` additionally records the line number at which
+(`extra_value`). A `parse_error` stores an error code identifying one of these failures, along with the CSV column
+at which it occurred. When processing an entire CSV input, a `row_error` additionally records the line number at which
 the parsing error occurred.
 
 Beyond errors associated with parsing individual rows, loading a CSV input may also fail while
@@ -117,11 +116,11 @@ All three failures are represented by the `std::variant` type `file_load_error`.
 {% include physical-quantities-csv/cb-4.html %}
 </div>
 
-As mentioned before, a physical quantity is typically expressed in terms of a numerical value and
+As mentioned earlier, a physical quantity is typically expressed in terms of a numerical value and
 a unit of measurement. We therefore begin by introducing the concepts that constrain the underlying
-numerical representation of a quantity. The value is considered parsable if it can be converted
-directly from a character sequence using `std::from_chars`,[^5] or alternatively extracted from an
-input stream using `operator>>`:
+numerical representation of a quantity. A value is considered parsable if its type models `parsable_value`,
+that is, if it can be converted directly from a character sequence using `std::from_chars`,[^5] or
+alternatively extracted from an input stream using `operator>>`:
 
 <div class="dgv-cb">
 {% include physical-quantities-csv/cb-5.html %}
@@ -129,7 +128,7 @@ input stream using `operator>>`:
 
 The following `parse_value` function parses a numerical value using the strategy appropriate
 for its underlying representation type. Whenever possible, conversion is performed directly
-on the character sequence with `std::from_chars`, providing a lightweight, locale-independent
+from the character sequence using `std::from_chars`, providing a lightweight, locale-independent
 path. Otherwise, the value is extracted through a `std::ispanstream` imbued with the classic C
 locale.[^6] In both cases, floating-point values use a period (`.`) as the decimal separator.
 Leading and trailing ASCII whitespace is ignored. Empty or whitespace-only fields are reported
@@ -168,12 +167,12 @@ members. The `parsable_quantity` concept requires a member to satisfy `mp_units:
 be non-const so that its numerical value can be modified, and to have a representation type `rep`
 satisfying `parsable_value`.
 
-`first_invalid_member` uses a C++26 `template for` expansion statement[^7] to inspect the
-reflected members in declaration order. It returns the first member whose type does not
+The `first_invalid_member` function uses a C++26 `template for` expansion statement[^7] to inspect
+the reflected members in declaration order. It returns the first member whose type does not
 satisfy `parsable_quantity`, or an empty `std::meta::info`[^8] if all members are valid.
 
 Rather than expressing the validity of the entire aggregate as a boolean constraint,
-`assert_valid_members` uses the result of `first_invalid_member` to produce a targeted compile-time
+`assert_valid_members` uses the result of `first_invalid_member` to generate a targeted compile-time
 diagnostic. If a member does not satisfy `parsable_quantity`, the `static_assert` message reports
 the member's identifier and type, along with the enclosing aggregate type. If all members satisfy the
 constraint, the `static_assert` has no effect and its message is an unevaluated operand:
@@ -211,8 +210,8 @@ named members of a single aggregate is particularly convenient: the type provide
 structure of a CSV row and meaningful names for the physical quantities it contains.
 </div>
 
-To make the structured errors convenient to present to users, we provide a set of `describe`
-overloads that translate each type of error into a human-readable diagnostic. Errors carrying
+To make structured errors easier to present to users, we provide a set of `describe`
+overloads that translate each error type into a human-readable diagnostic. Errors carrying
 contextual information use `std::format` to include the relevant line and column numbers:
 
 <div class="dgv-cb">
@@ -263,3 +262,4 @@ presented in an earlier post on my Spanish-language C++ blog on Blogger:
 [^8]: cppreference.com - [std::meta::info](https://cppreference.com/cpp/meta/info)
 [^9]: mp-units - [Why can't I convert a double& to a quantity&?](https://mpusz.github.io/mp-units/latest/getting_started/faq/?h=numerical_value_ref_in#why-cant-i-convert-a-double-to-a-quantity)
 [^10]: cppreference.com - [std::formatter](https://en.cppreference.com/cpp/utility/format/formatter)
+
