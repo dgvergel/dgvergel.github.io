@@ -188,8 +188,8 @@ reports the identifier and type of the offending data member: <code>"static asse
 
 Having defined the compile-time requirements, we can now implement the `parse_row` function to parse
 an individual CSV row into an aggregate `T` of physical quantities. The function first validates at
-compile time that the aggregate's members are suitable physical quantities for parsing and then
-splits the input row using the requested delimiter.
+compile time that the aggregate's members are suitable physical quantities, and then splits the input row
+using the specified delimiter.
 A default-initialized instance of `T` is populated, in declaration order, using a C++26
 `template for` expansion statement. For each reflected data member, `template for` expands its body
 at compile time, generating the runtime code that parses the corresponding CSV field into that member:
