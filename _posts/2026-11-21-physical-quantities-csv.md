@@ -24,10 +24,9 @@ Converting these raw values into strongly typed physical quantities requires par
 data and constructing the corresponding objects using a physical quantities library. In this article,
 we will accomplish this with C++26, particularly its reflection facilities, and mp-units.[^1]
 
-For example, consider a CSV file named `parabolic_throwing_data.csv` containing measurements
-from a projectile-launch experiment involving parabolic motion (see the figure),
-with each row storing the launch angle `ϕ` in degrees, the measured initial speed `v` in
-miles per hour, and the horizontal range to the impact point `r` in centimeters:
+For example, consider a CSV file named `parabolic_throwing_data.csv` containing measurements from a
+projectile motion experiment (see the figure). Each row contains the launch angle `ϕ` in degrees,
+the measured initial speed `v` in miles per hour, and the horizontal range `r` in centimeters:
 
 <div style="clear: both;"></div>
 <div class="dgv-sheet"><pre>ϕ (deg), v (mi/h), r (cm)
@@ -40,8 +39,8 @@ miles per hour, and the horizontal range to the impact point `r` in centimeters:
 30, 5.50, 88.1</pre>
 </div>
 
-The deserialization of this CSV file into a container of physical quantities will follow the
-simple scheme below:
+The following simple scheme illustrates how the CSV file may be deserialized into a container of physical
+quantities using the library developed in this article:
 
 <div class="dgv-cb">
 {% include physical-quantities-csv/cb-1.html %}
@@ -129,12 +128,12 @@ alternatively extracted from an input stream using `operator>>`:
 
 The following `parse_value` function parses a numerical value using the strategy appropriate
 for its underlying representation type. Whenever possible, conversion is performed directly
-from the character sequence using `std::from_chars`, providing a lightweight, locale-independent
-path. Otherwise, the value is extracted through a `std::ispanstream` imbued with the classic C
-locale.[^6] In both cases, floating-point values use a period (`.`) as the decimal separator.
-Leading and trailing ASCII whitespace is ignored. Empty or whitespace-only fields are reported
-as missing values, while any unparsed characters remaining after conversion result in a format
-error:
+from the character sequence using `std::from_chars`. This avoids the overhead associated with
+stream-based conversion and makes the process independent of the locale. Otherwise, the value
+is extracted through a `std::ispanstream` imbued with the classic C locale.[^6] In both cases,
+floating-point values use a period (`.`) as the decimal separator. Leading and trailing ASCII
+whitespace is ignored. Empty or whitespace-only fields are reported as missing values, while
+any unparsed characters remaining after conversion result in a format error:
 
 <div class="dgv-cb">
 {% include physical-quantities-csv/cb-6.html %}
@@ -165,8 +164,7 @@ those entities are permitted.
 
 Having established the aggregate's structural requirements, we now validate its individual data
 members. The `parsable_quantity` concept requires a member to satisfy `mp_units::Quantity`, to
-be non-const so that its numerical value can be modified, and to have a representation type `rep`
-satisfying `parsable_value`.
+be non-const, and to have a representation type `rep` satisfying `parsable_value`.
 
 The `first_invalid_member` function uses a C++26 `template for` expansion statement[^7] to inspect
 the reflected members in declaration order. It returns the first member whose type does not
@@ -188,7 +186,7 @@ reports the identifier and type of the offending data member: <code>"static asse
 'v' of type double in shot_data is not a parsable mp_units::quantity"</code>.
 </div>
 
-With the compile-time requirements in place, we can now use the `parse_row` function to parse
+Having defined the compile-time requirements, we can now implement the `parse_row` function to parse
 an individual CSV row into an aggregate `T` of physical quantities. The function first validates at
 compile time that the aggregate's members are suitable physical quantities for parsing and then
 splits the input row using the requested delimiter.
@@ -224,8 +222,8 @@ produces the message <code>"CSV error: line 4, column 2: missing value"</code>, 
 second field, <code>10, 5.64a, 72.0</code>, produces <code>"CSV error: line 4, column 2: invalid numeric format"</code>.
 </div>
 
-With these pieces in place, we provide two overloads of `load_quantities` that load a complete CSV dataset into
-a vector of aggregates: one operates on an existing `std::istream` input stream, while the other takes a
+At this point, we are ready to provide two overloads of `load_quantities` that load a complete CSV dataset into
+a vector of aggregates. One operates on an existing `std::istream` input stream, while the other takes a
 `std::filesystem::path` and opens the corresponding file. If the input is configured to contain a header,
 the first line is consumed and skipped. Each subsequent line is parsed with `parse_row` and, on success,
 the resulting aggregate is appended to the output vector.
