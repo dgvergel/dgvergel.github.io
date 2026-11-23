@@ -3,7 +3,7 @@
 {
 &nbsp; &nbsp;<span style="color: #569cd6;">using enum</span> parse_error_code;
 &nbsp; &nbsp;<span style="color: #569cd6;">switch</span> (c) {
-&nbsp; &nbsp; &nbsp; <span style="color: #569cd6;">case</span> <span style="color: #b5cea8;">format_error</span>: <span style="color: #569cd6;">return</span> <span style="color: #ce9178;">"invalid numeric format"</span>;
+&nbsp; &nbsp; &nbsp; <span style="color: #569cd6;">case</span> <span style="color: #b5cea8;">format_error</span>: <span style="color: #569cd6;">return</span> <span style="color: #ce9178;">"invalid field value"</span>;
 &nbsp; &nbsp; &nbsp; <span style="color: #569cd6;">case</span> <span style="color: #b5cea8;">missing_value</span>: <span style="color: #569cd6;">return</span> <span style="color: #ce9178;">"missing value"</span>;
 &nbsp; &nbsp; &nbsp; <span style="color: #569cd6;">case</span> <span style="color: #b5cea8;">extra_value</span>: <span style="color: #569cd6;">return</span> <span style="color: #ce9178;">"more columns than expected"</span>;
 &nbsp; &nbsp;}
@@ -17,7 +17,7 @@
 }
 
 <span style="color: #c586c0;">[[nodiscard]]</span>
-<span style="color: #569cd6;">inline</span> <span style="color: #569cd6;">auto</span> describe(read_error <span style="color: #569cd6;">const&amp;</span> e) -&gt; std::string
+<span style="color: #569cd6;">inline</span> <span style="color: #569cd6;">auto</span> describe(read_error <span style="color: #569cd6;">const</span>&amp; e) -&gt; std::string
 {
 &nbsp; &nbsp;<span style="color: #569cd6;">return</span> std::format(<span style="color: #ce9178;">"I/O error while reading line {}"</span>, e.line);
 }
