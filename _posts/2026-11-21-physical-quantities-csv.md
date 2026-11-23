@@ -76,7 +76,7 @@ Furthermore, mp-units is being proposed for standardization in C++29 through pro
 
 The rest of the article develops the header-only library in `quantity_csv.hpp`. Concatenating the
 code blocks in order produces the complete header. The code, compiled with GCC 16.2, is also available
-at this [Compiler Explorer link](https://godbolt.org/z/YjoWs5KxG).
+at this [Compiler Explorer link](https://godbolt.org/z/ccPnPKrz6).
 
 ## Implementation
 
@@ -219,7 +219,7 @@ contextual information use `std::format` to include the relevant line and column
 
 <div class="dgv-note">For instance, an empty second field on line 4 of the CSV shown in the introduction, <code>10, , 72.0</code>,
 produces the message <code>"CSV error: line 4, column 2: missing value"</code>, whereas a malformed
-second field, <code>10, 5.64a, 72.0</code>, produces <code>"CSV error: line 4, column 2: invalid numeric format"</code>.
+second field, <code>10, 5.64a, 72.0</code>, produces <code>"CSV error: line 4, column 2: invalid field value"</code>.
 </div>
 
 At this point, we are ready to provide two overloads of `load_quantities` that load a complete CSV dataset into
