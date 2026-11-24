@@ -117,7 +117,7 @@ All three failures are represented by the `std::variant` type `file_load_error`.
 </div>
 
 As mentioned earlier, a physical quantity is typically expressed in terms of a numerical value and
-a unit of measurement. For parsing purposes, it is convenient to introduce a concept that constrain the underlying
+a unit of measurement. For parsing purposes, it is convenient to introduce a concept that constrains the underlying
 numerical representation of a quantity. In our case, a type satisfies `parsable_value` if its values can be converted
 directly from a character sequence using `std::from_chars`,[^5] or alternatively extracted from an input stream
 using `operator>>`:
@@ -169,12 +169,11 @@ This validation is organized into three components:
 be non-const, and to have a representation type `rep` satisfying `parsable_value`.
 
 * `first_invalid_member` uses a C++26 `template for` expansion statement[^7] to inspect
-the reflected members in declaration order. It returns the first member whose type does not
+the reflected members of the aggregate in declaration order. It returns the first member whose type does not
 satisfy `parsable_quantity`, or an empty `std::meta::info`[^8] if all members are valid.
 
-* `assert_valid_members` takes a type `T` satisfying `plain_aggregate` as a template parameter and uses
-`first_invalid_member` to emit a compile-time diagnostic if `T` has a data member whose type does not
-satisfy `parsable_quantity`. In that case, the `static_assert` message reports the member's
+* `assert_valid_members` uses `first_invalid_member` to emit a compile-time diagnostic if the aggregate `T` has a data
+member whose type does not satisfy `parsable_quantity`. In that case, the `static_assert` message reports the member's
 identifier and type, along with the enclosing aggregate type. Unlike the diagnostic of a failed constraint
 on the whole aggregate, which would only report that `T` does not satisfy it, this message points
 directly at the offending member. If all members are valid, the `static_assert` has no effect and its
