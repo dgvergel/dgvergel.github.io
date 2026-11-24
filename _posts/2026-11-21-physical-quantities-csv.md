@@ -47,9 +47,9 @@ quantities using the library developed in this article:
 </div>
 
 Here, `shot_data` represents a CSV row as an aggregate, with each data member associating a CSV column with
-a physical quantity and its unit. More specifically, every member is a specialization of `mp_units::quantity<R, Rep>`,
-where `R` identifies the quantity and its unit, while `Rep` specifies the type used to store its numerical value
-and defaults to `double`.
+a physical quantity and its unit. More specifically, every member is a `mp_units::quantity<R, Rep>` object,
+where `R` identifies both the quantity (e.g., `isq::speed`) and its unit (e.g., `mi/h`), while `Rep`
+is the type used to store its numerical value (`double` by default).
 
 A single call to `qcsv::load_quantities<shot_data>`, provided by `quantity_csv.hpp`, returns a `std::expected`[^2]
 containing either the complete dataset as a `std::vector<shot_data>` or a loading or parsing error.
@@ -117,10 +117,10 @@ All three failures are represented by the `std::variant` type `file_load_error`.
 </div>
 
 As mentioned earlier, a physical quantity is typically expressed in terms of a numerical value and
-a unit of measurement. We therefore begin by introducing the concept that constrain the underlying
-numerical representation of a quantity. A value is considered parsable if its type models `parsable_value`,
-that is, if it can be converted directly from a character sequence using `std::from_chars`,[^5] or
-alternatively extracted from an input stream using `operator>>`:
+a unit of measurement. For parsing purposes, it is convenient to introduce a concept that constrain the underlying
+numerical representation of a quantity. A type satisfies `parsable_value` if its values can be converted
+directly from a character sequence using std::from_chars,[^5] or alternatively extracted from an input stream
+using `operator>>`:
 
 <div class="dgv-cb">
 {% include physical-quantities-csv/cb-5.html %}
