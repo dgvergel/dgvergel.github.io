@@ -39,8 +39,8 @@ the measured initial speed `v` in miles per hour, and the horizontal range `r` i
 30, 5.50, 88.1</pre>
 </div>
 
-The following simple scheme illustrates how the CSV file may be deserialized into a container of physical
-quantities using the small library developed in this article:
+The following simple scheme illustrates how the small library developed in this article can be used to
+deserialize the CSV file into a container of triples of physical quantities:
 
 <div class="dgv-cb">
 {% include physical-quantities-csv/cb-1.html %}
@@ -175,7 +175,7 @@ satisfy `parsable_quantity`, or an empty `std::meta::info`[^8] if all members ar
 * `assert_valid_members` uses `first_invalid_member` to emit a compile-time diagnostic if the aggregate `T` has a data
 member whose type does not satisfy `parsable_quantity`. In that case, the `static_assert` message reports the member's
 identifier and type, along with the enclosing aggregate type. Unlike the diagnostic of a failed constraint
-on the whole aggregate, which would only report that `T` does not satisfy it, this message points
+on the whole aggregate, which would only report that `T` does not satisfy the requirement, this message points
 directly at the offending member. If all members are valid, the `static_assert` has no effect and its
 message is an unevaluated operand.
 
@@ -190,8 +190,8 @@ reports the identifier and type of the offending data member: <code>"static asse
 </div>
 
 Having defined the compile-time requirements, we can now implement the `parse_row` function template to parse
-an individual CSV row into an aggregate `T` of physical quantities. The function first validates at
-compile time that the aggregate's members are parsable physical quantities, and then splits the input row
+an individual CSV row into an aggregate `T`. The function first validates at
+compile time that all members of the aggregate are parsable physical quantities, and then splits the input row
 using the specified delimiter.
 A default-initialized instance of `T` is populated, in declaration order, using a C++26
 `template for` expansion statement. For each reflected data member, `template for` expands its body
