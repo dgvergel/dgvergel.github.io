@@ -75,7 +75,7 @@ Furthermore, mp-units is being proposed for standardization in C++29 through pro
 </div>
 
 The rest of the article develops the header-only library in `quantity_csv.hpp`. Concatenating the code blocks
-in order produces the complete header, which is also available on [Compiler Explorer](https://godbolt.org/z/ccPnPKrz6)
+in order produces the complete header, which is also available on [Compiler Explorer](https://godbolt.org/z/TE4ha8TEM)
 together with the `main()` function from this introduction, ready to compile with GCC 16.2.
 
 ## Implementation
