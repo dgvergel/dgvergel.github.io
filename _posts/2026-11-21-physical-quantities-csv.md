@@ -119,7 +119,7 @@ All three failures are represented by the `std::variant` type `file_load_error`.
 As mentioned earlier, a physical quantity is typically expressed in terms of a numerical value and
 a unit of measurement. For parsing purposes, it is convenient to introduce a concept that constrain the underlying
 numerical representation of a quantity. A type satisfies `parsable_value` if its values can be converted
-directly from a character sequence using std::from_chars,[^5] or alternatively extracted from an input stream
+directly from a character sequence using `std::from_chars`,[^5] or alternatively extracted from an input stream
 using `operator>>`:
 
 <div class="dgv-cb">
