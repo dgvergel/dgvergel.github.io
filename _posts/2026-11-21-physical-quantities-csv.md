@@ -3,7 +3,7 @@ layout: post
 title: "Parsing Physical Quantities from CSV with C++26 Reflection and mp-units"
 author: Daniel Gómez Vergel
 date: 2026-11-21
-last_modified_at: 2026-11-23
+last_modified_at: 2026-11-24
 categories: [C++26, csv, mp-units, physical-quantities, reflection]
 permalink: /2026/11/21/physical-quantities-csv/
 excerpt: >
@@ -40,14 +40,14 @@ the measured initial speed `v` in miles per hour, and the horizontal range `r` i
 </div>
 
 The following simple scheme illustrates how the CSV file may be deserialized into a container of physical
-quantities using the library developed in this article:
+quantities using the small library developed in this article:
 
 <div class="dgv-cb">
 {% include physical-quantities-csv/cb-1.html %}
 </div>
 
-Here, `shot_data` represents a CSV row as an aggregate, with each data member associating a CSV column with
-a physical quantity and its unit. More specifically, every member is a `mp_units::quantity<R, Rep>` object,
+Here, `shot_data` represents a CSV row as an aggregate whose data members correspond, in declaration
+order, to the columns of the file. Each member is a `mp_units::quantity<R, Rep>` object,
 where `R` identifies both the quantity (e.g., `isq::speed`) and its unit (e.g., `mi/h`), while `Rep`
 is the type used to store its numerical value (`double` by default).
 
@@ -74,9 +74,9 @@ representation safety, quantity kind safety, quantity safety, and mathematical s
 Furthermore, mp-units is being proposed for standardization in C++29 through proposal P3045.[^4]
 </div>
 
-The rest of the article develops the header-only library in `quantity_csv.hpp`. Concatenating the
-code blocks in order produces the complete header. The code, compiled with GCC 16.2, is also available
-at this [Compiler Explorer link](https://godbolt.org/z/ccPnPKrz6).
+The rest of the article develops the header-only library in `quantity_csv.hpp`. Concatenating the code blocks
+in order produces the complete header, which is also available on [Compiler Explorer](https://godbolt.org/z/ccPnPKrz6)
+together with the `main()` function from this introduction, ready to compile with GCC 16.2.
 
 ## Implementation
 
@@ -90,9 +90,9 @@ the `mp-units` core header:
 Next, we define the error types that the library functions may report. When parsing a CSV row, we
 distinguish three possible errors: (i) a value cannot be parsed because of an invalid format (enumerator `format_error`),
 (ii) an expected value is missing (`missing_value`), or (iii) the row contains more values than expected
-(`extra_value`). A `parse_error` stores an error code identifying one of these failures, along with the CSV column
-at which it occurred. When processing an entire CSV input, a `row_error` additionally records the line number at which
-the parsing error occurred.
+(`extra_value`). A `parse_error` stores an error code identifying one of these failures, together with the number of
+the CSV column in which it occurred. When processing an entire CSV input, a `row_error` additionally records
+the number of the line on which the parsing error occurred. Columns and lines are both numbered starting from `1`.
 
 Beyond errors associated with parsing individual rows, loading a CSV input may also fail while
 reading from the input stream. A `read_error` records the line at which the read operation failed.
@@ -118,7 +118,7 @@ All three failures are represented by the `std::variant` type `file_load_error`.
 
 As mentioned earlier, a physical quantity is typically expressed in terms of a numerical value and
 a unit of measurement. For parsing purposes, it is convenient to introduce a concept that constrain the underlying
-numerical representation of a quantity. A type satisfies `parsable_value` if its values can be converted
+numerical representation of a quantity. In our case, a type satisfies `parsable_value` if its values can be converted
 directly from a character sequence using `std::from_chars`,[^5] or alternatively extracted from an input stream
 using `operator>>`:
 
@@ -126,13 +126,13 @@ using `operator>>`:
 {% include physical-quantities-csv/cb-5.html %}
 </div>
 
-The following `parse_value` function parses a numerical value using the strategy appropriate
-for its underlying representation type. Whenever possible, conversion is performed directly
-from the character sequence using `std::from_chars`. This avoids the overhead associated with
-stream-based conversion and makes the process independent of the locale. Otherwise, the value
-is extracted through a `std::ispanstream` imbued with the classic C locale.[^6] In both cases,
-floating-point values use a period (`.`) as the decimal separator. Leading and trailing ASCII
-whitespace is ignored. Empty or whitespace-only fields are reported as missing values, while
+The following `parse_value` function template parses a numerical value of any type `T` that
+satisfies `parsable_value`, using the strategy appropriate for that type. Whenever possible,
+conversion is performed directly from the character sequence using `std::from_chars`. This
+avoids the overhead associated with stream-based conversion and makes the process independent of
+the locale. Otherwise, the value is extracted through a `std::ispanstream` imbued with the classic C
+locale.[^6] In both cases, floating-point values use a period (`.`) as the decimal separator. Leading and
+trailing ASCII whitespace is ignored. Empty or whitespace-only fields are reported as missing values, while
 any unparsed characters remaining after conversion result in a format error:
 
 <div class="dgv-cb">
@@ -142,7 +142,7 @@ any unparsed characters remaining after conversion result in a format error:
 The next step is to constrain the aggregate type used to represent a CSV row and, more
 importantly, to verify at compile time that each of its non-static data members is
 a parsable mp-units quantity whose numerical value can be populated from a CSV field.
-For simplicity, the `plain_aggregate` concept admits only aggregate classes that are
+For simplicity, the following `plain_aggregate` concept admits only aggregate classes that are
 default-initializable, have no base classes, and declare at least one non-static data member:
 
 <div class="dgv-cb">
@@ -162,19 +162,23 @@ reintroduce (reify) entities represented by reflections into the program in the 
 those entities are permitted.
 </div>
 
-Having established the aggregate's structural requirements, we now validate its individual data
-members. The `parsable_quantity` concept requires a member to satisfy `mp_units::Quantity`, to
+Having established the aggregate's structural requirements, we now validate its individual data members.
+This validation is organized into three components:
+
+* `parsable_quantity` is a concept that requires the type of a member to satisfy `mp_units::Quantity`, to
 be non-const, and to have a representation type `rep` satisfying `parsable_value`.
 
-The `first_invalid_member` function uses a C++26 `template for` expansion statement[^7] to inspect
+* `first_invalid_member` uses a C++26 `template for` expansion statement[^7] to inspect
 the reflected members in declaration order. It returns the first member whose type does not
 satisfy `parsable_quantity`, or an empty `std::meta::info`[^8] if all members are valid.
 
-Rather than expressing the validity of the entire aggregate as a boolean constraint,
-`assert_valid_members` uses the result of `first_invalid_member` to generate a targeted compile-time
-diagnostic. If a member does not satisfy `parsable_quantity`, the `static_assert` message reports
-the member's identifier and type, along with the enclosing aggregate type. If all members satisfy the
-constraint, the `static_assert` has no effect and its message is an unevaluated operand:
+* `assert_valid_members` takes a type `T` satisfying `plain_aggregate` as a template parameter and uses
+`first_invalid_member` to emit a compile-time diagnostic if `T` has a data member whose type does not
+satisfy `parsable_quantity`. In that case, the `static_assert` message reports the member's
+identifier and type, along with the enclosing aggregate type. Unlike the diagnostic of a failed constraint
+on the whole aggregate, which would only report that `T` does not satisfy it, this message points
+directly at the offending member. If all members are valid, the `static_assert` has no effect and its
+message is an unevaluated operand.
 
 <div class="dgv-cb">
 {% include physical-quantities-csv/cb-8.html %}
@@ -186,9 +190,9 @@ reports the identifier and type of the offending data member: <code>"static asse
 'v' of type double in shot_data is not a parsable mp_units::quantity"</code>.
 </div>
 
-Having defined the compile-time requirements, we can now implement the `parse_row` function to parse
+Having defined the compile-time requirements, we can now implement the `parse_row` function template to parse
 an individual CSV row into an aggregate `T` of physical quantities. The function first validates at
-compile time that the aggregate's members are suitable physical quantities, and then splits the input row
+compile time that the aggregate's members are parsable physical quantities, and then splits the input row
 using the specified delimiter.
 A default-initialized instance of `T` is populated, in declaration order, using a C++26
 `template for` expansion statement. For each reflected data member, `template for` expands its body
