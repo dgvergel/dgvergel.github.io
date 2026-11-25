@@ -22,7 +22,7 @@ Experimental data in science and engineering are commonly stored in CSV files, w
 represents a physical quantity whose unit is either implicit or specified in a header.
 Converting these raw values into strongly typed physical quantities requires parsing the serialized
 data and constructing the corresponding objects using a physical quantities library. In this article,
-we will accomplish this with C++26, particularly its reflection facilities, and mp-units.[^1]
+we will accomplish this with C++26, particularly its reflection facilities, and mp-units v2.5.[^1]
 
 For example, consider a CSV file named `parabolic_throwing_data.csv` containing measurements from a
 projectile motion experiment (see the figure). Each row contains the launch angle `ϕ` in degrees,
