@@ -17,17 +17,18 @@
 }
 
 <span style="color: #569cd6;">template</span>&lt;<span style="color: #569cd6;">plain_aggregate</span> T&gt;
-<span style="color: #569cd6;">consteval</span> <span style="color: #569cd6;">auto</span> assert_valid_members() -&gt; <span style="color: #569cd6;">void</span>
+<span style="color: #569cd6;">consteval</span> <span style="color: #569cd6;">void</span> assert_valid_members()
 {
 &nbsp; &nbsp;<span style="color: #569cd6;">constexpr</span> <span style="color: #569cd6;">auto</span> bad = first_invalid_member&lt;T&gt;();
 &nbsp; &nbsp;<span style="color: #569cd6;">static_assert</span>(
 &nbsp; &nbsp; &nbsp; bad == std::meta::info{},
 &nbsp; &nbsp; &nbsp; std::string_view{std::define_static_string(
-&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;std::string{<span style="color: #ce9178;">"qcsv: data member '"</span>}
-&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;+ std::meta::identifier_of(bad)
-&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;+ <span style="color: #ce9178;">"' of type "</span> + std::meta::display_string_of(std::meta::type_of(bad))
-&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;+ <span style="color: #ce9178;">" in "</span> + std::meta::display_string_of(^^T)
-&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;+ <span style="color: #ce9178;">" is not a parsable mp_units::quantity"</span>
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;std::format(
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <span style="color: #ce9178;">"qcsv: data member '{}' of type {} in {} is not a parsable mp_units::quantity"</span>,
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; std::meta::identifier_of(bad),
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; std::meta::display_string_of(std::meta::type_of(bad)),
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; std::meta::display_string_of(^^T)
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;)
 &nbsp; &nbsp; &nbsp; )}
 &nbsp; &nbsp;);
 }
