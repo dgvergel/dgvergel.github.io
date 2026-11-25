@@ -30,8 +30,7 @@
 
 <span style="color: #569cd6;">auto</span> main() -&gt; <span style="color: #569cd6;">int</span>
 {
-&nbsp; &nbsp;<span style="color: #569cd6;">auto</span> <span style="color: #569cd6;">const</span> data =
-&nbsp; &nbsp; &nbsp; qcsv::load_quantities&lt;shot_data&gt;(<span style="color: #ce9178;">"parabolic_throwing_data.csv"</span>);
+&nbsp; &nbsp;<span style="color: #569cd6;">auto</span> <span style="color: #569cd6;">const</span> data = qcsv::load_quantities&lt;shot_data&gt;(<span style="color: #ce9178;">"parabolic_throwing_data.csv"</span>);
 
 &nbsp; &nbsp;<span style="color: #569cd6;">if</span> (<span style="color: #569cd6;">not</span> data) {
 &nbsp; &nbsp; &nbsp; std::println(<span style="color: #569cd6;">stderr</span>, <span style="color: #ce9178;">"CSV error: {}"</span>, data.error());
