@@ -152,7 +152,7 @@ default-initializable, have no base classes, and declare at least one non-static
 <div class="dgv-note">Note how C++26 <b>reflection</b> is used to inspect the aggregate at compile time,
 discovering its non-static data members and verifying that it has no base classes.
 <hr>
-The C++26 reflection system can be understood as an interaction between two domains: the program
+The C++26 static reflection system can be understood as an interaction between two domains: the program
 domain, comprising types, members, expressions, and other language constructs; and the meta-domain,
 comprising <code>std::meta::info</code> reflection values. The <code>^^</code> reflection operator projects
 program elements into the meta-domain, producing prvalues of type <code>std::meta::info</code> that represent them.
