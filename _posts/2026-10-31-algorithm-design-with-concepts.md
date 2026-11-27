@@ -3,7 +3,7 @@ layout: post
 title: "Algorithm Design with Concepts, Ranges, and Projections"
 author: Daniel Gómez Vergel
 date: 2026-10-31
-last_modified_at: 2026-11-15
+last_modified_at: 2026-11-27
 categories: [C++, algorithms, concepts, projections, ranges]
 permalink: /2026/10/31/algorithm-design-with-concepts/
 excerpt: >
@@ -33,7 +33,7 @@ iteration. It is specified by an iterator and a sentinel denoting the beginning 
 The sentinel need not have the same type as the iterator.
 <hr>
 A <b>projection</b> is a transformation applied by an algorithm to an element before its value is inspected. It may, for
-example, be a function object or a pointer to a data member. A projections makes it possible, for instance, to sort
+example, be a function object or a pointer to a data member. A projection makes it possible, for instance, to sort
 objects according to the ordering of one of their data members.
 </div>
 
@@ -133,7 +133,7 @@ Omitting namespace qualification for clarity, `std::sortable` is defined as foll
 </div>
 
 <div class="dgv-note"> Here, <code>std::projected&lt;I, Proj&gt;</code> provides an indirectly readable type
-whose reference type is the result of applying <code>Proj</code> to <code>std::iter_value_t&lt;I&gt;</code>,
+whose reference type is the result of applying <code>Proj</code> to <code>std::iter_reference_t&lt;I&gt;</code>,
 the reference type of <code>I</code>.
 <hr>
 Note that we do not require objects of type <code>std::iter_value_t&lt;I&gt;</code> to be copyable.
@@ -361,7 +361,7 @@ Note: This post is a translated and expanded version of an earlier article that 
 [^1]: cppreference.com - [Constraints and concepts](https://en.cppreference.com/w/cpp/language/constraints)
 [^2]: cppreference.com - [Concepts library](https://en.cppreference.com/w/cpp/concepts)
 [^3]: cppreference.com - [Iterator library](https://en.cppreference.com/w/cpp/iterator)
-[^4]: cppreference.com - [Rages library](https://en.cppreference.com/w/cpp/ranges)
+[^4]: cppreference.com - [Ranges library](https://en.cppreference.com/w/cpp/ranges)
 [^5]: Cormen T. H., et al., *Introduction to Algorithms*. 3rd Edition, MIT Press (2009).
 [^6]: cppreference.com - [std::sortable](https://en.cppreference.com/w/cpp/iterator/sortable)
 [^7]: cppreference.com - [std::ranges::find_if_not](https://en.cppreference.com/cpp/algorithm/ranges/find)
