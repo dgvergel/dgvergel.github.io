@@ -80,8 +80,8 @@ together with the `main()` function from this introduction, ready to compile wit
 
 <div class="dgv-def">For simplicity, our implementation has a deliberately limited scope.
 First, the library does not interpret any units that may appear in the CSV file header, nor does it check whether
-they match the units declared in the aggregate. Rather, numerical values are simply assumed to be expressed in
-the units of their respective quantity types. Second, the parser supports only a simplified subset of the
+they match the units declared in the aggregate. Rather, numerical values within the file are simply assumed to be expressed
+in the units of their respective quantity types. Second, the parser supports only a simplified subset of the
 CSV format: it splits each line into fields using a delimiter (<code>,</code> by default), but does not handle quoted
 fields or embedded line breaks.
 </div>
