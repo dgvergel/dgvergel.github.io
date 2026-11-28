@@ -168,6 +168,9 @@ These reflection values can then be queried, for example to obtain information a
 or template arguments. Splicers, written <code>[: <em>refl</em> :]</code>, provide the complementary operation: they
 reintroduce (reify) entities represented by reflections into the program in the grammatical contexts where
 those entities are permitted.
+<img src="{{ '/assets/images/physical-quantities-csv/fig-2.webp' | relative_url }}"
+     alt="C++26 static reflection"
+     style="display: block; margin: 5px auto 0; max-width: 100%; height: auto;">
 </div>
 
 Having established the aggregate's structural requirements, we now validate its individual data members.
