@@ -78,6 +78,14 @@ The rest of the article develops the header-only library in `quantity_csv.hpp`. 
 in order produces the complete header, which is also available on [Compiler Explorer](https://godbolt.org/z/hqEvGfMTT)
 together with the `main()` function from this introduction, ready to compile with GCC 16.2.
 
+<div class="dgv-def">For simplicity, our implementation has a deliberately limited scope.
+First, the library does not interpret any units that may appear in the CSV file header, nor does it check whether
+they match the units declared in the aggregate. Rather, numerical values are simply assumed to be expressed in
+the units of their respective quantity types. Second, the parser supports only a simplified subset of the
+CSV format: it splits each line into fields using a delimiter (<code>,</code> by default), but does not handle quoted
+fields or embedded line breaks.
+</div>
+
 ## Implementation
 
 We begin by including the standard library headers required by the implementation, along with
