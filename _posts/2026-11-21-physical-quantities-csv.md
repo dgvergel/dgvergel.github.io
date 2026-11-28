@@ -170,7 +170,7 @@ reintroduce (reify) entities represented by reflections into the program in the 
 those entities are permitted.
 <img src="{{ '/assets/images/physical-quantities-csv/fig-2.webp' | relative_url }}"
      alt="C++26 static reflection"
-     style="display: block; margin: 5px auto 0; max-width: 100%; height: auto;">
+     style="display: block; margin: 5px auto 0; max-width: 90%; height: auto;">
 </div>
 
 Having established the aggregate's structural requirements, we now validate its individual data members.
