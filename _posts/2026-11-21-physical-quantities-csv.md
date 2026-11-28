@@ -3,7 +3,7 @@ layout: post
 title: "Parsing Physical Quantities from CSV with C++26 Reflection and mp-units"
 author: Daniel Gómez Vergel
 date: 2026-11-21
-last_modified_at: 2026-11-25
+last_modified_at: 2026-11-28
 categories: [C++26, csv, mp-units, physical-quantities, reflection]
 permalink: /2026/11/21/physical-quantities-csv/
 excerpt: >
@@ -187,6 +187,11 @@ message is an unevaluated operand.
 changed from <code>speed_type</code> to <code>double</code>, compilation would fail with a diagnostic that
 reports the identifier and type of the offending data member: <code>"static assertion failed: qcsv: data member
 'v' of type double in shot_data is not a parsable mp_units::quantity"</code>.
+<hr>
+The `assert_valid_members` function could be expressed more conveniently using `constexpr std::format` (proposal
+P3391 adopted into C++26), since none of the excluded formatting cases (namely, floating-point types, chrono types,
+or locale-dependent formatting) are involved. However, the GCC 16.2 compiler used in this article does not support this
+feature yet.
 </div>
 
 Having defined the compile-time requirements, we can now implement the `parse_row` function template to parse
